@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:delivery/pages/Login.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +15,12 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-                color: Colors.deepPurple,
-
+        decoration:const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: SafeArea(
           child: Center(
             child: Padding(
@@ -25,7 +31,7 @@ class _HomeState extends State<Home> {
                 children: [
                   SizedBox(
                     height: 50,
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -33,12 +39,9 @@ class _HomeState extends State<Home> {
                           ),
                         );
                       },
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(Colors.blue),
-                      ),
-                      child: Text("Sign In",
-                          style: TextStyle(color: Colors.grey[550])),
+                      icon: Icon(Icons.login, color: Colors.white),
+                      label: Text("Sign In",
+                          style: TextStyle(color: Colors.white, fontSize: 18)),
                     ),
                   ),
                   const SizedBox(
@@ -46,15 +49,17 @@ class _HomeState extends State<Home> {
                   ),
                   SizedBox(
                     height: 50,
-                    child: OutlinedButton(
-                      style:const ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll<Color>(Colors.black38)
+                    child: OutlinedButton.icon(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.5),
                       ),
-                        onPressed: () {},
-                        child: const Text(
-                          " Create Your Account",
-                          style: TextStyle(color: Colors.indigo),
-                        )),
+                      icon: Icon(Icons.person_add, color: Colors.indigo),
+                      label: Text(
+                        " Create Your Account",
+                        style: TextStyle(color: Colors.indigo, fontSize: 18),
+                      ),
+                    ),
                   ),
                 ],
               ),
