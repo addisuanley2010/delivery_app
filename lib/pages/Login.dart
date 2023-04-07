@@ -118,19 +118,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title:const Text('Sign In'),
-                                content:
-                                  const Text('Are you sure you want to sign in?'),
+                                title: const Text('Sign In'),
+                                content: const Text(
+                                    'Are you sure you want to sign in?'),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child:const Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
-                                    child:const Text('Sign In'),
+                                    child: const Text('Sign In'),
                                   ),
                                 ],
                               ),
