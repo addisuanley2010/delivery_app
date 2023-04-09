@@ -1,7 +1,6 @@
-import 'package:delivery/pages/Login.dart';
+import 'package:delivery/pages/login.dart';
 import 'package:flutter/material.dart';
 import '../constants/constants.dart';
-// import '../screens/loginScreen.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
