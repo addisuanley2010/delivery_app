@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:delivery/pages/Login.dart';
 import 'package:flutter/material.dart';
 import '../constants/constants.dart';
@@ -285,3 +286,19 @@ class _RegisterState extends State<Register> {
     );
   }
 }
+=======
+import 'package:flutter/material.dart';
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: AppBar(
+        title:const Text("register page"),
+      ),
+    );
+  }
+}
+>>>>>>> 6e5834e505d3056841aa9d665c889f308d1cd6be
