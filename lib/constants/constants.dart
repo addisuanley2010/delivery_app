@@ -4,7 +4,7 @@ class AppColors {
   static const primaryColor = Colors.deepPurple;
   static const primaryColorDark = Colors.deepPurpleAccent;
   static const accentColor = Colors.white;
-  static final appBarColor = Colors.blue.shade400;
+  static final appBarColor = Colors.deepPurple.shade600;
 }
 
 class AppTextStyle {
@@ -33,4 +33,3 @@ class AppInputDecoration {
     );
   }
 }
-

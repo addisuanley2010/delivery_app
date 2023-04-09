@@ -136,6 +136,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Text('   Sign In  '),
                         onPressed: () {
                           if (_key.currentState!.validate()) {
+<<<<<<< HEAD
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Sign In'),
+                                content: const Text(
+                                    'Are you sure you want to sign in?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Sign In'),
+                                  ),
+                                ],
+                              ),
+                            );
+=======
                            // 'Are you sure you want to sign in ?${myController.text} and ${myPasswordController.text}'),
                        
                              Navigator.of(context).push(
@@ -146,6 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     
                     
                     
+>>>>>>> 6e5834e505d3056841aa9d665c889f308d1cd6be
                           }
                         },
                       ),
