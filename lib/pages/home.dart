@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
                       onPressed:  () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const MyWidget(),
+                            builder: (context) => const Register(),
                           ),
                         );
                       },
