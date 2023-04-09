@@ -1,7 +1,7 @@
-// ignore_for_file: avoid_unnecessary_containers
 
 import 'package:delivery/pages/Login.dart';
 import 'package:flutter/material.dart';
+import 'package:delivery/pages/Register.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -39,8 +39,8 @@ class _HomeState extends State<Home> {
                           ),
                         );
                       },
-                      icon: Icon(Icons.login, color: Colors.white),
-                      label: Text("Sign In",
+                      icon:const Icon(Icons.login, color: Colors.white),
+                      label: const Text("Sign In",
                           style: TextStyle(color: Colors.white, fontSize: 18)),
                     ),
                   ),
@@ -50,12 +50,18 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 50,
                     child: OutlinedButton.icon(
-                      onPressed: () {},
+                      onPressed:  () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const MyWidget(),
+                          ),
+                        );
+                      },
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.white.withOpacity(0.5),
                       ),
-                      icon: Icon(Icons.person_add, color: Colors.indigo),
-                      label: Text(
+                      icon:const Icon(Icons.person_add, color: Colors.indigo),
+                      label: const Text(
                         " Create Your Account",
                         style: TextStyle(color: Colors.indigo, fontSize: 18),
                       ),

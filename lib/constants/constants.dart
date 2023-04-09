@@ -4,12 +4,12 @@ class AppColors {
   static const primaryColor = Colors.deepPurple;
   static const primaryColorDark = Colors.deepPurpleAccent;
   static const accentColor = Colors.white;
-  static final appBarColor = Colors.deepPurple.shade600;
+  static final appBarColor = Colors.blue.shade400;
 }
 
 class AppTextStyle {
   static const headline1 = TextStyle(
-    color: Colors.red,
+    color: Color.fromARGB(255, 104, 101, 100),
     fontSize: 20,
     fontWeight: FontWeight.w300,
   );
@@ -33,3 +33,4 @@ class AppInputDecoration {
     );
   }
 }
+
