@@ -2,6 +2,8 @@ import 'package:delivery/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/const.dart';
 
+import '../services/auth.dart';
+
 class Register extends StatefulWidget {
   const Register({super.key});
 
@@ -12,6 +14,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   late String name, email, phone, address;
+  final AuthService _auth = AuthService();
 
   //TextController to read text entered in text field
   TextEditingController password = TextEditingController();
@@ -237,11 +240,17 @@ class _RegisterState extends State<Register> {
                   height: 50,
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formkey.currentState!.validate()) {
-                        print("successful");
-
-                        return;
+                        //print("successful");
+                        dynamic result = await _auth
+                            .registerWithEmailAndPassword(email, password.text);
+                        if (result == null) {
+                          print('null');
+                          //setState(() {});
+                        } else {
+                          print(result);
+                        }
                       } else {
                         print("UnSuccessfull");
                       }
