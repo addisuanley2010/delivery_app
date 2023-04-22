@@ -1,6 +1,7 @@
 import 'package:delivery/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/const.dart';
+import 'package:delivery/models/user.dart';
 
 import '../services/auth.dart';
 
@@ -13,12 +14,12 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  late String name, email, phone, address;
+
+  // text field state
+  late String name, email, phone, address, password, confirmpassword;
   final AuthService _auth = AuthService();
 
   //TextController to read text entered in text field
-  TextEditingController password = TextEditingController();
-  TextEditingController confirmpassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +69,8 @@ class _RegisterState extends State<Register> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      name = value!;
+                    onChanged: (val) {
+                      setState(() => name = val);
                     },
                   ),
                 ),
@@ -101,8 +102,8 @@ class _RegisterState extends State<Register> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      email = value!;
+                    onChanged: (val) {
+                      setState(() => email = val);
                     },
                   ),
                 ),
@@ -136,8 +137,8 @@ class _RegisterState extends State<Register> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      phone = value!;
+                    onChanged: (val) {
+                      setState(() => phone = val);
                     },
                   ),
                 ),
@@ -164,8 +165,8 @@ class _RegisterState extends State<Register> {
                       }
                       return null;
                     },
-                    onSaved: (value) {
-                      address = value!;
+                    onChanged: (val) {
+                      setState(() => address = val);
                     },
                   ),
                 ),
@@ -178,7 +179,6 @@ class _RegisterState extends State<Register> {
                     shape: StadiumBorder(),
                   ),
                   child: TextFormField(
-                    controller: password,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.lock),
@@ -198,6 +198,9 @@ class _RegisterState extends State<Register> {
 
                       return null;
                     },
+                    onChanged: (val) {
+                      setState(() => password = val);
+                    },
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -209,7 +212,6 @@ class _RegisterState extends State<Register> {
                     shape: StadiumBorder(),
                   ),
                   child: TextFormField(
-                    controller: confirmpassword,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.lock),
@@ -223,15 +225,15 @@ class _RegisterState extends State<Register> {
                       if (value!.isEmpty) {
                         return 'Please re-enter password';
                       }
-                      print(password.text);
 
-                      print(confirmpassword.text);
-
-                      if (password.text != confirmpassword.text) {
+                      if (password != confirmpassword) {
                         return "Password does not match";
                       }
 
                       return null;
+                    },
+                    onChanged: (val) {
+                      setState(() => confirmpassword = val);
                     },
                   ),
                 ),
@@ -243,16 +245,19 @@ class _RegisterState extends State<Register> {
                     onPressed: () async {
                       if (_formkey.currentState!.validate()) {
                         //print("successful");
-                        dynamic result = await _auth
-                            .registerWithEmailAndPassword(email, password.text);
+                        dynamic result =
+                            await _auth.registerWithEmailAndPassword(
+                                email, password, name, phone, address);
                         if (result == null) {
                           print('null');
                           //setState(() {});
                         } else {
-                          print(result);
+                          print('success full');
+                          Users user = result;
+                          print(user.uid);
                         }
                       } else {
-                        print("UnSuccessfull");
+                        print("please fill the form correctly");
                       }
                     },
                     child: const Text("Sign Up"),

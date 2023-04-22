@@ -1,5 +1,6 @@
 import 'package:delivery/pages/register.dart';
 import 'package:delivery/screens/home_screen.dart';
+import 'package:delivery/services/auth.dart';
 import 'package:flutter/material.dart';
 import '../constants/constants.dart';
 
@@ -13,6 +14,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _key = GlobalKey<FormState>();
+  //added by aemro below
+  final AuthService _auth = AuthService();
+  String email = '';
+  String password = '';
+
   double? deviceHeight, deviceWidth; //have no use now
 
   final myController = TextEditingController();
@@ -97,6 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
+                      // added by aemro
+                      onChanged: (val) {
+                        setState(() => email = val);
+                      },
                       style: const TextStyle(
                           color: Color.fromARGB(255, 24, 22, 22)),
                     ),
@@ -122,6 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
+                      // added by aemro
+                      onChanged: (val) {
+                        setState(() => password = val);
+                      },
                       style: const TextStyle(
                         color: Color.fromARGB(255, 36, 31, 31),
                       ),
@@ -134,15 +148,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: deviceHeight! * 0.05,
                       child: ElevatedButton(
                         child: const Text('   Sign In  '),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_key.currentState!.validate()) {
                             // 'Are you sure you want to sign in ?${myController.text} and ${myPasswordController.text}'),
 
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
-                              ),
-                            );
+                            //added by aemro
+                            dynamic result = await _auth
+                                .signInWithEmailAndPassword(email, password);
+
+                            if (result == null) {
+                              print('Could not sign in with those credentials');
+                            } else {
+                              print('successfully login');
+
+                              Navigator.pop(context);
+                            }
+                          } else {
+                            print('please enter valid form');
                           }
                         },
                       ),
