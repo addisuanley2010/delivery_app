@@ -1,6 +1,6 @@
-
 import 'package:delivery/pages/register.dart';
 import 'package:delivery/screens/home_screen.dart';
+import 'package:delivery/services/auth.dart';
 import 'package:flutter/material.dart';
 import '../constants/constants.dart';
 
@@ -14,10 +14,15 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _key = GlobalKey<FormState>();
-  double? deviceHeight, deviceWidth;//have no use now
+  //added by aemro below
+  final AuthService _auth = AuthService();
+  String email = '';
+  String password = '';
 
-    final myController = TextEditingController();
-     final myPasswordController = TextEditingController();
+  double? deviceHeight, deviceWidth; //have no use now
+
+  final myController = TextEditingController();
+  final myPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -81,7 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Colors.black54),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color.fromARGB(255, 9, 9, 9)),
+                          borderSide:
+                              BorderSide(color: Color.fromARGB(255, 9, 9, 9)),
                         ),
                         enabledBorder: OutlineInputBorder(),
                       ),
@@ -97,6 +103,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
+                      // added by aemro
+                      onChanged: (val) {
+                        setState(() => email = val);
+                      },
                       style: const TextStyle(
                           color: Color.fromARGB(255, 24, 22, 22)),
                     ),
@@ -108,7 +118,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Password',
                         labelStyle: TextStyle(color: Colors.black54),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color.fromARGB(255, 23, 22, 22)),
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 23, 22, 22)),
                         ),
                         enabledBorder: OutlineInputBorder(),
                       ),
@@ -121,36 +132,45 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
+                      // added by aemro
+                      onChanged: (val) {
+                        setState(() => password = val);
+                      },
                       style: const TextStyle(
                         color: Color.fromARGB(255, 36, 31, 31),
                       ),
                     ),
-                     SizedBox(
-                  height: deviceHeight! * 0.04,
+                    SizedBox(
+                      height: deviceHeight! * 0.04,
                     ),
                     SizedBox(
                       width: deviceWidth! * 0.75,
-                       height: deviceHeight! * 0.05,
+                      height: deviceHeight! * 0.05,
                       child: ElevatedButton(
                         child: const Text('   Sign In  '),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_key.currentState!.validate()) {
-                           // 'Are you sure you want to sign in ?${myController.text} and ${myPasswordController.text}'),
-                       
-                             Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
-                            ),
-                          );
-                    
-                    
-                    
+                            // 'Are you sure you want to sign in ?${myController.text} and ${myPasswordController.text}'),
+
+                            //added by aemro
+                            dynamic result = await _auth
+                                .signInWithEmailAndPassword(email, password);
+
+                            if (result == null) {
+                              print('Could not sign in with those credentials');
+                            } else {
+                              print('successfully login');
+
+                              Navigator.pop(context);
+                            }
+                          } else {
+                            print('please enter valid form');
                           }
                         },
                       ),
                     ),
-                     SizedBox(
-                  height: deviceHeight! * 0.05,
+                    SizedBox(
+                      height: deviceHeight! * 0.05,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -159,22 +179,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text(
                             'Forget Password ?',
                             style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              fontStyle: FontStyle.italic,
-                              decoration: TextDecoration.underline
-                              
-
-                            ),
+                                color: Colors.blueAccent,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                                decoration: TextDecoration.underline),
                           ),
                           onPressed: () {},
                         ),
                       ],
                     ),
-                 SizedBox(
-                  height: deviceHeight! * 0.01,
-                 ),
+                    SizedBox(
+                      height: deviceHeight! * 0.01,
+                    ),
                     SizedBox(
                       width: deviceWidth! * 0.75,
                       height: deviceHeight! * 0.05,
@@ -185,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                  height: deviceHeight! * 0.02,
+                      height: deviceHeight! * 0.02,
                     ),
                     SizedBox(
                       width: deviceWidth! * 0.75,
@@ -207,13 +224,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: deviceHeight! * 0.05,
                   child: ElevatedButton(
                     onPressed: () {
-                           Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const Register(),
-                            ),
-                          );
-                
-                
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const Register(),
+                        ),
+                      );
                     },
                     child: const Text(
                       "Create Account",

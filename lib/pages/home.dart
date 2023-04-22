@@ -1,4 +1,3 @@
-
 import 'package:delivery/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/pages/register.dart';
@@ -13,9 +12,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    print('home');
     return Scaffold(
       body: Container(
-        decoration:const BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/bg.png'),
             fit: BoxFit.cover,
@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
                           ),
                         );
                       },
-                      icon:const Icon(Icons.login, color: Colors.white),
+                      icon: const Icon(Icons.login, color: Colors.white),
                       label: const Text("Sign In",
                           style: TextStyle(color: Colors.white, fontSize: 18)),
                     ),
@@ -50,7 +50,7 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 50,
                     child: OutlinedButton.icon(
-                      onPressed:  () {
+                      onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => const Register(),
@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.white.withOpacity(0.5),
                       ),
-                      icon:const Icon(Icons.person_add, color: Colors.indigo),
+                      icon: const Icon(Icons.person_add, color: Colors.indigo),
                       label: const Text(
                         " Create Your Account",
                         style: TextStyle(color: Colors.indigo, fontSize: 18),
