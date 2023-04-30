@@ -28,7 +28,7 @@ class AuthService {
       User? user = result.user;
       return user;
     } catch (error) {
-      print(error.toString());
+      // print(error.toString());
       return null;
     }
   }
@@ -51,12 +51,12 @@ class AuthService {
         await DatabaseService(uid: user.uid)
             .updateUserData(name, email, phone, address);
       } else {
-        print('unuble to create account');
+        // print('unuble to create account');
       }
       return _userFromFirebaseUser(user);
     } catch (error) {
-      print('error:');
-      print(error.toString());
+      // print('error:');
+      // print(error.toString());
       return null;
     }
   }
@@ -66,7 +66,7 @@ class AuthService {
     try {
       return await _auth.signOut();
     } catch (error) {
-      print(error.toString());
+      // print(error.toString());
       return null;
     }
   }

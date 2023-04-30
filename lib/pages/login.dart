@@ -1,5 +1,4 @@
 import 'package:delivery/pages/register.dart';
-import 'package:delivery/screens/home_screen.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:flutter/material.dart';
 import '../constants/constants.dart';
@@ -14,20 +13,21 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _key = GlobalKey<FormState>();
-  //added by aemro below
   final AuthService _auth = AuthService();
+
   String email = '';
   String password = '';
+  String errorMessage = '';
 
   double? deviceHeight, deviceWidth; //have no use now
 
-  final myController = TextEditingController();
-  final myPasswordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   void dispose() {
-    myController.dispose();
-    myPasswordController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
 
     super.dispose();
   }
@@ -76,18 +76,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(32, 0, 32, 0),
+                padding:  EdgeInsets.fromLTRB(deviceWidth !* 0.15, 0, deviceWidth! * 0.15, 0),
                 child: Column(
                   children: [
                     const SizedBox(height: 30),
                     TextFormField(
-                      controller: myController,
+                      controller: emailController,
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(color: Colors.black54),
                         focusedBorder: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Color.fromARGB(255, 9, 9, 9)),
+                              BorderSide(color: Color.fromARGB(155, 9, 9, 9)),
                         ),
                         enabledBorder: OutlineInputBorder(),
                       ),
@@ -103,23 +103,22 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
-                      // added by aemro
                       onChanged: (val) {
                         setState(() => email = val);
                       },
                       style: const TextStyle(
-                          color: Color.fromARGB(255, 24, 22, 22)),
+                          color: Color.fromARGB(155, 24, 22, 22)),
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
-                      controller: myPasswordController,
+                      controller: passwordController,
                       obscureText: true,
                       decoration: const InputDecoration(
                         labelText: 'Password',
                         labelStyle: TextStyle(color: Colors.black54),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color: Color.fromARGB(255, 23, 22, 22)),
+                              color: Color.fromARGB(155, 23, 22, 22)),
                         ),
                         enabledBorder: OutlineInputBorder(),
                       ),
@@ -132,41 +131,44 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
-                      // added by aemro
                       onChanged: (val) {
                         setState(() => password = val);
                       },
                       style: const TextStyle(
-                        color: Color.fromARGB(255, 36, 31, 31),
+                        color: Color.fromARGB(155, 36, 31, 31),
                       ),
                     ),
                     SizedBox(
                       height: deviceHeight! * 0.04,
                     ),
                     SizedBox(
-                      width: deviceWidth! * 0.75,
+                      width: deviceWidth! * 0.85,
                       height: deviceHeight! * 0.05,
                       child: ElevatedButton(
                         child: const Text('   Sign In  '),
                         onPressed: () async {
                           if (_key.currentState!.validate()) {
-                            // 'Are you sure you want to sign in ?${myController.text} and ${myPasswordController.text}'),
-
-                            //added by aemro
                             dynamic result = await _auth
                                 .signInWithEmailAndPassword(email, password);
-
+                         
                             if (result == null) {
-                              print('Could not sign in with those credentials');
+                                setState(() => errorMessage = 'Could not sign in with those credentials');
+
                             } else {
-                              print('successfully login');
 
                               Navigator.pop(context);
                             }
                           } else {
-                            print('please enter valid form');
+                           setState(() => errorMessage = 'Please enter valid form');
                           }
                         },
+                      ),
+                    ),
+                    
+                    Text(
+                      errorMessage,
+                      style: const TextStyle(
+                        color: Colors.red,
                       ),
                     ),
                     SizedBox(
@@ -193,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: deviceHeight! * 0.01,
                     ),
                     SizedBox(
-                      width: deviceWidth! * 0.75,
+                      width: deviceWidth! * 0.85,
                       height: deviceHeight! * 0.05,
                       child: ElevatedButton.icon(
                         onPressed: () {},
@@ -205,7 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: deviceHeight! * 0.02,
                     ),
                     SizedBox(
-                      width: deviceWidth! * 0.75,
+                      width: deviceWidth! * 0.85,
                       height: deviceHeight! * 0.05,
                       child: ElevatedButton.icon(
                         onPressed: () {},
@@ -218,9 +220,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const Text("Have no Account  ?", style: AppTextStyle.headline1),
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding:  EdgeInsets.fromLTRB(deviceWidth !* 0.15, 0, deviceWidth! * 0.15, 0),
                 child: SizedBox(
-                  width: deviceWidth! * 0.75,
+                  width: deviceWidth! * 0.85,
                   height: deviceHeight! * 0.05,
                   child: ElevatedButton(
                     onPressed: () {
@@ -243,3 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+
+
+
