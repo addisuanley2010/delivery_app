@@ -116,6 +116,7 @@ class AdminHome extends StatelessWidget {
               colorIcon: 0xffF02849,
               onPressed: () async {
                 await _auth.signOut();
+                Navigator.pop(context);
               },
             ),
           ],

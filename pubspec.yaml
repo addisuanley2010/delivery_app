@@ -41,6 +41,7 @@ dependencies:
   provider: ^6.0.5
   cloud_firestore: ^4.5.1
   google_fonts: ^4.0.4
+  flutter_svg: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,11 @@ flutter:
     - assets/images/
     - assets/accessery/
     - assets/phone/
+    - assets/Logo/
+    - assets/svg/
+
+
+
 
 
 
