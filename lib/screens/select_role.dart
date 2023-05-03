@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
+import 'package:delivery/ui/client/client_home.dart';
+
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/admin_home.dart';
 
@@ -9,7 +11,6 @@ class SelectRoleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -48,24 +49,28 @@ class SelectRoleScreen extends StatelessWidget {
                 onPressed: () => {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) =>  AdminHome(),
+                      builder: (context) => AdminHome(),
                     ),
                   )
                 },
               ),
-            
               _BtnRol(
                 svg: 'assets/svg/bussiness-man.svg',
                 text: 'Client',
                 color1: const Color(0xffFE6488).withOpacity(.2),
                 color2: Colors.amber.withOpacity(.1),
-                // onPressed: () => Navigator.pushReplacement(context, routeFrave(page: ClientHomeScreen())),
+                onPressed: () => {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ClientHomeScreen(),
+                    ),
+                  )
+                },
               ),
-          
               _BtnRol(
                 svg: 'assets/svg/delivery-bike.svg',
                 text: 'Delivery',
-                color1:const Color(0xff8956FF).withOpacity(.2),
+                color1: const Color(0xff8956FF).withOpacity(.2),
                 color2: Colors.purpleAccent.withOpacity(.1),
                 // onPressed: () => Navigator.pushAndRemoveUntil(context, routeFrave(page: DeliveryHomeScreen()), (route) => false),
               )

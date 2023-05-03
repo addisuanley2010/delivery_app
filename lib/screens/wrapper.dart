@@ -1,8 +1,6 @@
 import 'package:delivery/models/user.dart';
 import 'package:delivery/pages/home.dart';
-import 'package:delivery/screens/home_screen.dart';
 import 'package:delivery/screens/select_role.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +15,6 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return const Home();
     } else {
-      // return const HomeScreen();
       return const SelectRoleScreen();
     }
   }

@@ -33,8 +33,7 @@ class _RegisterState extends State<Register> {
       body: SingleChildScrollView(
         child: Container(
           color: Colors.deepPurple,
-       
-          padding:const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Form(
             key: _formkey,
             child: Column(
