@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('helloo');
+    print('h');
 
     return StreamProvider<Users?>.value(
       value: AuthService().user,
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home:const Wrapper(),
+        home: const Wrapper(),
       ),
     );
   }
