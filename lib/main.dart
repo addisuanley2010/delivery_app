@@ -28,12 +28,12 @@ class MyApp extends StatelessWidget {
       initialData: null,
       catchError: (_, err) => null,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Delivery App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: Wrapper(),
+        home:const Wrapper(),
       ),
     );
   }
