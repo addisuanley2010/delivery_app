@@ -1,14 +1,11 @@
 import 'package:delivery/models/customers.dart';
 import 'package:delivery/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
   final String uid;
   DatabaseService({required this.uid});
 
-// database reference
-  // FirebaseFirestore db = FirebaseFirestore.instance;
 
   // collection reference
   final CollectionReference customersCollection =
@@ -20,8 +17,6 @@ class DatabaseService {
     String phone,
     String address,
   ) async {
-    print('collection method');
-    print(uid);
     return await customersCollection.doc(uid).set({
       'name': name,
       'email': email,
@@ -33,7 +28,6 @@ class DatabaseService {
   // brew list from snapshot
   List<Customers> _customersListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      //print(doc.data);
       return Customers(
           name: doc['name'] ?? '',
           email: doc['email'] ?? '',
