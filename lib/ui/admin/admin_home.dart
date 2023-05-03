@@ -5,9 +5,8 @@ import 'package:delivery/services/auth.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/profile/edit_Prodile_screen.dart';
 
-
 class AdminHome extends StatelessWidget {
-   AdminHome({super.key});
+  AdminHome({super.key});
   final AuthService _auth = AuthService();
 
   @override
@@ -16,23 +15,25 @@ class AdminHome extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            children: [
-              Align(alignment: Alignment.center, child: imagepicker()),
-              const SizedBox(height: 10.0),
-              Center(
-                child: TextCustom( text:"Addisu  Anley".toUpperCase(),
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        maxLine: 1,
-                        textAlign: TextAlign.center,
-                      )
-                ),
-             
-              const SizedBox(height: 5.0),
-           const Center(
-                  child:TextCustom( text:"addisu@gmail.com", fontSize: 20, color:AppColors.primaryColor)),
-              const SizedBox(height: 15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          children: [
+            Align(alignment: Alignment.center, child: imagepicker()),
+            const SizedBox(height: 10.0),
+            Center(
+                child: TextCustom(
+              text: "Addisu  Anley".toUpperCase(),
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              maxLine: 1,
+              textAlign: TextAlign.center,
+            )),
+            const SizedBox(height: 5.0),
+            const Center(
+                child: TextCustom(
+                    text: "addisu@gmail.com",
+                    fontSize: 20,
+                    color: AppColors.primaryColor)),
+            const SizedBox(height: 15.0),
             const SizedBox(height: 15.0),
             const TextCustom(text: 'Account', color: Colors.grey),
             const SizedBox(height: 10.0),
@@ -41,11 +42,11 @@ class AdminHome extends StatelessWidget {
                 icon: Icons.person,
                 colorIcon: 0xff01C58C,
                 onPressed: () {
-                     Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>  EditProfileScreen(),
-                          ),
-                        );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => EditProfileScreen(),
+                    ),
+                  );
                 }),
             ItemAccount(
                 text: 'Change Password',
@@ -57,7 +58,7 @@ class AdminHome extends StatelessWidget {
                 icon: Icons.swap_horiz_rounded,
                 colorIcon: 0xffE62755,
                 onPressed: () {}),
-           const ItemAccount(
+            const ItemAccount(
               text: 'Dark mode',
               icon: Icons.dark_mode_rounded,
               colorIcon: 0xff051E2F,
@@ -93,52 +94,48 @@ class AdminHome extends StatelessWidget {
               icon: Icons.policy_rounded,
               colorIcon: 0xff6dbd63,
             ),
-           const ItemAccount(
+            const ItemAccount(
               text: 'Security',
               icon: Icons.lock_outline_rounded,
               colorIcon: 0xff1F252C,
             ),
-           const ItemAccount(
+            const ItemAccount(
               text: 'Term & Conditions',
               icon: Icons.description_outlined,
               colorIcon: 0xff458bff,
             ),
-           const ItemAccount(
+            const ItemAccount(
               text: 'Help',
               icon: Icons.help_outline,
               colorIcon: 0xff4772e6,
             ),
             const Divider(),
             ItemAccount(
-                text: 'Sign Out',
-                icon: Icons.power_settings_new_sharp,
-                colorIcon: 0xffF02849,
-                onPressed: () async {
-                  await _auth.signOut();
-                },),
+              text: 'Sign Out',
+              icon: Icons.power_settings_new_sharp,
+              colorIcon: 0xffF02849,
+              onPressed: () async {
+                await _auth.signOut();
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-
-Widget imagepicker(){
-
-  return  Container(
+  Widget imagepicker() {
+    return Container(
       height: 150,
       width: 150,
-      
       decoration: BoxDecoration(
-        border: Border.all(style: BorderStyle.solid, color: Colors.grey[200]!),
-        shape: BoxShape.circle
-      ),
+          border:
+              Border.all(style: BorderStyle.solid, color: Colors.grey[200]!),
+          shape: BoxShape.circle),
       child: InkWell(
         borderRadius: BorderRadius.circular(100),
-      
-           
       ),
     );
-}
-
+  }
 }

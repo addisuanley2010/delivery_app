@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
-import 'package:delivery/ui/components/text_custom.dart';
+import '../components/text_custom.dart';
 import '../components/form_field_frave.dart';
 
 class EditProfileScreen extends StatefulWidget {
