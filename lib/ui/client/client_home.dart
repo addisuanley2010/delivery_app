@@ -25,41 +25,41 @@ class ClientHomeScreen extends StatelessWidget {
     Product(
         id: 1,
         description: 'good iphone  mobile',
-        picture: "assets/accessery/charger.png",
+        picture: "assets/phone/iphone.png",
         nameProduct: ' iphone  ',
-        price: 549,
-        status: " sold",
+        price: 70000,
+        status: " not sold",
         category_id: 3),
     Product(
         id: 2,
-        description: 'good iphone  mobile',
-        picture: "assets/accessery/charger.png",
-        nameProduct: ' memory  ',
-        price: 549,
+        description: 'good samsung  mobile',
+        picture: "assets/phone/samsung.png",
+        nameProduct: ' samsung phone  ',
+        price: 10000,
         status: " sold",
         category_id: 1),
     Product(
         id: 3,
-        description: 'good iphone  mobile',
+        description: 'good rogas charger',
         picture: "assets/accessery/charger.png",
-        nameProduct: ' airphone  ',
-        price: 549,
+        nameProduct: ' charger  ',
+        price: 200,
         status: " sold",
         category_id: 1),
     Product(
         id: 4,
-        description: 'good iphone  mobile',
-        picture: "assets/accessery/charger.png",
-        nameProduct: ' lenevolaptop  ',
+        description: 'good flush',
+        picture: "assets/accessery/flush.png",
+        nameProduct: ' flush  ',
         price: 549,
         status: " sold",
-        category_id: 2),
+        category_id: 1),
     Product(
         id: 5,
         description: 'good iphone  mobile',
-        picture: "assets/accessery/charger.png",
+        picture: "assets/laptop/hp_laptop.png",
         nameProduct: ' hplaptop  ',
-        price: 549,
+        price: 40000,
         status: " sold",
         category_id: 2),
   ];
@@ -174,8 +174,11 @@ class ClientHomeScreen extends StatelessWidget {
               //future: catagory,
               builder: (context, snapshot) {
                 final List<Catagory> category = catagory;
+                print(catagory.length);
+                //print(snapshot);
 
-                return !snapshot.hasData
+                // return !snapshot.hasData
+                return catagory.isEmpty
                     ? const ShimmerFrave()
                     : Container(
                         height: 45,
@@ -200,7 +203,8 @@ class ClientHomeScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                   color: Color(0xff5469D4).withOpacity(.1),
                                   borderRadius: BorderRadius.circular(25.0)),
-                              child: TextCustom(text: catagory[0].name),
+                              child: TextCustom(text: catagory[i].name),
+                              //child: Text('catagory'),
                             ),
                           ),
                         ),
@@ -238,8 +242,8 @@ class _ListProducts extends StatelessWidget {
       //future: ClientHomeScreen().products,
       builder: (_, snapshot) {
         final List<Product> listProduct = ClientHomeScreen().products;
-
-        return !snapshot.hasData
+        print(listProduct);
+        return listProduct.isEmpty
             ? Column(
                 children: const [
                   ShimmerFrave(),
