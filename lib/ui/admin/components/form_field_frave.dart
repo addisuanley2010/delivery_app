@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 class FormFieldFrave extends StatelessWidget {
-  
   final TextEditingController? controller;
   final String? hintText;
   final bool isPassword;
@@ -10,16 +8,18 @@ class FormFieldFrave extends StatelessWidget {
   final int maxLine;
   final bool readOnly;
   final FormFieldValidator<String>? validator;
+  final Widget? suffixIcon;
 
-  const FormFieldFrave({ 
-    this.controller, 
-    this.hintText, 
-    this.isPassword = false,
-    this.keyboardType = TextInputType.text,
-    this.maxLine = 1,
-    this.readOnly = false,
-    this.validator
-  });
+  const FormFieldFrave(
+      {super.key,
+      this.controller,
+      this.hintText,
+      this.isPassword = false,
+      this.keyboardType = TextInputType.text,
+      this.maxLine = 1,
+      this.readOnly = false,
+      this.validator,
+      this.suffixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +31,15 @@ class FormFieldFrave extends StatelessWidget {
       readOnly: readOnly,
       keyboardType: keyboardType,
       decoration: InputDecoration(
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-        enabledBorder:const OutlineInputBorder(borderSide: BorderSide(width: .5, color: Colors.grey)),
-        contentPadding: const EdgeInsets.only(left: 15.0),
-        hintText: hintText,
-        hintStyle: GoogleFonts.getFont('Roboto', color: Colors.grey),
-      ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+          enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(width: .5, color: Colors.grey)),
+          contentPadding: const EdgeInsets.only(left: 15.0),
+          hintText: hintText,
+          hintStyle: GoogleFonts.getFont('Roboto', color: Colors.grey),
+          suffixIcon: suffixIcon),
       validator: validator,
+      
     );
   }
 }

@@ -1,9 +1,17 @@
+import 'package:delivery/ui/admin/delivery/add_new_delivery_screen.dart';
+import 'package:delivery/ui/admin/delivery/list_deliverys_screen.dart';
+import 'package:delivery/ui/admin/orders_admin/orders_admin_screen.dart';
+import 'package:delivery/ui/admin/products/list_products_screen.dart';
 import 'package:flutter/material.dart';
 import 'components/text_custom.dart';
 import 'components/item_account.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/profile/edit_Prodile_screen.dart';
+import 'package:delivery/ui/admin/profile/change_password_screen.dart';
+import 'package:delivery/ui/admin/category/categories_admin_screen.dart';
+
+import 'home/select_role_screen.dart.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
@@ -52,12 +60,24 @@ class AdminHome extends StatelessWidget {
                 text: 'Change Password',
                 icon: Icons.lock_rounded,
                 colorIcon: 0xff1B83F5,
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ChangePasswordScreen(),
+                    ),
+                  );
+                }),
             ItemAccount(
                 text: 'Change Role',
                 icon: Icons.swap_horiz_rounded,
                 colorIcon: 0xffE62755,
-                onPressed: () {}),
+ onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => SelectRoleScreen(),
+                    ),
+                  );
+                }),                
             const ItemAccount(
               text: 'Dark mode',
               icon: Icons.dark_mode_rounded,
@@ -70,22 +90,46 @@ class AdminHome extends StatelessWidget {
                 text: 'Categories',
                 icon: Icons.category_rounded,
                 colorIcon: 0xff5E65CD,
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>const CategoriesAdminScreen(),
+                    ),
+                  );
+                }),
             ItemAccount(
                 text: 'Products',
                 icon: Icons.add,
                 colorIcon: 0xff355773,
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ListProductsScreen(),
+                    ),
+                  );
+                }),
             ItemAccount(
                 text: 'Delivery',
                 icon: Icons.delivery_dining_rounded,
                 colorIcon: 0xff469CD7,
-                onPressed: () {}),
+                onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ListDeliverysScreen(),
+                  ),
+                );
+                }),
             ItemAccount(
                 text: 'Orders',
                 icon: Icons.checklist_rounded,
                 colorIcon: 0xffFFA136,
-                onPressed: () {}),
+                onPressed: () {
+                    Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => OrdersAdminScreen(),
+                  ),
+                );
+                }),
             const SizedBox(height: 15.0),
             const TextCustom(text: 'Personal', color: Colors.grey),
             const SizedBox(height: 10.0),
