@@ -8,7 +8,7 @@ class ItemAccount extends StatelessWidget {
   final int colorIcon;
   final VoidCallback? onPressed;
 
-  const ItemAccount({
+  const ItemAccount({super.key, 
     this.borderRadius = 10.0, 
     required this.text, 
     required this.icon, 
@@ -32,7 +32,7 @@ class ItemAccount extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(borderRadius)),
         elevation: 0,
         color: Colors.grey[100],
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         child: InkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(borderRadius),

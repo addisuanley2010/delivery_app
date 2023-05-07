@@ -273,7 +273,7 @@ class _RegisterState extends State<Register> {
                         onPressed: () => {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
+                              builder: (context) =>  LoginScreen(),
                             ),
                           )
                         },

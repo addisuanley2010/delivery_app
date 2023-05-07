@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('helloo');
 
     return StreamProvider<Users?>.value(
       value: AuthService().user,
