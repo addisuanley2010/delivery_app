@@ -1,16 +1,19 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/StaggeredDualView.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class SearchForCategoryScreen extends StatelessWidget {
-  final int idCategory;
+  final int categoryId;
   final String category;
+  final ClientHomeScreen clientHomeScreen = ClientHomeScreen();
 
-  const SearchForCategoryScreen(
-      {Key? key, required this.idCategory, required this.category})
+  SearchForCategoryScreen(
+      {Key? key, required this.categoryId, required this.category})
       : super(key: key);
 
   @override
@@ -33,6 +36,7 @@ class SearchForCategoryScreen extends StatelessWidget {
         child: FutureBuilder<List<Product>>(
             // future: productServices
             // .searchPorductsForCategory(idCategory.toString()),
+            future: clientHomeScreen.getProductByCatagory(categoryId),
             builder: (context, snapshot) => (!snapshot.hasData)
                 ? const ShimmerFrave()
                 : ListProducts(listProduct: snapshot.data!)),
@@ -71,9 +75,10 @@ class ListProducts extends StatelessWidget {
                         Container(
                           child: Hero(
                               tag: listProduct[i].id,
-                              child: Image.network(
-                                  'http://192.168.1.35:7070/' +
-                                      listProduct[i].picture,
+                              // child: Image.network(
+                              //     'http://192.168.1.35:7070/' +
+                              //         listProduct[i].picture,
+                              child: Image.asset(listProduct[i].picture,
                                   height: 150)),
                         ),
                         TextCustom(
@@ -97,8 +102,7 @@ class ListProducts extends StatelessWidget {
   Widget _withoutProducts() {
     return Column(
       children: [
-        // SvgPicture.asset('Assets/empty-cart.svg', height: 450),
-        Image.asset('Assets/empty-cart.svg', height: 450),
+        SvgPicture.asset('Assets/empty-cart.svg', height: 450),
         const TextCustom(
             text: 'Without products',
             fontSize: 21,

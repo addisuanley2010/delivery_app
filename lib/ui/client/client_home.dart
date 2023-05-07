@@ -4,6 +4,8 @@ import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
+import 'package:delivery/ui/client/details_product_screen.dart';
+import 'package:delivery/ui/client/search_for_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'component/date_custom.dart';
 
@@ -16,10 +18,6 @@ class ClientHomeScreen extends StatelessWidget {
     Catagory(id: 2, name: 'computers', description: 'laptops and desktops'),
     Catagory(id: 3, name: 'mobiles', description: 'tablates and smart phones')
   ];
-
-  Future getCatagory() async {
-    return await catagory;
-  }
 
   final List<Product> products = [
     Product(
@@ -37,7 +35,7 @@ class ClientHomeScreen extends StatelessWidget {
         nameProduct: ' samsung phone  ',
         price: 10000,
         status: " sold",
-        category_id: 1),
+        category_id: 3),
     Product(
         id: 3,
         description: 'good rogas charger',
@@ -56,13 +54,24 @@ class ClientHomeScreen extends StatelessWidget {
         category_id: 1),
     Product(
         id: 5,
-        description: 'good iphone  mobile',
-        picture: "assets/laptop/hp_laptop.png",
-        nameProduct: ' hplaptop  ',
+        description: 'good router',
+        picture: "assets/accessery/router.png",
+        nameProduct: ' router  ',
         price: 40000,
         status: " sold",
-        category_id: 2),
+        category_id: 1),
   ];
+
+  Future<List<Product>> getProductByCatagory(int categoryId) async {
+    List<Product>? result = [];
+    products.forEach((product) {
+      if (product.category_id == categoryId) {
+        result.add(product);
+      }
+    });
+    print(result);
+    return result; // return when result different from null
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +183,8 @@ class ClientHomeScreen extends StatelessWidget {
               //future: catagory,
               builder: (context, snapshot) {
                 final List<Catagory> category = catagory;
-                print(catagory.length);
+                print(' category length : ${category.length}');
+                print(catagory);
                 //print(snapshot);
 
                 // return !snapshot.hasData
@@ -189,12 +199,12 @@ class ClientHomeScreen extends StatelessWidget {
                           itemBuilder: (context, i) => InkWell(
                             splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
-                            // onTap: () => Navigator.push(
-                            //     context,
-                            //     routeFrave(
-                            //         page: SearchForCategoryScreen(
-                            //             idCategory: category[i].id,
-                            //             category: category[i].category))),
+                            onTap: () => Navigator.push(
+                                context,
+                                routeFrave(
+                                    page: SearchForCategoryScreen(
+                                        categoryId: category[i].id,
+                                        category: category[i].name))),
                             child: Container(
                               alignment: Alignment.center,
                               margin: const EdgeInsets.only(right: 10.0),
@@ -242,7 +252,6 @@ class _ListProducts extends StatelessWidget {
       //future: ClientHomeScreen().products,
       builder: (_, snapshot) {
         final List<Product> listProduct = ClientHomeScreen().products;
-        print(listProduct);
         return listProduct.isEmpty
             ? Column(
                 children: const [
@@ -268,11 +277,11 @@ class _ListProducts extends StatelessWidget {
                       color: Colors.grey[50],
                       borderRadius: BorderRadius.circular(20.0)),
                   child: GestureDetector(
-                    // onTap: () => Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (_) =>
-                    //             DetailsProductScreen(product: listProduct[i]))),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                DetailsProductScreen(product: listProduct[i]))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -290,7 +299,7 @@ class _ListProducts extends StatelessWidget {
                             fontSize: 19),
                         const SizedBox(height: 5.0),
                         TextCustom(
-                            text: '10 br',
+                            text: listProduct[i].price.toString(),
                             fontSize: 16,
                             fontWeight: FontWeight.w500)
                       ],
