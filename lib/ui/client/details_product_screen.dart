@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:delivery/ui/client/component/product.dart';
+import 'package:delivery/ui/client/component/carousel_slider';
 
 class DetailsProductScreen extends StatefulWidget {
   final Product product;
