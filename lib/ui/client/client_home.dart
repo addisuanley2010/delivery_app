@@ -11,16 +11,18 @@ import 'component/date_custom.dart';
 
 class ClientHomeScreen extends StatelessWidget {
   List<Catagory> catagory = [
-    Catagory(
+    const Catagory(
         id: 1,
         name: 'accessories',
         description: ' computer  phone accessaries'),
-    Catagory(id: 2, name: 'computers', description: 'laptops and desktops'),
-    Catagory(id: 3, name: 'mobiles', description: 'tablates and smart phones')
+    const Catagory(
+        id: 2, name: 'computers', description: 'laptops and desktops'),
+    const Catagory(
+        id: 3, name: 'mobiles', description: 'tablates and smart phones')
   ];
 
   final List<Product> products = [
-    Product(
+    const Product(
         id: 1,
         description: 'good iphone  mobile',
         picture: "assets/phone/iphone.png",
@@ -28,7 +30,7 @@ class ClientHomeScreen extends StatelessWidget {
         price: 70000,
         status: "not sold",
         category_id: 3),
-    Product(
+    const Product(
         id: 2,
         description: 'good samsung  mobile',
         picture: "assets/phone/samsung.png",
@@ -36,7 +38,7 @@ class ClientHomeScreen extends StatelessWidget {
         price: 10000,
         status: "sold",
         category_id: 3),
-    Product(
+    const Product(
         id: 3,
         description: 'good rogas charger',
         picture: "assets/accessery/charger.png",
@@ -44,7 +46,7 @@ class ClientHomeScreen extends StatelessWidget {
         price: 200,
         status: "sold",
         category_id: 1),
-    Product(
+    const Product(
         id: 4,
         description: 'good flush',
         picture: "assets/accessery/flush.png",
@@ -52,7 +54,7 @@ class ClientHomeScreen extends StatelessWidget {
         price: 549,
         status: "sold",
         category_id: 1),
-    Product(
+    const Product(
         id: 5,
         description: 'good router',
         picture: "assets/accessery/router.png",
@@ -61,6 +63,8 @@ class ClientHomeScreen extends StatelessWidget {
         status: "sold",
         category_id: 1),
   ];
+
+  ClientHomeScreen({super.key});
 
   Future<List<Product>> getProductByCatagory(int categoryId) async {
     List<Product>? result = [];
@@ -108,7 +112,7 @@ class ClientHomeScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () => Navigator.pushReplacement(
-                      context, routeFrave(page: CartClientScreen())),
+                      context, routeFrave(page: const CartClientScreen())),
                   child: Stack(
                     children: [
                       const Icon(Icons.shopping_bag_outlined, size: 30),

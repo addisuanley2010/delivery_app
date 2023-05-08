@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: <Widget>[
               TextButton.icon(
                 icon: const Icon(Icons.person),
-                label:const  Text(
+                label: const Text(
                   'logout',
                   style: TextStyle(
                     color: Color.fromARGB(0, 243, 233, 233),
@@ -126,6 +126,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  
 }

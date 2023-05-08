@@ -1,5 +1,4 @@
 import 'package:delivery/constants/constants.dart';
-import 'package:delivery/ui/client/component/carouselOptions.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ class DetailsProductScreen extends StatefulWidget {
 }
 
 class _DetailsProductScreenState extends State<DetailsProductScreen> {
-  bool isLoading = false;
+  bool isLoading = true;
   // List<ImageProductdb> imagesProducts = [];
 
   // _getImageProducts() async {
@@ -97,9 +96,12 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(10.0)),
-                                child: const Icon(
-                                    Icons.arrow_back_ios_new_rounded,
-                                    size: 20),
+                                child: IconButton(
+                                  icon: const Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: Colors.black),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
                               ),
                             ),
                             const TextCustom(
@@ -197,7 +199,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                               IconButton(
                                   splashColor: Colors.transparent,
                                   highlightColor: Colors.transparent,
-                                  icon: Icon(Icons.remove),
+                                  icon: const Icon(Icons.remove),
                                   onPressed: () {
                                     // if (state.quantity > 1)
                                     //   cartBloc.add(

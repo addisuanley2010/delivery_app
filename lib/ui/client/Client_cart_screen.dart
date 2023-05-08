@@ -8,6 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CartClientScreen extends StatelessWidget {
   final int quantityCart = 5;
+
+  const CartClientScreen({super.key});
   @override
   Widget build(BuildContext context) {
     //final cartBloc = BlocProvider.of<CartBloc>(context);

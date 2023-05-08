@@ -28,7 +28,8 @@ class SearchForCategoryScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+          icon:
+              const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -53,7 +54,7 @@ class ListProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (listProduct.length != 0)
+    return (listProduct.isNotEmpty)
         ? StaggeredDualView(
             spacing: 15,
             alturaElement: 0.14,
@@ -103,7 +104,7 @@ class ListProducts extends StatelessWidget {
   Widget _withoutProducts() {
     return Column(
       children: [
-        SvgPicture.asset('assets/svg/empty.png', height: 450),
+        SvgPicture.asset('assets/svg/empty-cart.svg', height: 450),
         const TextCustom(
             text: 'Without products',
             fontSize: 21,

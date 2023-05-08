@@ -8,7 +8,8 @@ class StaggeredDualView extends StatelessWidget {
   final double alturaElement;
 
   const StaggeredDualView(
-      {required this.itemBuilder,
+      {super.key,
+      required this.itemBuilder,
       required this.itemCount,
       this.spacing = 0.0,
       this.aspectRatio = 0.5,
