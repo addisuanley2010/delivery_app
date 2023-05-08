@@ -1,6 +1,5 @@
 import 'package:delivery/models/customers.dart';
 import 'package:delivery/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -20,8 +19,7 @@ class DatabaseService {
     String phone,
     String address,
   ) async {
-    print('collection method');
-    print(uid);
+   
     return await customersCollection.doc(uid).set({
       'name': name,
       'email': email,

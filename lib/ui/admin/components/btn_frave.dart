@@ -13,7 +13,7 @@ class BtnFrave extends StatelessWidget {
   final double fontSize;
   final VoidCallback? onPressed;
 
-  const BtnFrave({
+  const BtnFrave({super.key, 
     required this.text, 
     this.color  = const Color(0xff0C6CF2), 
     this.height = 50, 
