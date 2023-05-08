@@ -5,7 +5,7 @@ import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchForCategoryScreen extends StatelessWidget {
   final int categoryId;

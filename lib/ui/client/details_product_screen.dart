@@ -4,7 +4,6 @@ import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/ui/client/component/product.dart';
-import 'package:delivery/ui/client/component/carousel_slider';
 
 class DetailsProductScreen extends StatefulWidget {
   final Product product;

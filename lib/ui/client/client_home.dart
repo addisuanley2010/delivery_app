@@ -101,9 +101,7 @@ class ClientHomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8.0),
                     TextCustom(
-                        text: DateCustom.getDateFrave() +
-                            // ', ${authBloc.state.user!.firstName}',
-                            " , Aemro client",
+                        text: "${DateCustom.getDateFrave()} , Aemro client",
                         fontSize: 17,
                         color: ColorsFrave.secundaryColor),
                   ],
