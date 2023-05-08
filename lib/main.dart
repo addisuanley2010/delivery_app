@@ -1,6 +1,5 @@
 import 'firebase_options.dart';
 import 'package:delivery/screens/wrapper.dart';
-import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,8 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('helloo');
-
+    
     return StreamProvider<Users?>.value(
       value: AuthService().user,
       initialData: null,
