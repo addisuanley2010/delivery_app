@@ -1,10 +1,13 @@
+import 'package:delivery/constants/constants.dart';
+import 'package:delivery/ui/client/component/carouselOptions.dart';
+import 'package:delivery/ui/client/component/shimmer_frave.dart';
+import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/carousel_slider';
 
 class DetailsProductScreen extends StatefulWidget {
   final Product product;
-
   const DetailsProductScreen({super.key, required this.product});
 
   @override
@@ -13,26 +16,26 @@ class DetailsProductScreen extends StatefulWidget {
 
 class _DetailsProductScreenState extends State<DetailsProductScreen> {
   bool isLoading = false;
-  List<ImageProductdb> imagesProducts = [];
+  // List<ImageProductdb> imagesProducts = [];
 
-  _getImageProducts() async {
-    imagesProducts =
-        await productServices.getImagesProducts(widget.product.id.toString());
-    setState(() {
-      isLoading = true;
-    });
-  }
+  // _getImageProducts() async {
+  //   imagesProducts =
+  //       await productServices.getImagesProducts(widget.product.id.toString());
+  //   setState(() {
+  //     isLoading = true;
+  //   });
+  // }
 
-  @override
-  void initState() {
-    _getImageProducts();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _getImageProducts();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final cartBloc = BlocProvider.of<CartBloc>(context);
+    // final cartBloc = BlocProvider.of<CartBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -50,28 +53,33 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                             width: size.width,
                             decoration: BoxDecoration(
                                 color: Colors.grey[50],
-                                borderRadius: BorderRadius.only(
+                                borderRadius: const BorderRadius.only(
                                     bottomLeft: Radius.circular(40.0),
                                     bottomRight: Radius.circular(40.0))),
                             child: Hero(
                               tag: widget.product.id,
                               child: Container(
                                 height: 180,
-                                child: CarouselSlider.builder(
-                                  itemCount: imagesProducts.length,
-                                  options: CarouselOptions(
-                                      viewportFraction: 1.0, autoPlay: true),
-                                  itemBuilder: (context, i, realIndex) =>
-                                      Container(
-                                    width: size.width,
-                                    child: Image.network(
-                                        'http://192.168.1.35:7070/' +
-                                            imagesProducts[i].picture),
-                                  ),
+                                // child: CarouselSlider.builder(
+                                //   itemCount: imagesProducts.length,
+                                //   options: CarouselOptions(
+                                //       viewportFraction: 1.0, autoPlay: true),
+                                //   itemBuilder: (context, i, realIndex) =>
+                                //       Container(
+                                //     width: size.width,
+                                //     child:
+                                //         Image.asset(widget.product.picture),
+                                child: Image.asset(
+                                  widget.product.picture,
+
+                                  // child: Asset.network(
+                                  //     widget.product.picture),
+                                  //   ),
+                                  // ),
                                 ),
                               ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                       Container(
@@ -81,8 +89,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Navigator.pop(context);
-                                cartBloc.add(OnResetQuantityEvent());
+                                // Navigator.pop(context);
+                                // cartBloc.add(OnResetQuantityEvent());
                               },
                               child: Container(
                                 height: 40,
@@ -181,36 +189,39 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                           decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(15.0)),
-                          child: BlocBuilder<CartBloc, CartState>(
-                            builder: (context, state) => Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    icon: Icon(Icons.remove),
-                                    onPressed: () {
-                                      if (state.quantity > 1)
-                                        cartBloc.add(
-                                            OnDecreaseProductQuantityEvent());
-                                    }),
-                                const SizedBox(width: 10.0),
-                                TextCustom(
-                                    text: state.quantity.toString(),
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w500),
-                                const SizedBox(width: 10.0),
-                                IconButton(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () => cartBloc
-                                        .add(OnIncreaseProductQuantityEvent())),
-                              ],
-                            ),
+                          child:
+                              // BlocBuilder<CartBloc, CartState>(
+                              //   builder: (context, state) =>
+                              Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  icon: Icon(Icons.remove),
+                                  onPressed: () {
+                                    // if (state.quantity > 1)
+                                    //   cartBloc.add(
+                                    //       OnDecreaseProductQuantityEvent());
+                                  }),
+                              const SizedBox(width: 10.0),
+                              const TextCustom(
+                                  text: '3', //state.quantity.toString(),
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w500),
+                              const SizedBox(width: 10.0),
+                              IconButton(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                icon: const Icon(Icons.add),
+                                onPressed: () => {},
+                                // onPressed: () => cartBloc
+                                //     .add(OnIncreaseProductQuantityEvent())
+                              ),
+                            ],
                           ),
                         ),
-                        (widget.product.status == 1)
+                        (widget.product.status == 'sold')
                             ? Container(
                                 height: 50,
                                 width: 220,
@@ -226,29 +237,31 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                           color: Colors.white,
                                           fontSize: 18),
                                       onPressed: () {
-                                        final newProduct = ProductCart(
-                                            uidProduct:
-                                                widget.product.id.toString(),
-                                            imageProduct:
-                                                widget.product.picture,
-                                            nameProduct:
-                                                widget.product.nameProduct,
-                                            price: widget.product.price,
-                                            quantity: cartBloc.state.quantity);
-                                        cartBloc.add(OnAddProductToCartEvent(
-                                            newProduct));
-                                        modalSuccess(context, 'Product Added',
-                                            () => Navigator.pop(context));
+                                        // final newProduct = ProductCart(
+                                        //     uidProduct:
+                                        //         widget.product.id.toString(),
+                                        //     imageProduct:
+                                        //         widget.product.picture,
+                                        //     nameProduct:
+                                        //         widget.product.nameProduct,
+                                        //     price: widget.product.price,
+                                        //     quantity: cartBloc.state.quantity);
+                                        // cartBloc.add(OnAddProductToCartEvent(
+                                        //     newProduct));
+                                        // modalSuccess(context, 'Product Added',
+                                        //     () => Navigator.pop(context));
                                       },
                                     ),
                                     const SizedBox(width: 5.0),
-                                    BlocBuilder<CartBloc, CartState>(
-                                        builder: (context, state) => TextCustom(
-                                            text:
-                                                '\$ ${widget.product.price * state.quantity}',
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 20))
+                                    // BlocBuilder<CartBloc, CartState>(
+                                    // builder: (context, state) =>
+                                    const TextCustom(
+                                        text: '500 br',
+                                        // '\$ ${widget.product.price * state.quantity}',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 20)
+                                    //)
                                   ],
                                 ))
                             : Container(

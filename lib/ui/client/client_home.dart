@@ -26,7 +26,7 @@ class ClientHomeScreen extends StatelessWidget {
         picture: "assets/phone/iphone.png",
         nameProduct: ' iphone  ',
         price: 70000,
-        status: " not sold",
+        status: "not sold",
         category_id: 3),
     Product(
         id: 2,
@@ -34,7 +34,7 @@ class ClientHomeScreen extends StatelessWidget {
         picture: "assets/phone/samsung.png",
         nameProduct: ' samsung phone  ',
         price: 10000,
-        status: " sold",
+        status: "sold",
         category_id: 3),
     Product(
         id: 3,
@@ -42,7 +42,7 @@ class ClientHomeScreen extends StatelessWidget {
         picture: "assets/accessery/charger.png",
         nameProduct: ' charger  ',
         price: 200,
-        status: " sold",
+        status: "sold",
         category_id: 1),
     Product(
         id: 4,
@@ -50,7 +50,7 @@ class ClientHomeScreen extends StatelessWidget {
         picture: "assets/accessery/flush.png",
         nameProduct: ' flush  ',
         price: 549,
-        status: " sold",
+        status: "sold",
         category_id: 1),
     Product(
         id: 5,
@@ -58,7 +58,7 @@ class ClientHomeScreen extends StatelessWidget {
         picture: "assets/accessery/router.png",
         nameProduct: ' router  ',
         price: 40000,
-        status: " sold",
+        status: "sold",
         category_id: 1),
   ];
 
