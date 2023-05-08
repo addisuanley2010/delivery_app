@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    
     return StreamProvider<Users?>.value(
       value: AuthService().user,
       initialData: null,
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home:const Wrapper(),
+        home: const Wrapper(),
       ),
     );
   }

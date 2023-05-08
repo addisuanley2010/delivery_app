@@ -9,7 +9,7 @@ class Product extends StatelessWidget {
   final String status;
   final int category_id;
 
-  Product(
+  const Product(
       {super.key,
       required this.id,
       required this.description,
@@ -30,7 +30,7 @@ class Catagory extends StatelessWidget {
   final int id;
   final String name;
   final String description;
-  Catagory({
+  const Catagory({
     super.key,
     required this.id,
     required this.name,

@@ -1,16 +1,20 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/StaggeredDualView.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
+import 'package:delivery/ui/client/details_product_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchForCategoryScreen extends StatelessWidget {
-  final int idCategory;
+  final int categoryId;
   final String category;
+  final ClientHomeScreen clientHomeScreen = ClientHomeScreen();
 
-  const SearchForCategoryScreen(
-      {Key? key, required this.idCategory, required this.category})
+  SearchForCategoryScreen(
+      {Key? key, required this.categoryId, required this.category})
       : super(key: key);
 
   @override
@@ -24,7 +28,8 @@ class SearchForCategoryScreen extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+          icon:
+              const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -33,6 +38,7 @@ class SearchForCategoryScreen extends StatelessWidget {
         child: FutureBuilder<List<Product>>(
             // future: productServices
             // .searchPorductsForCategory(idCategory.toString()),
+            future: clientHomeScreen.getProductByCatagory(categoryId),
             builder: (context, snapshot) => (!snapshot.hasData)
                 ? const ShimmerFrave()
                 : ListProducts(listProduct: snapshot.data!)),
@@ -48,7 +54,7 @@ class ListProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (listProduct.length != 0)
+    return (listProduct.isNotEmpty)
         ? StaggeredDualView(
             spacing: 15,
             alturaElement: 0.14,
@@ -60,20 +66,21 @@ class ListProducts extends StatelessWidget {
                       color: Colors.grey[50],
                       borderRadius: BorderRadius.circular(20.0)),
                   child: GestureDetector(
-                    // onTap: () => Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (_) =>
-                    //             DetailsProductScreen(product: listProduct[i]))),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                DetailsProductScreen(product: listProduct[i]))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           child: Hero(
                               tag: listProduct[i].id,
-                              child: Image.network(
-                                  'http://192.168.1.35:7070/' +
-                                      listProduct[i].picture,
+                              // child: Image.network(
+                              //     'http://192.168.1.35:7070/' +
+                              //         listProduct[i].picture,
+                              child: Image.asset(listProduct[i].picture,
                                   height: 150)),
                         ),
                         TextCustom(
@@ -97,8 +104,7 @@ class ListProducts extends StatelessWidget {
   Widget _withoutProducts() {
     return Column(
       children: [
-        // SvgPicture.asset('Assets/empty-cart.svg', height: 450),
-        Image.asset('Assets/empty-cart.svg', height: 450),
+        SvgPicture.asset('assets/svg/empty-cart.svg', height: 450),
         const TextCustom(
             text: 'Without products',
             fontSize: 21,

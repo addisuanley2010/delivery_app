@@ -11,7 +11,8 @@ class TextCustom extends StatelessWidget {
   final TextAlign textAlign;
 
   const TextCustom(
-      {required this.text,
+      {super.key,
+      required this.text,
       this.fontSize = 18,
       this.color = Colors.black,
       this.fontWeight = FontWeight.normal,
