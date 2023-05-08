@@ -4,6 +4,7 @@ import 'package:delivery/ui/client/component/StaggeredDualView.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
+import 'package:delivery/ui/client/details_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -64,11 +65,11 @@ class ListProducts extends StatelessWidget {
                       color: Colors.grey[50],
                       borderRadius: BorderRadius.circular(20.0)),
                   child: GestureDetector(
-                    // onTap: () => Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (_) =>
-                    //             DetailsProductScreen(product: listProduct[i]))),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                DetailsProductScreen(product: listProduct[i]))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
