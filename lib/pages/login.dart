@@ -1,250 +1,231 @@
+import 'package:flutter/material.dart';
+import 'package:delivery/ui/admin/components/btn_frave.dart';
+import 'package:delivery/ui/admin/components/form_field_frave.dart';
+import 'package:delivery/constants/constants.dart';
+import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:delivery/pages/register.dart';
 import 'package:delivery/services/auth.dart';
-import 'package:flutter/material.dart';
-import '../constants/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final _key = GlobalKey<FormState>();
+class LoginScreenState extends State<LoginScreen> {
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  final _keyForm = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   String email = '';
   String password = '';
   String errorMessage = '';
+//   double? deviceHeight, deviceWidth; //have no use now
 
-  double? deviceHeight, deviceWidth; //have no use now
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-
+    _emailController.clear();
+    _passwordController.clear();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    deviceHeight = MediaQuery.of(context).size.height;
-    deviceWidth = MediaQuery.of(context).size.width;
+    //     deviceHeight = MediaQuery.of(context).size.height;
+    //     deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Sign In"),
-        backgroundColor: AppColors.appBarColor,
-      ),
-      backgroundColor: AppColors.accentColor,
-      body: ListView(children: [
-        Form(
-          key: _key,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Form(
+          key: _keyForm,
+          child: ListView(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Sign In',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Please enter The Email And Password ",
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w300,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:  EdgeInsets.fromLTRB(deviceWidth !* 0.15, 0, deviceWidth! * 0.15, 0),
-                child: Column(
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const SizedBox(height: 30),
-                    TextFormField(
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(color: Colors.black54),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Color.fromARGB(155, 9, 9, 9)),
-                        ),
-                        enabledBorder: OutlineInputBorder(),
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      borderRadius: BorderRadius.circular(100.0),
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[50], shape: BoxShape.circle),
+                        child: const Icon(Icons.arrow_back_ios_new_outlined,
+                            color: Colors.black, size: 20),
                       ),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        } else {
-                          final emailRegex =
-                              RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                          if (!emailRegex.hasMatch(value)) {
-                            return 'Please enter a valid email';
-                          }
-                        }
-                        return null;
-                      },
-                      onChanged: (val) {
-                        setState(() => email = val);
-                      },
-                      style: const TextStyle(
-                          color: Color.fromARGB(155, 24, 22, 22)),
-                    ),
-                    const SizedBox(height: 30),
-                    TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: TextStyle(color: Colors.black54),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(155, 23, 22, 22)),
-                        ),
-                        enabledBorder: OutlineInputBorder(),
-                      ),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter password';
-                        }
-                        if (value.length < 4) {
-                          return 'Password must be at least 4 characters';
-                        }
-                        return null;
-                      },
-                      onChanged: (val) {
-                        setState(() => password = val);
-                      },
-                      style: const TextStyle(
-                        color: Color.fromARGB(155, 36, 31, 31),
-                      ),
-                    ),
-                    SizedBox(
-                      height: deviceHeight! * 0.04,
-                    ),
-                    SizedBox(
-                      width: deviceWidth! * 0.85,
-                      height: deviceHeight! * 0.05,
-                      child: ElevatedButton(
-                        child: const Text('   Sign In  '),
-                        onPressed: () async {
-                          if (_key.currentState!.validate()) {
-                            dynamic result = await _auth
-                                .signInWithEmailAndPassword(email, password);
-                         
-                            if (result == null) {
-                                setState(() => errorMessage = 'Could not sign in with those credentials');
-
-                            } else {
-
-                              Navigator.pop(context);
-                            }
-                          } else {
-                           setState(() => errorMessage = 'Please enter valid form');
-                          }
-                        },
-                      ),
-                    ),
-                    
-                    Text(
-                      errorMessage,
-                      style: const TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                    SizedBox(
-                      height: deviceHeight! * 0.05,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        TextButton(
-                          child: const Text(
-                            'Forget Password ?',
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                decoration: TextDecoration.underline),
-                          ),
-                          onPressed: () {},
-                        ),
+                      children: const [
+                        TextCustom(
+                            text: 'online  ',
+                            color: ColorsFrave.primaryColor,
+                            fontWeight: FontWeight.w500),
+                        TextCustom(
+                            text: 'Delivery',
+                            color: Colors.black87,
+                            fontWeight: FontWeight.w500),
                       ],
-                    ),
-                    SizedBox(
-                      height: deviceHeight! * 0.01,
-                    ),
-                    SizedBox(
-                      width: deviceWidth! * 0.85,
-                      height: deviceHeight! * 0.05,
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.facebook),
-                        label: const Text("Login With Facebook"),
-                      ),
-                    ),
-                    SizedBox(
-                      height: deviceHeight! * 0.02,
-                    ),
-                    SizedBox(
-                      width: deviceWidth! * 0.85,
-                      height: deviceHeight! * 0.05,
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.email_rounded),
-                        label: const Text("Login With Google"),
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
-              const Text("Have no Account  ?", style: AppTextStyle.headline1),
-              Padding(
-                padding:  EdgeInsets.fromLTRB(deviceWidth !* 0.15, 0, deviceWidth! * 0.15, 0),
-                child: SizedBox(
-                  width: deviceWidth! * 0.85,
-                  height: deviceHeight! * 0.05,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const Register(),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Create Account",
-                    ),
-                  ),
+              const SizedBox(height: 20.0),
+              Image.asset('assets/images/food-delivery-marker.png',
+                  height: 150),
+              const SizedBox(height: 30.0),
+              Container(
+                alignment: Alignment.center,
+                child: const TextCustom(
+                    text: 'Welcome back!',
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff14222E)),
+              ),
+              const SizedBox(height: 5.0),
+              const Align(
+                alignment: Alignment.center,
+                child: TextCustom(
+                    text:
+                        'Use your credentials below and login to your account.',
+                    textAlign: TextAlign.center,
+                    color: Colors.grey,
+                    maxLine: 2,
+                    fontSize: 16),
+              ),
+              const SizedBox(height: 50.0),
+              const TextCustom(text: 'Email Address'),
+              const SizedBox(height: 5.0),
+              FormFieldFrave(
+                controller: _emailController,
+                hintText: 'email@frave.com',
+                keyboardType: TextInputType.emailAddress,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  } else {
+                    final emailRegex =
+                        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                    if (!emailRegex.hasMatch(value)) {
+                      return 'Please enter a valid email';
+                    }
+                  }
+                  return null;
+                },
+              ),
+              Text(
+                errorMessage,
+                style: const TextStyle(
+                  color: Colors.red,
                 ),
               ),
+              const SizedBox(height: 20.0),
+              const TextCustom(text: 'Password'),
+              const SizedBox(height: 5.0),
+              FormFieldFrave(
+                controller: _passwordController,
+                hintText: '********',
+                isPassword: true,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter password';
+                  }
+                  if (value.length < 4) {
+                    return 'Password must be at least 4 characters';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 10.0),
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: const [
+                      InkWell(
+                          // onTap: () => Navigator.push(context, routeFrave(page: ForgotPasswordScreen())),
+                          child: TextCustom(
+                              text: 'Forgot Password?',
+                              fontSize: 17,
+                              color: ColorsFrave.primaryColor)),
+                    ],
+                  )),
+              const SizedBox(height: 40.0),
+              BtnFrave(
+                text: 'Login',
+                fontSize: 21,
+                height: 50,
+                fontWeight: FontWeight.w500,
+                onPressed: () async {
+                  if (_keyForm.currentState!.validate()) {
+                    dynamic result =
+                        await _auth.signInWithEmailAndPassword(_emailController.text, _passwordController.text);
+                    if (result == null) {
+                      setState(() => errorMessage =
+                          'Could not sign in with those credentials');
+                    } 
+                    else {
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                    }
+                  }
+                },
+              ),
+              const SizedBox(height: 40.0),
+              BtnFrave(
+                text: 'continue with google ',
+                fontSize: 21,
+                height: 50,
+                fontWeight: FontWeight.w500,
+                color: const Color.fromARGB(255, 67, 90, 241),
+                onPressed: () {},
+              ),
+              const SizedBox(height: 20.0),
+              InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Register(),
+                      ),
+                    );
+                  },
+                  child: const TextCustom(
+                      text: 'create new Account?',
+                      fontSize: 17,
+                      color: ColorsFrave.primaryColor)),
             ],
           ),
         ),
-      ]),
+      ),
     );
   }
 }
+
+
+
+
+
+
+
+
 
 
 
