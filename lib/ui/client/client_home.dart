@@ -1,6 +1,7 @@
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/client/Client_cart_screen.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
+import 'package:delivery/ui/client/component/bottom_navigation_frave.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
@@ -243,6 +244,7 @@ class ClientHomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const BottomNavigationFrave(0),
     );
   }
 }
