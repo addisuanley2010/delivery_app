@@ -11,8 +11,7 @@ import 'package:delivery/ui/admin/profile/edit_Prodile_screen.dart';
 import 'package:delivery/ui/admin/profile/change_password_screen.dart';
 import 'package:delivery/ui/admin/category/categories_admin_screen.dart';
 
-import 'home/select_role_screen.dart.dart';
-
+import 'package:delivery/screens/select_role.dart';
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
   final AuthService _auth = AuthService();
@@ -63,7 +62,7 @@ class AdminHome extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ChangePasswordScreen(),
+                      builder: (context) => const ChangePasswordScreen(),
                     ),
                   );
                 }),
@@ -84,7 +83,7 @@ class AdminHome extends StatelessWidget {
               colorIcon: 0xff051E2F,
             ),
             const SizedBox(height: 15.0),
-            const TextCustom(text: 'Restaurant', color: Colors.grey),
+            const TextCustom(text: 'shop', color: Colors.grey),
             const SizedBox(height: 10.0),
             ItemAccount(
                 text: 'Categories',

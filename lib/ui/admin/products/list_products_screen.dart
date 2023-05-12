@@ -51,6 +51,7 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
             )
           ],
         ),
+        body: _GridViewListProduct(),
         // body: FutureBuilder(
         //   future: productServices.listProductsAdmin(),
         //   builder: (context, snapshot) 
@@ -65,18 +66,19 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
 
 class _GridViewListProduct extends StatelessWidget {
   
-  final List listProducts;
+  // final List listProducts;
 
-  const _GridViewListProduct({required this.listProducts});
+  // const _GridViewListProduct({required this.listProducts});
 
   @override
   Widget build(BuildContext context) {
 
     return GridView.builder(
-      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      itemCount: listProducts.length,
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      // itemCount: listProducts.length,
+            itemCount: 10,
+
+      gridDelegate:const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200,
         childAspectRatio: 4,
         crossAxisSpacing: 20,
@@ -91,7 +93,7 @@ class _GridViewListProduct extends StatelessWidget {
               Container(
                 height: 50,
                 width: 50,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     scale: 7,
                     image: NetworkImage('https://images.unsplash.com/photo-1572888195250-3037a59d3578?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZXRoaW9waWF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60')
@@ -103,10 +105,11 @@ class _GridViewListProduct extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
-                    color: ( listProducts[i].status == 1 ) ? Colors.grey[50] : Colors.red[100]
+                    // color: ( listProducts[i].status == 1 ) ? Colors.grey[50] : Colors.red[100]
                   ),
                   // child: TextCustom(text: listProducts[i].nameProduct, fontSize: 16),
-                  child:const TextCustom(text:"this is product list"),
+                    child: TextCustom(text: "mobile", fontSize: 16),
+
 
                 ),
               ),

@@ -1,6 +1,5 @@
 import 'package:delivery/models/customers.dart';
 import 'package:delivery/models/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
@@ -14,14 +13,52 @@ class DatabaseService {
   final CollectionReference customersCollection =
       FirebaseFirestore.instance.collection('customers');
 
+  final CollectionReference productCollection =
+      FirebaseFirestore.instance.collection('products');
+
+  final CollectionReference catagoryCollection =
+      FirebaseFirestore.instance.collection('catagory');
+
+  Future<DocumentReference> updateProductData(
+  String name,
+  String description,
+  String price,
+) async {
+  final productCollection = FirebaseFirestore.instance.collection('products');
+  return await productCollection.add({
+    'name': name,
+    'description': description,
+    'price': price,
+     'shopId':uid,
+
+  });
+}
+
+
+Future<DocumentReference> addNewCatagory(
+  String name,
+  String description,
+) async {
+  final catagoryCollection = FirebaseFirestore.instance.collection('catagory');
+  return await catagoryCollection.add({
+    'name': name,
+    'description': description,
+     'shopId':uid,
+
+  });
+}
+
+
+
+
+
+
   Future updateUserData(
     String name,
     String email,
     String phone,
     String address,
   ) async {
-    print('collection method');
-    print(uid);
     return await customersCollection.doc(uid).set({
       'name': name,
       'email': email,
@@ -62,3 +99,5 @@ class DatabaseService {
     return customersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 }
+
+///////////////////////////////////////

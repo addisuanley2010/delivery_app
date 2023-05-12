@@ -23,7 +23,7 @@ class SelectRoleScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   TextCustom(
-                      text: 'Food ',
+                      text: 'Electronics ',
                       fontSize: 25,
                       color: ColorsFrave.primaryColor,
                       fontWeight: FontWeight.w500),
@@ -43,7 +43,7 @@ class SelectRoleScreen extends StatelessWidget {
               const SizedBox(height: 30.0),
               _BtnRol(
                 svg: 'assets/svg/restaurante.svg',
-                text: 'Restaurant Admin',
+                text: 'shop Admin',
                 color1: ColorsFrave.primaryColor.withOpacity(.2),
                 color2: Colors.greenAccent.withOpacity(.1),
                 onPressed: () => {
