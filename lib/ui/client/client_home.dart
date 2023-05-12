@@ -22,6 +22,17 @@ class ClientHomeScreen extends StatelessWidget {
         id: 3, name: 'mobiles', description: 'tablates and smart phones')
   ];
 
+  Future<List<Product>> getProductByCatagory(int categoryId) async {
+    List<Product>? result = [];
+    products.forEach((product) {
+      if (product.category_id == categoryId) {
+        result.add(product);
+      }
+    });
+    print(result);
+    return result; // return when result different from null
+  }
+
   final List<Product> products = [
     const Product(
         id: 1,
@@ -65,18 +76,18 @@ class ClientHomeScreen extends StatelessWidget {
         category_id: 1),
   ];
 
-  ClientHomeScreen({super.key});
-
-  Future<List<Product>> getProductByCatagory(int categoryId) async {
-    List<Product>? result = [];
+  Future<Product?> searchProductByName(int productName) async {
+    Product? result;
     products.forEach((product) {
-      if (product.category_id == categoryId) {
-        result.add(product);
+      if (product.category_id == productName) {
+        result = product;
       }
     });
     print(result);
     return result; // return when result different from null
   }
+
+  ClientHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

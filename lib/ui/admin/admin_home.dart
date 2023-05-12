@@ -71,13 +71,13 @@ class AdminHome extends StatelessWidget {
                 text: 'Change Role',
                 icon: Icons.swap_horiz_rounded,
                 colorIcon: 0xffE62755,
- onPressed: () {
+                onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => SelectRoleScreen(),
                     ),
                   );
-                }),                
+                }),
             const ItemAccount(
               text: 'Dark mode',
               icon: Icons.dark_mode_rounded,
@@ -93,7 +93,7 @@ class AdminHome extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) =>const CategoriesAdminScreen(),
+                      builder: (context) => const CategoriesAdminScreen(),
                     ),
                   );
                 }),
@@ -113,22 +113,22 @@ class AdminHome extends StatelessWidget {
                 icon: Icons.delivery_dining_rounded,
                 colorIcon: 0xff469CD7,
                 onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ListDeliverysScreen(),
-                  ),
-                );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ListDeliverysScreen(),
+                    ),
+                  );
                 }),
             ItemAccount(
                 text: 'Orders',
                 icon: Icons.checklist_rounded,
                 colorIcon: 0xffFFA136,
                 onPressed: () {
-                    Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => OrdersAdminScreen(),
-                  ),
-                );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => OrdersAdminScreen(),
+                    ),
+                  );
                 }),
             const SizedBox(height: 15.0),
             const TextCustom(text: 'Personal', color: Colors.grey),
