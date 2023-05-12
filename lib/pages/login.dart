@@ -5,7 +5,7 @@ import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:delivery/pages/register.dart';
 import 'package:delivery/services/auth.dart';
-
+import 'package:delivery/ui/admin/components/loading.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -20,6 +20,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   final _keyForm = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
+
+  bool loading = false;
 
   String email = '';
   String password = '';
@@ -47,7 +49,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     //     deviceHeight = MediaQuery.of(context).size.height;
     //     deviceWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return loading ? const Loadnig(): Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Form(
@@ -131,12 +133,7 @@ class LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              Text(
-                errorMessage,
-                style: const TextStyle(
-                  color: Colors.red,
-                ),
-              ),
+            
               const SizedBox(height: 20.0),
               const TextCustom(text: 'Password'),
               const SizedBox(height: 5.0),
@@ -168,6 +165,12 @@ class LoginScreenState extends State<LoginScreen> {
                               color: ColorsFrave.primaryColor)),
                     ],
                   )),
+                  Text(
+                errorMessage,
+                style: const TextStyle(
+                  color: Colors.red,
+                ),
+              ),
               const SizedBox(height: 40.0),
               BtnFrave(
                 text: 'Login',
@@ -176,13 +179,18 @@ class LoginScreenState extends State<LoginScreen> {
                 fontWeight: FontWeight.w500,
                 onPressed: () async {
                   if (_keyForm.currentState!.validate()) {
-                    dynamic result =
-                        await _auth.signInWithEmailAndPassword(_emailController.text, _passwordController.text);
+                    setState(() {
+                      loading = true;
+                    });
+                    dynamic result = await _auth.signInWithEmailAndPassword(
+                        _emailController.text, _passwordController.text);
                     if (result == null) {
-                      setState(() => errorMessage =
-                          'Could not sign in with those credentials');
-                    } 
-                    else {
+                      setState(() => {
+                            loading = false,
+                            errorMessage =
+                                'Could not sign in with those credentials'
+                          });
+                    } else {
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     }
@@ -218,15 +226,3 @@ class LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
