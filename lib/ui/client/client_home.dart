@@ -1,4 +1,6 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/user.dart';
+import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/client/Client_cart_screen.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/bottom_navigation_frave.dart';
@@ -8,28 +10,28 @@ import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:delivery/ui/client/details_product_screen.dart';
 import 'package:delivery/ui/client/search_for_category_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'component/date_custom.dart';
 
 class ClientHomeScreen extends StatelessWidget {
   List<Catagory> catagory = [
     const Catagory(
-        id: 1,
+        id: '1',
         name: 'accessories',
         description: ' computer  phone accessaries'),
     const Catagory(
-        id: 2, name: 'computers', description: 'laptops and desktops'),
+        id: '2', name: 'computers', description: 'laptops and desktops'),
     const Catagory(
-        id: 3, name: 'mobiles', description: 'tablates and smart phones')
+        id: '3', name: 'mobiles', description: 'tablates and smart phones')
   ];
 
-  Future<List<Product>> getProductByCatagory(int categoryId) async {
+  Future<List<Product>> getProductByCatagory(String categoryId) async {
     List<Product>? result = [];
     products.forEach((product) {
       if (product.category_id == categoryId) {
         result.add(product);
       }
     });
-    print(result);
     return result; // return when result different from null
   }
 
@@ -41,7 +43,7 @@ class ClientHomeScreen extends StatelessWidget {
         nameProduct: ' iphone  ',
         price: 70000,
         status: "not sold",
-        category_id: 3),
+        category_id: 'f7Sq8BEUJb667vojyxQX'),
     const Product(
         id: 2,
         description: 'good samsung  mobile',
@@ -49,7 +51,7 @@ class ClientHomeScreen extends StatelessWidget {
         nameProduct: ' samsung phone  ',
         price: 10000,
         status: "sold",
-        category_id: 3),
+        category_id: 'f7Sq8BEUJb667vojyxQX'),
     const Product(
         id: 3,
         description: 'good rogas charger',
@@ -57,7 +59,7 @@ class ClientHomeScreen extends StatelessWidget {
         nameProduct: ' charger  ',
         price: 200,
         status: "sold",
-        category_id: 1),
+        category_id: 'gFnQYQ1sM04Rfi9Ey9qU'),
     const Product(
         id: 4,
         description: 'good flush',
@@ -65,7 +67,7 @@ class ClientHomeScreen extends StatelessWidget {
         nameProduct: ' flush  ',
         price: 549,
         status: "sold",
-        category_id: 1),
+        category_id: 'rcJnTAbsHDtBp1ZBh97F'),
     const Product(
         id: 5,
         description: 'good router',
@@ -73,24 +75,15 @@ class ClientHomeScreen extends StatelessWidget {
         nameProduct: ' router  ',
         price: 40000,
         status: "sold",
-        category_id: 1),
+        category_id: 'rcJnTAbsHDtBp1ZBh97F'),
   ];
-
-  Future<Product?> searchProductByName(int productName) async {
-    Product? result;
-    products.forEach((product) {
-      if (product.category_id == productName) {
-        result = product;
-      }
-    });
-    print(result);
-    return result; // return when result different from null
-  }
 
   ClientHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users?>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -192,25 +185,22 @@ class ClientHomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20.0),
-            FutureBuilder<List<Catagory>>(
-              // future: categoryServices.getAllCategories(),
-              //future: catagory,
-              builder: (context, snapshot) {
-                final List<Catagory> category = catagory;
-                print(' category length : ${category.length}');
-                print(catagory);
-                //print(snapshot);
+            StreamBuilder<List<Catagory>>(
+              stream: Category().catagory1,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Catagory>> snapshot) {
+                final List<Catagory>? category = snapshot.data;
+                //print(category);
 
-                // return !snapshot.hasData
-                return catagory.isEmpty
+                return !snapshot.hasData
                     ? const ShimmerFrave()
                     : Container(
                         height: 45,
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
-                          itemCount: category.length,
-                          itemBuilder: (context, i) => InkWell(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (BuildContext context, i) => InkWell(
                             splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
                             onTap: () => Navigator.push(
@@ -227,7 +217,7 @@ class ClientHomeScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                   color: Color(0xff5469D4).withOpacity(.1),
                                   borderRadius: BorderRadius.circular(25.0)),
-                              child: TextCustom(text: catagory[i].name),
+                              child: TextCustom(text: category![i].name),
                               //child: Text('catagory'),
                             ),
                           ),

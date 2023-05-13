@@ -7,7 +7,7 @@ class Product extends StatelessWidget {
   final String nameProduct;
   final int price;
   final String status;
-  final int category_id;
+  final String category_id;
 
   const Product(
       {super.key,
@@ -27,7 +27,7 @@ class Product extends StatelessWidget {
 
 // catagory list
 class Catagory extends StatelessWidget {
-  final int id;
+  final String id;
   final String name;
   final String description;
   const Catagory({
@@ -36,6 +36,14 @@ class Catagory extends StatelessWidget {
     required this.name,
     required this.description,
   });
+
+  factory Catagory.fromMap(Map<String, dynamic> map) {
+    return Catagory(
+      id: map['shopId'],
+      name: map['name'],
+      description: map['description'],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
