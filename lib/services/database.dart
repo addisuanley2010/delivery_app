@@ -33,24 +33,18 @@ class DatabaseService {
     });
   }
 
-
-Future<DocumentReference> addNewCatagory(
-  String name,
-  String description,
-) async {
-  final catagoryCollection = FirebaseFirestore.instance.collection('catagory');
-  return await catagoryCollection.add({
-    'name': name,
-    'description': description,
-     'shopId':uid,
-
-  });
-}
-
-
-
-
-
+  Future<DocumentReference> addNewCatagory(
+    String name,
+    String description,
+  ) async {
+    final catagoryCollection =
+        FirebaseFirestore.instance.collection('catagory');
+    return await catagoryCollection.add({
+      'name': name,
+      'description': description,
+      'shopId': uid,
+    });
+  }
 
   Future updateUserData(
     String name,
@@ -62,6 +56,22 @@ Future<DocumentReference> addNewCatagory(
       'name': name,
       'email': email,
       'phone': phone,
+      'address': address,
+    });
+  }
+
+  Future updateUserDataProfile(
+    String name,
+    String email,
+    String phone,
+    String lastName,
+    String address,
+  ) async {
+    return await customersCollection.doc(uid).set({
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'lastName': lastName,
       'address': address,
     });
   }
@@ -115,14 +125,9 @@ Future<DocumentReference> addNewCatagory(
   }
 }
 
-
-
-
-
 ///////////////////////////////////////
 
 // catagort list from snapshot
-
 
 class Category {
   final CollectionReference categoryCollection =
