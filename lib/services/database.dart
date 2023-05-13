@@ -122,7 +122,7 @@ Future<DocumentReference> addNewCatagory(
 ///////////////////////////////////////
 
 // catagort list from snapshot
-}
+
 
 class Category {
   final CollectionReference categoryCollection =
