@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/ui/admin/delivery/add_new_delivery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -48,36 +49,33 @@ class _ListDeliverysScreenState extends State<ListDeliverysScreen> {
                   text: 'Add', color: ColorsFrave.primaryColor, fontSize: 17))
         ],
       ),
-      body:
-          // future: deliveryServices.getAlldelivery(),
-          // builder: () ,
-          // => ( !snapshot.hasData )
-          // ?
-          Column(
-        children: const [
-          // ShimmerFrave(),
-          SizedBox(height: 10.0),
-          // ShimmerFrave(),
-          SizedBox(height: 10.0),
-          // ShimmerFrave(),
-        ],
-      ),
+      body:_ListDelivery()
+
     );
   }
 }
 
 class _ListDelivery extends StatelessWidget {
-  final List listDelivery;
 
-  const _ListDelivery({required this.listDelivery});
 
   @override
-  Widget build(BuildContext context) {
-    return (listDelivery.length != 0)
+    Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.all(16.0),
+      child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('customers').where('role', isEqualTo:'delivery').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center( child:  CircularProgressIndicator());
+            }
+            final List<DocumentSnapshot> documents = snapshot.data!.docs;
+         return (documents.length != 0)
         ? ListView.builder(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            itemCount: listDelivery.length,
+            itemCount: documents.length,
             itemBuilder: (context, i) => Padding(
               padding: const EdgeInsets.only(bottom: 15.0),
               child: Container(
@@ -91,7 +89,7 @@ class _ListDelivery extends StatelessWidget {
                     Container(
                       height: 50,
                       width: 50,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(image: NetworkImage(''))),
                     ),
@@ -100,11 +98,11 @@ class _ListDelivery extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextCustom(
-                            text: listDelivery[i].nameDelivery,
+                            text: documents[i].get('name'),
                             fontWeight: FontWeight.w500),
                         const SizedBox(height: 5.0),
                         TextCustom(
-                            text: listDelivery[i].phone, color: Colors.grey),
+                            text: documents[i].get('phone'), color: Colors.grey),
                       ],
                     )
                   ],
@@ -116,7 +114,7 @@ class _ListDelivery extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset('Assets/no-data.svg', height: 290),
+                SvgPicture.asset('assets/images/empty-cart.svg', height: 290),
                 const SizedBox(height: 20.0),
                 const TextCustom(
                     text: 'Without Delivery men',
@@ -125,5 +123,10 @@ class _ListDelivery extends StatelessWidget {
               ],
             ),
           );
+      } 
+     )
+      );
+          
   }
+      
 }

@@ -3,6 +3,9 @@ import 'package:delivery/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
+  final String? uid;
+  AuthService({this.uid});
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // create user obj based on firebase user
@@ -10,7 +13,6 @@ class AuthService {
     return Users(uid: user!.uid);
   }
 
-  // auth change user stream
 // auth change user stream
   Stream<Users?> get user {
     return _auth.authStateChanges().map(_userFromFirebaseUser);
@@ -52,6 +54,36 @@ class AuthService {
         // print('unuble to create account');
       }
       return _userFromFirebaseUser(user);
+    } catch (error) {
+      // print('error:');
+      // print(error.toString());
+      return null;
+    }
+  }
+
+  // register with delivery person
+  Future registerDelivery(
+    String name,
+    String lastName,
+    String phone,
+    String email,
+    String password,
+  ) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user!;
+
+      // create a new document(customers collection) for the user with the uid
+      if (user != null) {
+        await DatabaseService(uid: user.uid)
+            .addNewDelivery(name, lastName, phone, email);
+        return "registered successfully!";
+      } else {
+        // print('unuble to create account');
+        return "not registerd";
+      }
+      // return _userFromFirebaseUser(user);
     } catch (error) {
       // print('error:');
       // print(error.toString());

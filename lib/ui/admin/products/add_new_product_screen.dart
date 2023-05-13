@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
@@ -60,11 +61,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
         actions: [
           TextButton(
               onPressed: () {
-               
                 DatabaseService databaseService =
                     DatabaseService(uid: user.uid);
-                databaseService.updateProductData(
-                    _nameController.text, _descriptionController.text, _priceController.text);
+                databaseService.updateProductData(_nameController.text,
+                    _descriptionController.text, _priceController.text);
+                Navigator.pop(context);
               },
               child: const TextCustom(
                   text: ' Save ', color: ColorsFrave.primaryColor))
@@ -155,7 +156,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           color: Colors.grey, blurRadius: 7, spreadRadius: -5.0)
                     ]),
                 child: InkWell(
-                  // onTap: () => modalSelectionCategory(context),
+                  //  onTap: () => _ListCategories(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -177,7 +178,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

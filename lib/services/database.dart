@@ -6,10 +6,8 @@ class DatabaseService {
   final String uid;
   DatabaseService({required this.uid});
 
-// database reference
-  // FirebaseFirestore db = FirebaseFirestore.instance;
-
   // collection reference
+
   final CollectionReference customersCollection =
       FirebaseFirestore.instance.collection('customers');
 
@@ -19,40 +17,36 @@ class DatabaseService {
   final CollectionReference catagoryCollection =
       FirebaseFirestore.instance.collection('catagory');
 
+//to add new product
   Future<DocumentReference> updateProductData(
-  String name,
-  String description,
-  String price,
-) async {
-  final productCollection = FirebaseFirestore.instance.collection('products');
-  return await productCollection.add({
-    'name': name,
-    'description': description,
-    'price': price,
-     'shopId':uid,
+    String name,
+    String description,
+    String price,
+  ) async {
+    final productCollection = FirebaseFirestore.instance.collection('products');
+    return await productCollection.add({
+      'name': name,
+      'description': description,
+      'price': price,
+      'shopId': uid,
+    });
+  }
 
-  });
-}
+//to add new catagory
+  Future<DocumentReference> addNewCatagory(
+    String name,
+    String description,
+  ) async {
+    final catagoryCollection =
+        FirebaseFirestore.instance.collection('catagory');
+    return await catagoryCollection.add({
+      'name': name,
+      'description': description,
+      'shopId': uid,
+    });
+  }
 
-
-Future<DocumentReference> addNewCatagory(
-  String name,
-  String description,
-) async {
-  final catagoryCollection = FirebaseFirestore.instance.collection('catagory');
-  return await catagoryCollection.add({
-    'name': name,
-    'description': description,
-     'shopId':uid,
-
-  });
-}
-
-
-
-
-
-
+//to register new user
   Future updateUserData(
     String name,
     String email,
@@ -64,6 +58,22 @@ Future<DocumentReference> addNewCatagory(
       'email': email,
       'phone': phone,
       'address': address,
+    });
+  }
+
+  //to register new delivery person
+  Future addNewDelivery(
+    String name,
+    String lastName,
+    String phone,
+    String email,
+  ) async {
+    return await customersCollection.doc(uid).set({
+      'name': name,
+      'lastName': lastName,
+      'phone': phone,
+      'email': email,
+      'role': 'delivery',
     });
   }
 
@@ -98,6 +108,11 @@ Future<DocumentReference> addNewCatagory(
   Stream<UserData> get userData {
     return customersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
+
 }
+
+
+
+
 
 ///////////////////////////////////////
