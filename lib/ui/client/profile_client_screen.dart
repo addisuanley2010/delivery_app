@@ -1,4 +1,5 @@
 import 'package:delivery/models/user.dart';
+import 'package:delivery/services/auth.dart';
 import 'package:delivery/ui/admin/components/item_account.dart';
 import 'package:delivery/ui/admin/profile/change_password_screen.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
@@ -8,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProfileClientScreen extends StatelessWidget {
-  const ProfileClientScreen({super.key});
-
+  ProfileClientScreen({super.key});
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     //final authBloc = BlocProvider.of<AuthBloc>(context);
@@ -133,12 +134,15 @@ class ProfileClientScreen extends StatelessWidget {
                 text: 'Sign Out',
                 icon: Icons.power_settings_new_sharp,
                 colorIcon: 0xffF02849,
-                onPressed: () {
+                onPressed: () async {
                   // authBloc.add(LogOutEvent());
                   // Navigator.pushAndRemoveUntil(
                   //     context,
                   //     routeFrave(page: CheckingLoginScreen()),
                   //     (route) => false);
+
+                  await _auth.signOut();
+                  Navigator.pop(context);
                 },
               ),
             ],

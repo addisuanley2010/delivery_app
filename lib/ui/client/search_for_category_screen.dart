@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchForCategoryScreen extends StatelessWidget {
-  final int categoryId;
+  final String categoryId;
   final String category;
   final ClientHomeScreen clientHomeScreen = ClientHomeScreen();
 
@@ -19,6 +19,7 @@ class SearchForCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(categoryId);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -54,6 +55,7 @@ class ListProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //print(listProduct);
     return (listProduct.isNotEmpty)
         ? StaggeredDualView(
             spacing: 15,
