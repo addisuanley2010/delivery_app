@@ -1,6 +1,8 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/location_model.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/database.dart';
+import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/client/Client_cart_screen.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/bottom_navigation_frave.dart';
@@ -76,6 +78,14 @@ class ClientHomeScreen extends StatelessWidget {
         price: 40000,
         status: "sold",
         category_id: 'rcJnTAbsHDtBp1ZBh97F'),
+    const Product(
+        id: 6,
+        description: 'good laptop',
+        picture: "assets/laptop/laptop.png",
+        nameProduct: ' laptop  ',
+        price: 40000,
+        status: "not sold",
+        category_id: 'gFnQYQ1sM04Rfi9Ey9qU'),
   ];
 
   ClientHomeScreen({super.key});
@@ -83,6 +93,13 @@ class ClientHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users?>(context);
+    Mylocation location;
+
+    getLocation().then((data) {
+      location = data;
+      print('latitude:  ${location.lat}');
+      print('longtude:  ${location.long}');
+    });
 
     return Scaffold(
       backgroundColor: Colors.white,
