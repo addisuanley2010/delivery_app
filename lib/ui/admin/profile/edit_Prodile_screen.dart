@@ -51,7 +51,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Color.fromARGB(255, 181, 74, 110),
+        backgroundColor: const Color.fromARGB(255, 181, 74, 110),
         content: Text(
           message,
           style: const TextStyle(
@@ -131,93 +131,92 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             } else {
               return SafeArea(
                 child: Form(
-                    key: _keyForm,
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10.0),
-                      children: [
-                        const TextCustom(
-                            text: 'Name', color: ColorsFrave.secundaryColor),
-                        const SizedBox(height: 5.0),
-                        FormFieldFrave(
-                          controller: _nameController,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your name';
+                  key: _keyForm,
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    children: [
+                      const TextCustom(
+                          text: 'Name', color: ColorsFrave.secundaryColor),
+                      const SizedBox(height: 5.0),
+                      FormFieldFrave(
+                        controller: _nameController,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const TextCustom(
+                          text: 'Lastname', color: ColorsFrave.secundaryColor),
+                      const SizedBox(height: 5.0),
+                      FormFieldFrave(
+                        controller: _lastNameController,
+                        hintText: 'lastname',
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your father name';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const TextCustom(
+                          text: 'Phone', color: ColorsFrave.secundaryColor),
+                      const SizedBox(height: 5.0),
+                      FormFieldFrave(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.number,
+                        hintText: '0912345678',
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your phone number';
+                          }
+                          if (!RegExp(r'^09[0-9]{8}$').hasMatch(value)) {
+                            return 'Please enter a valid phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const TextCustom(
+                          text: 'Email Address',
+                          color: ColorsFrave.secundaryColor),
+                      const SizedBox(height: 5.0),
+                      FormFieldFrave(
+                        controller: _emailController,
+                        readOnly: true,
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          } else {
+                            final emailRegex =
+                                RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                            if (!emailRegex.hasMatch(value)) {
+                              return 'Please enter a valid email';
                             }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20.0),
-                        const TextCustom(
-                            text: 'Lastname',
-                            color: ColorsFrave.secundaryColor),
-                        const SizedBox(height: 5.0),
-                        FormFieldFrave(
-                          controller: _lastNameController,
-                          hintText: 'lastname',
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your father name';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20.0),
-                        const TextCustom(
-                            text: 'Phone', color: ColorsFrave.secundaryColor),
-                        const SizedBox(height: 5.0),
-                        FormFieldFrave(
-                          controller: _phoneController,
-                          keyboardType: TextInputType.number,
-                          hintText: '0912345678',
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            if (!RegExp(r'^09[0-9]{8}$').hasMatch(value)) {
-                              return 'Please enter a valid phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20.0),
-                        const TextCustom(
-                            text: 'Email Address',
-                            color: ColorsFrave.secundaryColor),
-                        const SizedBox(height: 5.0),
-                        FormFieldFrave(
-                          controller: _emailController,
-                          readOnly: true,
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
-                            } else {
-                              final emailRegex =
-                                  RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                              if (!emailRegex.hasMatch(value)) {
-                                return 'Please enter a valid email';
-                              }
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 20.0),
-                        const TextCustom(
-                            text: ' Address',
-                            color: ColorsFrave.secundaryColor),
-                        const SizedBox(height: 5.0),
-                        FormFieldFrave(
-                          controller: _addressController,
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your Address';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    )),
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const TextCustom(
+                          text: ' Address', color: ColorsFrave.secundaryColor),
+                      const SizedBox(height: 5.0),
+                      FormFieldFrave(
+                        controller: _addressController,
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your Address';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               );
             }
           }),

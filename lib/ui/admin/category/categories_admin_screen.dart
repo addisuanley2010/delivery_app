@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:restaurant/domain/models/response/category_all_response.dart';
-// import 'package:restaurant/domain/services/category_services.dart';
-// import 'package:delivery/ui/admin/components/components.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:delivery/ui/admin/category/add_category_admin_screen.dart';

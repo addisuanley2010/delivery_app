@@ -1,3 +1,11 @@
+
+import 'dart:io';
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +16,10 @@ import 'package:delivery/services/database.dart';
 import 'package:provider/provider.dart';
 
 class AddNewProductScreen extends StatefulWidget {
+  const AddNewProductScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _AddNewProductScreenState createState() => _AddNewProductScreenState();
 }
 
@@ -18,6 +29,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   late TextEditingController _priceController;
 
   final _keyForm = GlobalKey<FormState>();
+
+  String? _selectedCategory;
+
+  String? imageUrl; // Add imageUrl variable
 
   @override
   void initState() {
@@ -63,8 +78,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               onPressed: () {
                 DatabaseService databaseService =
                     DatabaseService(uid: user.uid);
-                databaseService.updateProductData(_nameController.text,
-                    _descriptionController.text, _priceController.text);
+                databaseService.addProduct(
+                  _nameController.text,
+                  _descriptionController.text,
+                 _priceController.text,
+                   _selectedCategory ?? '',
+                    imageUrl ?? ''); // Pass imageUrl to addProduct method
                 Navigator.pop(context);
               },
               child: const TextCustom(
@@ -107,11 +126,28 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             const SizedBox(height: 10.0),
             InkWell(
               onTap: () async {
-                // final ImagePicker _picker = ImagePicker();
+                final picker = ImagePicker();
+                final pickedFile =
+                    await picker.pickImage(source: ImageSource.gallery);
 
-                // final List<XFile>? images = await _picker.pickMultiImage();
+                if (pickedFile != null) {
+                  final file = File(pickedFile.path);
+                  final fileName = basename(file.path);
+                  final firebaseStorageRef =
+                      FirebaseStorage.instance.ref().child('uploads/$fileName');
+                  final uploadTask = firebaseStorageRef.putFile(file);
 
-                // if(images != null)  productBloc.add(OnSelectMultipleImagesEvent(images));
+                  await uploadTask.whenComplete(() async {
+                    try {
+                      final url = await firebaseStorageRef.getDownloadURL();
+                      setState(() {
+                        imageUrl = url; // Set the imageUrl state variable
+                      });
+                    } catch (e) {
+                      print('Error uploading image: $e');
+                    }
+                  });
+                }
               },
               child: Container(
                   height: 150,
@@ -119,21 +155,20 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(8.0)),
-                  child: ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 5.0),
-                      scrollDirection: Axis.horizontal,
-                      // itemCount: state.images?.length,
-                      itemBuilder: (_, i) => Container(
-                            height: 100,
-                            width: 120,
-                            margin: const EdgeInsets.only(right: 10.0),
-                            decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        'https://images.unsplash.com/photo-1572888195250-3037a59d3578?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8ZXRoaW9waWF8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'),
-                                    fit: BoxFit.cover)),
-                          ))),
+                  child: imageUrl != null // Show the selected image if there is one
+                      ? Image.network(
+                          imageUrl!,
+                          fit: BoxFit.cover,
+                        )
+                      : const Center(
+                          child: Text(
+                            'Tap to select image',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 18.0,
+                            ),
+                          ),
+                        )),
             ),
             const SizedBox(height: 20.0),
             const TextCustom(text: 'Category'),
@@ -156,7 +191,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                           color: Colors.grey, blurRadius: 7, spreadRadius: -5.0)
                     ]),
                 child: InkWell(
-                  //  onTap: () => _ListCategories(),
+                  onTap: () => _showCategories(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -171,6 +206,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                                 borderRadius: BorderRadius.circular(6.0)),
                           ),
                           const SizedBox(width: 8.0),
+                          TextCustom(
+                            text: _selectedCategory ?? 'Select a category',
+                            color: _selectedCategory == null
+                                ? Colors.grey
+                                : Colors.black,
+                          ),
                         ],
                       ),
                       const Icon(Icons.navigate_next_rounded)
@@ -182,6 +223,40 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showCategories(BuildContext context) async {
+    final categories = await FirebaseFirestore.instance
+        .collection('catagory')
+        .get()
+        .then((querySnapshot) => querySnapshot.docs
+            .map((doc) => {'id': doc.id, 'name': doc.data()['name']})
+            .toList());
+
+    // ignore: use_build_context_synchronously
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Select a category'),
+          content: DropdownButton<String>(
+            value: _selectedCategory,
+            onChanged: (String? newValue) {
+              setState(() {
+                _selectedCategory = newValue;
+              });
+              Navigator.pop(context);
+            },
+            items: categories.map((category) {
+              return DropdownMenuItem<String>(
+                value: category['id'],
+                child: Text(category['name']),
+              );
+            }).toList(),
+          ),
+        );
+      },
     );
   }
 }

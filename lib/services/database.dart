@@ -19,10 +19,12 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('catagory');
 
 //to add new product
-  Future<DocumentReference> updateProductData(
+  Future<DocumentReference> addProduct(
     String name,
     String description,
     String price,
+    String category,
+    String url,
   ) async {
     final productCollection = FirebaseFirestore.instance.collection('products');
     return await productCollection.add({
@@ -30,8 +32,35 @@ class DatabaseService {
       'description': description,
       'price': price,
       'shopId': uid,
+      'catagory':category,
+      'imageURL':url,
     });
   }
+//  Future<void> addProduct({
+//     required String name,
+//     required String description,
+//     required String price,
+//     required String imageUrl,
+//     required String category,
+//     required String subcategory,
+//   }) async {
+//     try {
+//       final docRef = await productCollection.add({
+//         'name': name,
+//         'description': description,
+//         'price': price,
+//         'shopId': uid,
+//         'category': category,
+//       });
+//       await docRef.collection('variants').add({
+//         'price': price,
+//         'imageUrl': imageUrl,
+//         'subcategory': subcategory,
+//       });
+//     } catch (e) {
+//       print('Error adding product: $e');
+//     }
+//   }
 
   Future<DocumentReference> addNewCatagory(
     String name,
