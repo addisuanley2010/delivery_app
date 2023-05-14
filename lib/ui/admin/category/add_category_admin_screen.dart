@@ -38,7 +38,6 @@ class _AddCategoryAdminScreenState extends State<AddCategoryAdminScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final productBloc = BlocProvider.of<ProductsBloc>(context);
     final user = Provider.of<Users>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -63,17 +62,16 @@ class _AddCategoryAdminScreenState extends State<AddCategoryAdminScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                
                 // if( _keyForm.currentState!.validate() ){
 
-
-                 DatabaseService databaseService =
+                DatabaseService databaseService =
                     DatabaseService(uid: user.uid);
-                databaseService.addNewCatagory(
-                    _nameCategoryController.text, _categoryDescriptionController.text);
+                databaseService.addNewCatagory(_nameCategoryController.text,
+                    _categoryDescriptionController.text);
 
                 // }
-
+                Navigator.pop(context);
+                
               },
               child: const TextCustom(
                   text: 'Save', color: ColorsFrave.primaryColor))

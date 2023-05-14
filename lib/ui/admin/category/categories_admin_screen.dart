@@ -1,7 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-// import 'package:restaurant/domain/models/response/category_all_response.dart';
-// import 'package:restaurant/domain/services/category_services.dart';
-// import 'package:delivery/ui/admin/components/components.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:delivery/ui/admin/category/add_category_admin_screen.dart';
@@ -44,37 +42,29 @@ class CategoriesAdminScreen extends StatelessWidget {
           )
         ],
       ),
-      body: FutureBuilder(
-        // future: categoryServices.getAllCategories(),
-        builder: (context, snapshot) 
-          =>  Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 20,),
-                  TextCustom(text: 'Loading Categories...')
-                ],
-              ),
-            )
-           
-      ),
+      body: _ListCategories()
     );
   }
 }
 
 class _ListCategories extends StatelessWidget {
   
-  final List listCategory;
-
-  const _ListCategories({ required this.listCategory});
-
   @override
   Widget build(BuildContext context) {
-
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.all(16.0),
+      child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('catagory').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return const Center( child:  CircularProgressIndicator());
+            }
+            final List<DocumentSnapshot> documents = snapshot.data!.docs;
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      itemCount: listCategory.length,
+      itemCount: documents.length,
       itemBuilder: (_, i) 
         => Padding(
           padding: const EdgeInsets.only(bottom: 15.0),
@@ -98,11 +88,16 @@ class _ListCategories extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 20.0),
-                TextCustom(text: listCategory[i].category),
+                TextCustom(text: documents[i].get('name')),
               ],
             ),
           ),
         ),
     );
+     } 
+      ) 
+       );
+      }
   }
-}
+  
+  
