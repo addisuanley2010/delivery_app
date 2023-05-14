@@ -69,8 +69,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 const Text(
                   'Password Updated Successfully',
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -114,10 +114,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 const SizedBox(height: 20),
                 TextCustom(
-                  text:message,
+                  text: message,
                   color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 20,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
@@ -144,7 +144,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     });
 
     final currentUser = FirebaseAuth.instance.currentUser;
-
+//check the current password
     try {
       final credential = EmailAuthProvider.credential(
         email: currentUser!.email!,
@@ -173,7 +173,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         _isLoading = false;
       });
 
-      _showErrorDialog('An error occurred while updating your password. Please try again later.');
+      _showErrorDialog(
+          'An error occurred while updating your password. Please try again later.');
     }
   }
 
@@ -184,7 +185,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         backgroundColor: Color.fromRGBO(214, 204, 204, 1),
         elevation: 0,
         title: const TextCustom(
-          text:'Change Password',
+          text: 'Change Password',
           color: Colors.blue,
           fontWeight: FontWeight.bold,
         ),
@@ -217,7 +218,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           });
                         },
                         icon: Icon(
-                          showPassword ? Icons.visibility_off : Icons.visibility,
+                          showPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.grey,
                         ),
                       ),
@@ -243,7 +246,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           });
                         },
                         icon: Icon(
-                          showPassword1 ? Icons.visibility_off : Icons.visibility,
+                          showPassword1
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.grey,
                         ),
                       ),
@@ -269,7 +274,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           });
                         },
                         icon: Icon(
-                          showPassword2 ? Icons.visibility_off : Icons.visibility,
+                          showPassword2
+                              ? Icons.visibility_off
+                              : Icons.visibility,
                           color: Colors.grey,
                         ),
                       ),
@@ -290,9 +297,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         ),
                       ),
                       child: const TextCustom(
-                        text:'Change Password',
+                        text: 'Change Password',
                         color: Color.fromRGBO(235, 239, 242, 0.914),
-                        fontSize: 24,
+                        fontSize: 15,
                       ),
                     ),
                   ],

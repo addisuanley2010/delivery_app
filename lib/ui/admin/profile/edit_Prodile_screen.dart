@@ -51,11 +51,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        backgroundColor: Color.fromARGB(255, 181, 74, 110),
         content: Text(
           message,
-          style: const TextStyle(backgroundColor: Colors.amberAccent),
+          style: const TextStyle(
+            fontSize: 15,
+          ),
         ),
-        duration: const Duration(seconds: 6),
+        duration: const Duration(seconds: 3),
       ),
     );
   }
@@ -200,7 +203,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           },
                         ),
                         const SizedBox(height: 20.0),
-                          const TextCustom(
+                        const TextCustom(
                             text: ' Address',
                             color: ColorsFrave.secundaryColor),
                         const SizedBox(height: 5.0),
@@ -209,7 +212,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your Address';
-                            } 
+                            }
                             return null;
                           },
                         ),
