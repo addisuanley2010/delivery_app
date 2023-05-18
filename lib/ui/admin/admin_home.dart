@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:delivery/ui/admin/delivery/add_new_delivery_screen.dart';
 import 'package:delivery/ui/admin/delivery/list_deliverys_screen.dart';
 import 'package:delivery/ui/admin/orders_admin/orders_admin_screen.dart';
 import 'package:delivery/ui/admin/products/list_products_screen.dart';
@@ -13,6 +12,8 @@ import 'package:delivery/ui/admin/profile/change_password_screen.dart';
 import 'package:delivery/ui/admin/category/categories_admin_screen.dart';
 import 'package:delivery/screens/select_role.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'my_test/test.dart';
 
 class AdminHome extends StatelessWidget {
   AdminHome({super.key});
@@ -167,10 +168,18 @@ class AdminHome extends StatelessWidget {
                 icon: Icons.policy_rounded,
                 colorIcon: 0xff6dbd63,
               ),
-              const ItemAccount(
+               ItemAccount(
                 text: 'Security',
                 icon: Icons.lock_outline_rounded,
                 colorIcon: 0xff1F252C,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AddItem(),
+                      ),
+                    );
+                  }
+                
               ),
               const ItemAccount(
                 text: 'Term & Conditions',
@@ -211,7 +220,10 @@ class AdminHome extends StatelessWidget {
               Border.all(style: BorderStyle.solid, color: Colors.grey[200]!),
           shape: BoxShape.circle),
       child: InkWell(
-        borderRadius: BorderRadius.circular(100),
+        child: CircleAvatar(
+          radius: 100,
+          backgroundImage: NetworkImage("https://firebasestorage.googleapis.com/v0/b/deliver-d327d.appspot.com/o/addisu.jpeg?alt=media&token=726b56e8-c4c5-4b40-aed3-324f596f1de7"),
+        ),
       ),
     );
   }

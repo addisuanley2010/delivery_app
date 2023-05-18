@@ -36,6 +36,23 @@ class _AddCategoryAdminScreenState extends State<AddCategoryAdminScreen> {
     super.dispose();
   }
 
+
+
+void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: const Color.fromARGB(255, 181, 74, 110),
+        content: Text(
+          message,
+          style: const TextStyle(
+            fontSize: 15,
+          ),
+        ),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users>(context);
@@ -71,7 +88,7 @@ class _AddCategoryAdminScreenState extends State<AddCategoryAdminScreen> {
 
                 // }
                 Navigator.pop(context);
-                
+                  _showSnackbar('Catagory added successfully');
               },
               child: const TextCustom(
                   text: 'Save', color: ColorsFrave.primaryColor))

@@ -1,11 +1,9 @@
-
 import 'dart:io';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +28,11 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
 
   final _keyForm = GlobalKey<FormState>();
 
+  String imageUrl = '';
+  File? _imageFile;
+  bool _isLoading = false;
   String? _selectedCategory;
-
-  String? imageUrl; // Add imageUrl variable
+  String? _selectedName;
 
   @override
   void initState() {
@@ -68,23 +68,54 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               text: 'Cancel', color: ColorsFrave.primaryColor, fontSize: 17),
           onPressed: () {
             Navigator.pop(context);
-            // productBloc.add(OnUnSelectCategoryEvent());
-            // productBloc.add(OnUnSelectMultipleImagesEvent());
           },
         ),
         elevation: 0,
         actions: [
           TextButton(
-              onPressed: () {
-                DatabaseService databaseService =
-                    DatabaseService(uid: user.uid);
-                databaseService.addProduct(
-                  _nameController.text,
-                  _descriptionController.text,
-                 _priceController.text,
-                   _selectedCategory ?? '',
-                    imageUrl ?? ''); // Pass imageUrl to addProduct method
-                Navigator.pop(context);
+              onPressed: () async {
+                if (_imageFile == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please select an image')));
+                  return;
+                }
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  Reference referenceRoot = FirebaseStorage.instance.ref();
+                  Reference referenceDirImages = referenceRoot.child('images');
+                  String uniqueFileName =
+                      DateTime.now().millisecondsSinceEpoch.toString();
+                  Reference referenceImageToUpload =
+                      referenceDirImages.child(uniqueFileName);
+                  await referenceImageToUpload.putFile(_imageFile!);
+
+                  imageUrl = await referenceImageToUpload.getDownloadURL();
+
+                  DatabaseService databaseService =
+                      DatabaseService(uid: user.uid);
+                  double doubleValue = double.parse(_priceController.text);
+
+                  await databaseService.addProduct(
+                      _nameController.text,
+                      _descriptionController.text,
+                      doubleValue,
+                      _selectedCategory ?? '',
+                      imageUrl);
+
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Item added successfully')));
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                } catch (error) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Error: $error')));
+                }
               },
               child: const TextCustom(
                   text: ' Save ', color: ColorsFrave.primaryColor))
@@ -93,7 +124,6 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       body: Form(
         key: _keyForm,
         child: ListView(
-          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           children: [
             const SizedBox(height: 10.0),
@@ -113,6 +143,10 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
               // validator: RequiredValidator(errorText: 'Description is required'),
             ),
             const SizedBox(height: 20.0),
+            if (_isLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
             const TextCustom(text: 'Price'),
             const SizedBox(height: 5.0),
             FormFieldFrave(
@@ -126,28 +160,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             const SizedBox(height: 10.0),
             InkWell(
               onTap: () async {
-                final picker = ImagePicker();
-                final pickedFile =
-                    await picker.pickImage(source: ImageSource.gallery);
-
-                if (pickedFile != null) {
-                  final file = File(pickedFile.path);
-                  final fileName = basename(file.path);
-                  final firebaseStorageRef =
-                      FirebaseStorage.instance.ref().child('uploads/$fileName');
-                  final uploadTask = firebaseStorageRef.putFile(file);
-
-                  await uploadTask.whenComplete(() async {
-                    try {
-                      final url = await firebaseStorageRef.getDownloadURL();
-                      setState(() {
-                        imageUrl = url; // Set the imageUrl state variable
-                      });
-                    } catch (e) {
-                      print('Error uploading image: $e');
-                    }
-                  });
+                ImagePicker imagePicker = ImagePicker();
+                XFile? file =
+                    await imagePicker.pickImage(source: ImageSource.gallery);
+                if (file == null) {
+                  return;
                 }
+                String uniqueFileName =
+                    DateTime.now().millisecondsSinceEpoch.toString();
+                setState(() {
+                  _imageFile = File(file.path);
+                });
               },
               child: Container(
                   height: 150,
@@ -155,10 +178,17 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(8.0)),
-                  child: imageUrl != null // Show the selected image if there is one
-                      ? Image.network(
-                          imageUrl!,
-                          fit: BoxFit.cover,
+                  child: _imageFile !=
+                          null // Show the selected image if there is one
+                      ? Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: FileImage(_imageFile!),
+                            ),
+                          ),
                         )
                       : const Center(
                           child: Text(
@@ -190,32 +220,86 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                       BoxShadow(
                           color: Colors.grey, blurRadius: 7, spreadRadius: -5.0)
                     ]),
+                // child: InkWell(
+                //   onTap: () => _showCategories(context),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Row(
+                //         children: [
+                //           Container(
+                //             height: 20,
+                //             width: 20,
+                //             decoration: BoxDecoration(
+                //                 border:
+                //                     Border.all(color: Colors.blue, width: 3.5),
+                //                 borderRadius: BorderRadius.circular(6.0)),
+                //           ),
+                //           const SizedBox(width: 8.0),
+                //           TextCustom(
+                //             text: _selectedCategory ?? 'Select a category',
+                //             color: _selectedCategory == null
+                //                 ? Colors.grey
+                //                 : Colors.black,
+                //           ),
+                //         ],
+                //       ),
+                //       const Icon(Icons.navigate_next_rounded)
+                //     ],
+                //   ),
+                // ),
+
                 child: InkWell(
-                  onTap: () => _showCategories(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.blue, width: 3.5),
-                                borderRadius: BorderRadius.circular(6.0)),
+                  onTap: () async {
+                    final categories = await FirebaseFirestore.instance
+                        .collection('catagory')
+                        .get()
+                        .then((querySnapshot) => querySnapshot.docs
+                            .map((doc) =>
+                                {'id': doc.id, 'name': doc.data()['name']})
+                            .toList());
+                    // ignore: use_build_context_synchronously
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: categories.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final category = categories[index];
+                            print(category['id']);
+                            return ListTile(
+                              title: Text(category['name']),
+                              onTap: () {
+                                setState(() {
+                                  _selectedCategory = category['id'];
+                                  _selectedName = category['name'];
+                                });
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 3.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.category),
+                        const SizedBox(width: 25.0),
+                        Expanded(
+                          child: Text(
+                            _selectedCategory == null
+                                ? 'Select a category'
+                                : 'Category: $_selectedName',
+                            style: const TextStyle(fontSize: 16.0),
                           ),
-                          const SizedBox(width: 8.0),
-                          TextCustom(
-                            text: _selectedCategory ?? 'Select a category',
-                            color: _selectedCategory == null
-                                ? Colors.grey
-                                : Colors.black,
-                          ),
-                        ],
-                      ),
-                      const Icon(Icons.navigate_next_rounded)
-                    ],
+                        ),
+                        const Icon(Icons.arrow_drop_down),
+                      ],
+                    ),
                   ),
                 ),
               ),
