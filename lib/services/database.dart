@@ -22,7 +22,7 @@ class DatabaseService {
   Future<DocumentReference> addProduct(
     String name,
     String description,
-    String price,
+    double price,
     String category,
     String url,
   ) async {
@@ -34,6 +34,7 @@ class DatabaseService {
       'shopId': uid,
       'catagory':category,
       'imageURL':url,
+      'status':'not sold'
     });
   }
 //  Future<void> addProduct({
