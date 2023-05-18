@@ -77,7 +77,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                
                 DatabaseService databaseService =
                     DatabaseService(uid: user.uid);
-                databaseService.updateProductData(
+                databaseService.addProduct(
                     _nameController.text, _descriptionController.text, _priceController.text);
               },
               child: const TextCustom(
