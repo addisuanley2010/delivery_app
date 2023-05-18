@@ -61,6 +61,7 @@ class _RegisterState extends State<Register> {
 
   void setPictureProfilePath(String PictureProfilePath) {
     pictureProfilePath = PictureProfilePath;
+    print(pictureProfilePath);
   }
 
   @override
@@ -93,7 +94,7 @@ class _RegisterState extends State<Register> {
               if (_formkey.currentState!.validate()) {
                 //print("successful");
                 dynamic result = await _auth.registerWithEmailAndPassword(
-                    email, password, name, phone, address);
+                    email, password, name, phone);
                 if (result == null) {
                   print('null');
                   //setState(() {});
@@ -118,7 +119,7 @@ class _RegisterState extends State<Register> {
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.deepPurple,
+          color: Color.fromARGB(255, 255, 254, 255),
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Form(
             key: _formkey,
@@ -305,7 +306,7 @@ class _RegisterState extends State<Register> {
                         //print("successful");
                         dynamic result =
                             await _auth.registerWithEmailAndPassword(
-                                email, password, name, phone, address);
+                                email, password, name, phone);
                         if (result == null) {
                           print('null');
                           //setState(() {});
@@ -405,8 +406,9 @@ class _PictureRegistre extends StatelessWidget {
                   final XFile? photoPath =
                       await _picker.pickImage(source: ImageSource.camera);
                   // if (photoPath != null) OnSelectPictureEvent(photoPath.path);
-                  if (photoPath != null)
+                  if (photoPath != null) {
                     _RegisterState().setPictureProfilePath(photoPath.path);
+                  }
 
                   break;
 

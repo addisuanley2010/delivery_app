@@ -60,11 +60,12 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
         actions: [
           TextButton(
               onPressed: () {
-               
                 DatabaseService databaseService =
                     DatabaseService(uid: user.uid);
                 databaseService.updateProductData(
-                    _nameController.text, _descriptionController.text, _priceController.text);
+                    _nameController.text,
+                    _descriptionController.text,
+                    _priceController.text as double);
               },
               child: const TextCustom(
                   text: ' Save ', color: ColorsFrave.primaryColor))

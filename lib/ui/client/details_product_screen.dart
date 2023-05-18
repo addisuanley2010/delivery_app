@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/cartModel.dart';
+import 'package:delivery/models/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
-import 'package:delivery/ui/client/component/product.dart';
 
 class DetailsProductScreen extends StatefulWidget {
   final Product product;
@@ -14,6 +17,18 @@ class DetailsProductScreen extends StatefulWidget {
 
 class _DetailsProductScreenState extends State<DetailsProductScreen> {
   bool isLoading = true;
+
+  // late StreamSubscription<CartItem> _streamSubscription;
+  // late Cart _cart;
+  // CartItem? _cartItem;
+
+  @override
+  void initState() {
+    super.initState();
+    Cart()
+        .addItem(widget.product.id, widget.product.name, widget.product.price);
+  }
+
   // List<ImageProductdb> imagesProducts = [];
 
   // _getImageProducts() async {
@@ -34,7 +49,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     // final cartBloc = BlocProvider.of<CartBloc>(context);
-
+    print(Product);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -123,6 +138,10 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                     ],
                   )
                 : const ShimmerFrave(),
+
+            ///////////////////
+            ///////////////////////////
+            ///////////////////////////
             const SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -159,7 +178,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextCustom(
-                  text: widget.product.nameProduct,
+                  text: widget.product.name,
                   fontSize: 30,
                   fontWeight: FontWeight.w500),
             ),
@@ -190,36 +209,52 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                           decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(15.0)),
-                          child:
-                              // BlocBuilder<CartBloc, CartState>(
-                              //   builder: (context, state) =>
-                              Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
+                          child: StreamBuilder<CartItem>(
+                            stream: Cart().getItemStream(
+                                widget.product.id, widget.product.name),
+                            builder: (context, snapshot)
+                                // builder: (context, state)
+                                =>
+                                Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    icon: const Icon(Icons.remove),
+                                    onPressed: () {
+                                      // if (state.quantity > 1)
+                                      //   cartBloc.add(
+                                      //       OnDecreaseProductQuantityEvent());
+                                      if (snapshot.data!.quantity > 1) {
+                                        // increaseQuantity
+                                        Cart().decreaseQuantity(
+                                            snapshot.data!.productId);
+                                      }
+                                    }),
+                                const SizedBox(width: 10.0),
+                                const TextCustom(
+                                    text: '3', //state.quantity.toString(),
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500),
+                                const SizedBox(width: 10.0),
+                                IconButton(
                                   splashColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  icon: const Icon(Icons.remove),
-                                  onPressed: () {
-                                    // if (state.quantity > 1)
-                                    //   cartBloc.add(
-                                    //       OnDecreaseProductQuantityEvent());
-                                  }),
-                              const SizedBox(width: 10.0),
-                              const TextCustom(
-                                  text: '3', //state.quantity.toString(),
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w500),
-                              const SizedBox(width: 10.0),
-                              IconButton(
-                                splashColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                icon: const Icon(Icons.add),
-                                onPressed: () => {},
-                                // onPressed: () => cartBloc
-                                //     .add(OnIncreaseProductQuantityEvent())
-                              ),
-                            ],
+                                  highlightColor:
+                                      Color.fromARGB(0, 184, 123, 123),
+                                  icon: const Icon(Icons.add),
+                                  onPressed: () => {
+                                    //cartBloc.add(OnIncreaseProductQuantityEvent())
+
+                                    Cart().increaseQuantity(
+                                        snapshot.data!.productId)
+                                  },
+                                  // onPressed: () =>
+                                  //String id, String name, double price
+                                  // Cart().addItem(widget.product.id,widget.product.name,widget.product.price);
+                                ),
+                              ],
+                            ), //row here
                           ),
                         ),
                         (widget.product.status == 'sold')
@@ -238,6 +273,10 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                           color: Colors.white,
                                           fontSize: 18),
                                       onPressed: () {
+                                        Cart().addItem(
+                                            widget.product.id,
+                                            widget.product.name,
+                                            widget.product.price as double);
                                         // final newProduct = ProductCart(
                                         //     uidProduct:
                                         //         widget.product.id.toString(),
@@ -256,6 +295,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                     const SizedBox(width: 5.0),
                                     // BlocBuilder<CartBloc, CartState>(
                                     // builder: (context, state) =>
+                                    //snapshot.data!.quantity
                                     const TextCustom(
                                         text: '500 br',
                                         // '\$ ${widget.product.price * state.quantity}',

@@ -31,23 +31,27 @@ class AuthService {
     }
   }
 
+
+
   // register with email and password
   Future registerWithEmailAndPassword(
     String email,
     String password,
     String name,
     String phone,
-    String address,
   ) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
 
+
+
+
       // create a new document(customers collection) for the user with the uid
       if (user != null) {
         await DatabaseService(uid: user.uid)
-            .updateUserData(name, email, phone, address);
+            .updateUserData(name, email, phone);
       } else {
         // print('unuble to create account');
       }

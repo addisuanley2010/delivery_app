@@ -1,7 +1,8 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/product.dart';
+import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/StaggeredDualView.dart';
-import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:delivery/ui/client/details_product_screen.dart';
@@ -36,13 +37,15 @@ class SearchForCategoryScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        child: FutureBuilder<List<Product>>(
+        child: StreamBuilder<List<Product>>(
             // future: productServices
             // .searchPorductsForCategory(idCategory.toString()),
-            future: clientHomeScreen.getProductByCatagory(categoryId),
-            builder: (context, snapshot) => (!snapshot.hasData)
-                ? const ShimmerFrave()
-                : ListProducts(listProduct: snapshot.data!)),
+            stream: Products().productsList,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Product>> snapshot) =>
+                    (!snapshot.hasData)
+                        ? const ShimmerFrave()
+                        : ListProducts(listProduct: snapshot.data!)),
       ),
     );
   }
@@ -86,7 +89,7 @@ class ListProducts extends StatelessWidget {
                                   height: 150)),
                         ),
                         TextCustom(
-                            text: listProduct[i].nameProduct,
+                            text: listProduct[i].name,
                             textOverflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w500,
                             color: ColorsFrave.primaryColor,
