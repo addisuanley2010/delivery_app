@@ -157,14 +157,14 @@ class Products {
         price: doc['price'] ?? 0.0,
         status: doc['status'] ?? '',
       );
-      print('product: $productsList');
+      //print('product: $productsList');
       return productsList;
     }).toList();
   }
 
 // get catagoty stream
   Stream<List<Product>> get productsList {
-    print('stream called');
+    //print('stream called');
     return productsCollection.snapshots().map(_productsListFromSnapshot);
   }
 }

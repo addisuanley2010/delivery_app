@@ -27,8 +27,8 @@ class ClientHomeScreen extends StatelessWidget {
 
     getLocation().then((data) {
       location = data;
-      print('latitude:  ${location.lat}');
-      print('longtude:  ${location.long}');
+      // print('latitude:  ${location.lat}');
+      //print('longtude:  ${location.long}');
     });
 
     return Scaffold(
@@ -137,7 +137,7 @@ class ClientHomeScreen extends StatelessWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<List<Catagory>> snapshot) {
                 final List<Catagory>? category = snapshot.data;
-                print(category);
+                // print(category);
 
                 return !snapshot.hasData
                     ? const ShimmerFrave()

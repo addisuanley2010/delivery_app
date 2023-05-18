@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:delivery/models/product.dart';
 import 'package:flutter/material.dart';
 
 class CartItem {
@@ -48,6 +49,7 @@ class Cart {
     }
     _itemsController.add(_items);
     print(_items.length);
+    print(id);
   }
 
   void removeItem(String id) {
