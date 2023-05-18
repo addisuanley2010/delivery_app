@@ -273,37 +273,5 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
     );
   }
 
-  void _showCategories(BuildContext context) async {
-    final categories = await FirebaseFirestore.instance
-        .collection('catagory')
-        .get()
-        .then((querySnapshot) => querySnapshot.docs
-            .map((doc) => {'id': doc.id, 'name': doc.data()['name']})
-            .toList());
-
-    // ignore: use_build_context_synchronously
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select a category'),
-          content: DropdownButton<String>(
-            value: _selectedCategory,
-            onChanged: (String? newValue) {
-              setState(() {
-                _selectedCategory = newValue;
-              });
-              Navigator.pop(context);
-            },
-            items: categories.map((category) {
-              return DropdownMenuItem<String>(
-                value: category['id'],
-                child: Text(category['name']),
-              );
-            }).toList(),
-          ),
-        );
-      },
-    );
-  }
+ 
 }
