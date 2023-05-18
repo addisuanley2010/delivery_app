@@ -8,10 +8,8 @@ class DatabaseService {
   final String uid;
   DatabaseService({required this.uid});
 
-// database reference
-  // FirebaseFirestore db = FirebaseFirestore.instance;
-
   // collection reference
+
   final CollectionReference customersCollection =
       FirebaseFirestore.instance.collection('customers');
 
@@ -21,10 +19,11 @@ class DatabaseService {
   final CollectionReference catagoryCollection =
       FirebaseFirestore.instance.collection('catagory');
 
-  Future<DocumentReference> updateProductData(
+//to add new product
+  Future<DocumentReference> addProduct(
     String name,
     String description,
-    double price,
+    String price,
   ) async {
     final productCollection = FirebaseFirestore.instance.collection('products');
     return await productCollection.add({
@@ -32,9 +31,33 @@ class DatabaseService {
       'description': description,
       'price': price,
       'shopId': uid,
-      // 'picture': 'assets/phone/iphone.png'
     });
   }
+//  Future<void> addProduct({
+//     required String name,
+//     required String description,
+//     required String price,
+//     required String imageUrl,
+//     required String category,
+//     required String subcategory,
+//   }) async {
+//     try {
+//       final docRef = await productCollection.add({
+//         'name': name,
+//         'description': description,
+//         'price': price,
+//         'shopId': uid,
+//         'category': category,
+//       });
+//       await docRef.collection('variants').add({
+//         'price': price,
+//         'imageUrl': imageUrl,
+//         'subcategory': subcategory,
+//       });
+//     } catch (e) {
+//       print('Error adding product: $e');
+//     }
+//   }
 
   Future<DocumentReference> addNewCatagory(
     String name,
@@ -69,6 +92,38 @@ class DatabaseService {
     });
   }
 
+  Future updateUserDataProfile(
+    String name,
+    String email,
+    String phone,
+    String lastName,
+    String address,
+  ) async {
+    return await customersCollection.doc(uid).set({
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'lastName': lastName,
+      'address': address,
+    });
+  }
+
+  //to register new delivery person
+  Future addNewDelivery(
+    String name,
+    String lastName,
+    String phone,
+    String email,
+  ) async {
+    return await customersCollection.doc(uid).set({
+      'name': name,
+      'lastName': lastName,
+      'phone': phone,
+      'email': email,
+      'role': 'delivery',
+    });
+  }
+
   // brew list from snapshot
   List<Customers> _customersListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -100,10 +155,12 @@ class DatabaseService {
   Stream<UserData> get userData {
     return customersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
-}
+
 ///////////////////////////////////////
 
 // catagort list from snapshot
+}
+
 class Category {
   final CollectionReference categoryCollection =
       FirebaseFirestore.instance.collection('catagory');

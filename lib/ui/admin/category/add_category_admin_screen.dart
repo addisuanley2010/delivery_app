@@ -36,9 +36,25 @@ class _AddCategoryAdminScreenState extends State<AddCategoryAdminScreen> {
     super.dispose();
   }
 
+
+
+void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: const Color.fromARGB(255, 181, 74, 110),
+        content: Text(
+          message,
+          style: const TextStyle(
+            fontSize: 15,
+          ),
+        ),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // final productBloc = BlocProvider.of<ProductsBloc>(context);
     final user = Provider.of<Users>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -63,17 +79,16 @@ class _AddCategoryAdminScreenState extends State<AddCategoryAdminScreen> {
         actions: [
           TextButton(
               onPressed: () {
-                
                 // if( _keyForm.currentState!.validate() ){
 
-
-                 DatabaseService databaseService =
+                DatabaseService databaseService =
                     DatabaseService(uid: user.uid);
-                databaseService.addNewCatagory(
-                    _nameCategoryController.text, _categoryDescriptionController.text);
+                databaseService.addNewCatagory(_nameCategoryController.text,
+                    _categoryDescriptionController.text);
 
                 // }
-
+                Navigator.pop(context);
+                  _showSnackbar('Catagory added successfully');
               },
               child: const TextCustom(
                   text: 'Save', color: ColorsFrave.primaryColor))

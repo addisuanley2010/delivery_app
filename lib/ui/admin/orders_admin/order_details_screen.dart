@@ -1,3 +1,4 @@
+import 'package:delivery/models/orders_by_status_response.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/ui/admin/components/components.dart';
 
@@ -7,7 +8,7 @@ import 'package:delivery/ui/admin/components/text_custom.dart';
 class OrderDetailsScreen extends StatelessWidget {
 
 
-  const OrderDetailsScreen();
+  const OrderDetailsScreen({required OrdersResponse order});
 
 
   @override
@@ -56,31 +57,31 @@ class OrderDetailsScreen extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const TextCustom(text: 'Total', color: ColorsFrave.secundaryColor, fontSize: 22, fontWeight: FontWeight.w500),
+                      children: const[
+                         TextCustom(text: 'Total', color: ColorsFrave.secundaryColor, fontSize: 22, fontWeight: FontWeight.w500),
                         TextCustom(text: '\$ ${12}0', fontSize: 22, fontWeight: FontWeight.w500),
                       ],
                     ),
                     const Divider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const TextCustom(text: 'Cliente:', color: ColorsFrave.secundaryColor, fontSize: 16),
+                      children: const[
+                         TextCustom(text: 'Cliente:', color: ColorsFrave.secundaryColor, fontSize: 16),
                         TextCustom(text: 'what annaoying'),
                       ],
                     ),
                     const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const TextCustom(text: 'Date:', color: ColorsFrave.secundaryColor, fontSize: 16),
+                      children:const [
+                         TextCustom(text: 'Date:', color: ColorsFrave.secundaryColor, fontSize: 16),
                         TextCustom(text: "12/21/12", fontSize: 16),
                       ],
                     ),
                     const SizedBox(height: 10.0),
                     const TextCustom(text: 'Address shipping:', color: ColorsFrave.secundaryColor, fontSize: 16),
                     const SizedBox(height: 5.0),
-                    TextCustom(text: "dfsdfk", maxLine: 2, fontSize: 16),
+                    const TextCustom(text: "dfsdfk", maxLine: 2, fontSize: 16),
                     const SizedBox(height: 5.0),
                     ("status" == 'DISPATCHED')
                     ? Row(
@@ -92,14 +93,14 @@ class OrderDetailsScreen extends StatelessWidget {
                             Container(
                               height: 40,
                               width: 40,
-                              decoration: BoxDecoration(
+                              decoration:const BoxDecoration(
                                 image: DecorationImage(
                                   image: NetworkImage('')
                                 )
                               ),
                             ),
                             const SizedBox(width: 10.0),
-                            TextCustom(text: "hello", fontSize: 17)
+                           const TextCustom(text: "hello", fontSize: 17)
                           ],
                         )
                       ],
