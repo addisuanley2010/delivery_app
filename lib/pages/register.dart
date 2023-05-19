@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../services/auth.dart';
-
+//this is comment
 class Register extends StatefulWidget {
   const Register({super.key});
 
