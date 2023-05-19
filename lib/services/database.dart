@@ -37,7 +37,7 @@ class DatabaseService {
       'status':'not sold'
     });
   }
-
+//oh my god
 
   Future<DocumentReference> addNewCatagory(
     String name,
