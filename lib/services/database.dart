@@ -37,31 +37,7 @@ class DatabaseService {
       'status':'not sold'
     });
   }
-//  Future<void> addProduct({
-//     required String name,
-//     required String description,
-//     required String price,
-//     required String imageUrl,
-//     required String category,
-//     required String subcategory,
-//   }) async {
-//     try {
-//       final docRef = await productCollection.add({
-//         'name': name,
-//         'description': description,
-//         'price': price,
-//         'shopId': uid,
-//         'category': category,
-//       });
-//       await docRef.collection('variants').add({
-//         'price': price,
-//         'imageUrl': imageUrl,
-//         'subcategory': subcategory,
-//       });
-//     } catch (e) {
-//       print('Error adding product: $e');
-//     }
-//   }
+
 
   Future<DocumentReference> addNewCatagory(
     String name,
