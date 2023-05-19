@@ -94,7 +94,7 @@ class _RegisterState extends State<Register> {
               if (_formkey.currentState!.validate()) {
                 //print("successful");
                 dynamic result = await _auth.registerWithEmailAndPassword(
-                    email, password, name, phone);
+                    email, password, name, phone,address);
                 if (result == null) {
                   print('null');
                   //setState(() {});
@@ -306,7 +306,7 @@ class _RegisterState extends State<Register> {
                         //print("successful");
                         dynamic result =
                             await _auth.registerWithEmailAndPassword(
-                                email, password, name, phone);
+                                email, password, name, phone,address);
                         if (result == null) {
                           print('null');
                           //setState(() {});
