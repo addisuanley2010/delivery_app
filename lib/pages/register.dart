@@ -311,7 +311,6 @@ class _RegisterState extends State<Register> {
                                 name, email, phone, password, 'addis abeba');
                         if (result == null) {
                           print('null');
-                          //setState(() {});
                         } else {
                           Navigator.pop(context);
                           print('success full');
