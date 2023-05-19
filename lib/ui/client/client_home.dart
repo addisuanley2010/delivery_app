@@ -1,5 +1,6 @@
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/location_model.dart';
+import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/services/locationService.dart';
@@ -16,89 +17,18 @@ import 'package:provider/provider.dart';
 import 'component/date_custom.dart';
 
 class ClientHomeScreen extends StatelessWidget {
-  List<Catagory> catagory = [
-    const Catagory(
-        id: '1',
-        name: 'accessories',
-        description: ' computer  phone accessaries'),
-    const Catagory(
-        id: '2', name: 'computers', description: 'laptops and desktops'),
-    const Catagory(
-        id: '3', name: 'mobiles', description: 'tablates and smart phones')
-  ];
-
-  Future<List<Product>> getProductByCatagory(String categoryId) async {
-    List<Product>? result = [];
-    products.forEach((product) {
-      if (product.category_id == categoryId) {
-        result.add(product);
-      }
-    });
-    return result; // return when result different from null
-  }
-
-  final List<Product> products = [
-    const Product(
-        id: 1,
-        description: 'good iphone  mobile',
-        picture: "assets/phone/iphone.png",
-        nameProduct: ' iphone  ',
-        price: 70000,
-        status: "not sold",
-        category_id: 'f7Sq8BEUJb667vojyxQX'),
-    const Product(
-        id: 2,
-        description: 'good samsung  mobile',
-        picture: "assets/phone/samsung.png",
-        nameProduct: ' samsung phone  ',
-        price: 10000,
-        status: "sold",
-        category_id: 'f7Sq8BEUJb667vojyxQX'),
-    const Product(
-        id: 3,
-        description: 'good rogas charger',
-        picture: "assets/accessery/charger.png",
-        nameProduct: ' charger  ',
-        price: 200,
-        status: "sold",
-        category_id: 'gFnQYQ1sM04Rfi9Ey9qU'),
-    const Product(
-        id: 4,
-        description: 'good flush',
-        picture: "assets/accessery/flush.png",
-        nameProduct: ' flush  ',
-        price: 549,
-        status: "sold",
-        category_id: 'rcJnTAbsHDtBp1ZBh97F'),
-    const Product(
-        id: 5,
-        description: 'good router',
-        picture: "assets/accessery/router.png",
-        nameProduct: ' router  ',
-        price: 40000,
-        status: "sold",
-        category_id: 'rcJnTAbsHDtBp1ZBh97F'),
-    const Product(
-        id: 6,
-        description: 'good laptop',
-        picture: "assets/laptop/laptop.png",
-        nameProduct: ' laptop  ',
-        price: 40000,
-        status: "not sold",
-        category_id: 'gFnQYQ1sM04Rfi9Ey9qU'),
-  ];
-
   ClientHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    print('cient home');
     final user = Provider.of<Users?>(context);
     Mylocation location;
 
     getLocation().then((data) {
       location = data;
-      print('latitude:  ${location.lat}');
-      print('longtude:  ${location.long}');
+      // print('latitude:  ${location.lat}');
+      //print('longtude:  ${location.long}');
     });
 
     return Scaffold(
@@ -207,7 +137,7 @@ class ClientHomeScreen extends StatelessWidget {
               builder: (BuildContext context,
                   AsyncSnapshot<List<Catagory>> snapshot) {
                 final List<Catagory>? category = snapshot.data;
-                //print(category);
+                // print(category);
 
                 return !snapshot.hasData
                     ? const ShimmerFrave()
@@ -270,11 +200,14 @@ class ClientHomeScreen extends StatelessWidget {
 class _ListProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Product>>(
-      //future: ClientHomeScreen().products,
-      builder: (_, snapshot) {
-        final List<Product> listProduct = ClientHomeScreen().products;
-        return listProduct.isEmpty
+    print('product list called');
+
+    return StreamBuilder<List<Product>>(
+      stream: Products().productsList,
+      builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+        final List<Product>? listProduct = snapshot.data;
+        //print(listProduct);
+        return !snapshot.hasData
             ? Column(
                 children: const [
                   ShimmerFrave(),
@@ -292,7 +225,7 @@ class _ListProducts extends StatelessWidget {
                     crossAxisSpacing: 25,
                     mainAxisSpacing: 20,
                     mainAxisExtent: 220),
-                itemCount: listProduct.length,
+                itemCount: listProduct!.length,
                 itemBuilder: (_, i) => Container(
                   padding: const EdgeInsets.all(10.0),
                   decoration: BoxDecoration(
@@ -314,7 +247,7 @@ class _ListProducts extends StatelessWidget {
                                   height: 150)),
                         ),
                         TextCustom(
-                            text: listProduct[i].nameProduct,
+                            text: listProduct[i].name,
                             textOverflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.w500,
                             color: ColorsFrave.primaryColor,

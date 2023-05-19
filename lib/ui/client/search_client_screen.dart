@@ -1,8 +1,9 @@
+import 'package:delivery/models/product.dart';
+import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/components/components.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/bottom_navigation_frave.dart';
-import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:delivery/ui/client/details_product_screen.dart';
 import 'package:flutter/material.dart';
@@ -100,27 +101,27 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
   //       final List<Product> listProduct = ClientHomeScreen().products;
 
   Widget listProducts() {
-    return FutureBuilder<List<Product>>(
-        //future: ClientHomeScreen().products,
-        builder: (_, snapshot) {
-      final List<Product> listProduct = ClientHomeScreen().products;
-      if (snapshot.data == null) return _HistorySearch();
+    return StreamBuilder<List<Product>>(
+        stream: Products().productsList,
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+          final List<Product>? listProduct = snapshot.data;
+          if (snapshot.data == null) return _HistorySearch();
 
-      if (!snapshot.hasData) {
-        return Center(child: CircularProgressIndicator());
-      }
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-      if (snapshot.data!.isEmpty) {
-        return ListTile(
-          title:
-              TextCustom(text: 'Without results for ${_searchController.text}'),
-        );
-      }
+          if (snapshot.data!.isEmpty) {
+            return ListTile(
+              title: TextCustom(
+                  text: 'Without results for ${_searchController.text}'),
+            );
+          }
 
-      // final listProduct = snapshot.data!;
+          // final listProduct = snapshot.data!;
 
-      return _ListProductSearch(listProduct: listProduct);
-    });
+          return _ListProductSearch(listProduct: listProduct!);
+        });
   }
 }
 
@@ -162,7 +163,7 @@ class _ListProductSearch extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            TextCustom(text: listProduct[i].nameProduct),
+                            TextCustom(text: listProduct[i].name),
                             const SizedBox(height: 5.0),
                             TextCustom(
                                 text: '\$ ${listProduct[i].price}',
