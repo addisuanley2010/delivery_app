@@ -1,7 +1,9 @@
 import 'package:delivery/models/customers.dart';
+import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/ui/client/component/product.dart';
+
 
 class DatabaseService {
   final String uid;
@@ -158,5 +160,43 @@ class Category {
 // get catagoty stream
   Stream<List<Catagory>> get catagory1 {
     return categoryCollection.snapshots().map(_catagoryListFromSnapshot);
+  }
+}
+
+
+////////////////////////
+class Products {
+  final CollectionReference productsCollection =
+      FirebaseFirestore.instance.collection('products');
+
+  List<Product> _productsListFromSnapshot(QuerySnapshot snapshot) {
+    print('firebase called');
+    //print(snapshot.docs[5].data()); //the data returned is here
+    return snapshot.docs.map((doc) {
+      //print('doc id: ${doc.id}');
+      //print('doc data: ${doc.data()}');
+      // String url =
+      //     "   https://firebasestorage.googleapis.com/v0/b/deliver-d327d.appspot.com/o/addisu.jpeg?alt=media&token=726b56e8-c4c5-4b40-aed3-324f596f1de7";
+      // String trimmedUrl = url.trim(); // remove extra white space characters
+
+      final productsList = Product(
+        id: doc.id,
+        name: doc['name'] ?? '',
+        catagoryId: doc['catagory'] ?? '',
+        picture: doc['imageURL'].trim() ?? '',
+        description: doc['description'] ?? '',
+        shopeId: doc['shopId'] ?? '',
+        price: doc['price'] ?? 0.0,
+        status: doc['status'] ?? '',
+      );
+      //print('product: $productsList');
+      return productsList;
+    }).toList();
+  }
+
+// get catagoty stream
+  Stream<List<Product>> get productsList {
+    //print('stream called');
+    return productsCollection.snapshots().map(_productsListFromSnapshot);
   }
 }
