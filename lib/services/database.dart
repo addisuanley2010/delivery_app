@@ -4,7 +4,6 @@ import 'package:delivery/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/ui/client/component/product.dart';
 
-
 class DatabaseService {
   final String uid;
   DatabaseService({required this.uid});
@@ -34,9 +33,9 @@ class DatabaseService {
       'description': description,
       'price': price,
       'shopId': uid,
-      'catagory':category,
-      'imageURL':url,
-      'status':'not sold'
+      'catagory': category,
+      'imageURL': url,
+      'status': 'not sold'
     });
   }
 //oh my god
@@ -162,7 +161,6 @@ class Category {
     return categoryCollection.snapshots().map(_catagoryListFromSnapshot);
   }
 }
-
 
 ////////////////////////
 class Products {

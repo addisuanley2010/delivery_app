@@ -33,6 +33,7 @@ class _RegisterState extends State<Register> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _confirmpasswordController;
+  //late TextEditingController _addressController;
 
   final _keyForm = GlobalKey<FormState>();
 
@@ -43,6 +44,7 @@ class _RegisterState extends State<Register> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmpasswordController = TextEditingController();
+    // _addressController = TextEditingController();
 
     super.initState();
   }
@@ -94,7 +96,7 @@ class _RegisterState extends State<Register> {
               if (_formkey.currentState!.validate()) {
                 //print("successful");
                 dynamic result = await _auth.registerWithEmailAndPassword(
-                    email, password, name, phone,address);
+                    email, password, name, phone, 'addis abeba');
                 if (result == null) {
                   print('null');
                   //setState(() {});
@@ -306,11 +308,12 @@ class _RegisterState extends State<Register> {
                         //print("successful");
                         dynamic result =
                             await _auth.registerWithEmailAndPassword(
-                                email, password, name, phone,address);
+                                name, email, phone, password, 'addis abeba');
                         if (result == null) {
                           print('null');
                           //setState(() {});
                         } else {
+                          Navigator.pop(context);
                           print('success full');
                           Users user = result;
                           print(user.uid);
