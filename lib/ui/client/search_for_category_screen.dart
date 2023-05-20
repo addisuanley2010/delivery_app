@@ -40,7 +40,7 @@ class SearchForCategoryScreen extends StatelessWidget {
         child: StreamBuilder<List<Product>>(
             // future: productServices
             // .searchPorductsForCategory(idCategory.toString()),
-            stream: Products().productsList,
+            stream: Products().productsListByCatagory(categoryId),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Product>> snapshot) =>
                     (!snapshot.hasData)
@@ -58,7 +58,7 @@ class ListProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //print(listProduct);
+    print(listProduct);
     return (listProduct.isNotEmpty)
         ? StaggeredDualView(
             spacing: 15,
@@ -74,8 +74,10 @@ class ListProducts extends StatelessWidget {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) =>
-                                DetailsProductScreen(product: listProduct[i]))),
+                            builder: (_) => DetailsProductScreen(
+                                  product: listProduct[i],
+                                  quantity: 1,
+                                ))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

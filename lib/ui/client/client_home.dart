@@ -236,7 +236,7 @@ class _ListProducts extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (_) =>
-                                DetailsProductScreen(product: listProduct[i]))),
+                                DetailsProductScreen(product: listProduct[i],quantity:1))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

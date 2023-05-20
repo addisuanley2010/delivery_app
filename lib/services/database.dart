@@ -197,4 +197,36 @@ class Products {
     //print('stream called');
     return productsCollection.snapshots().map(_productsListFromSnapshot);
   }
+
+  //  get product by catagory
+
+  List<Product> _productsListByCatagoryFromSnapshot(QuerySnapshot snapshot) {
+    print('firebase search by catagory');
+    print(snapshot.docs); //the data returned is here
+    return snapshot.docs.map((doc) {
+      //print('doc id: ${doc.id}');
+      final productsList = Product(
+        id: doc.id,
+        name: doc['name'] ?? '',
+        catagoryId: doc['catagory'] ?? '',
+        picture: doc['imageURL'].trim() ?? '',
+        description: doc['description'] ?? '',
+        shopeId: doc['shopId'] ?? '',
+        price: doc['price'] ?? 0.0,
+        status: doc['status'] ?? '',
+      );
+      print('product: $productsList');
+      return productsList;
+    }).toList();
+  }
+
+// get product  by catagory stream
+  Stream<List<Product>> productsListByCatagory(String catId) {
+    print('.................');
+    print(catId);
+    return productsCollection
+        .where('catagory', isEqualTo: catId)
+        .snapshots()
+        .map(_productsListByCatagoryFromSnapshot);
+  }
 }

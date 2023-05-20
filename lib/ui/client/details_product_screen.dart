@@ -6,10 +6,13 @@ import 'package:delivery/models/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DetailsProductScreen extends StatefulWidget {
   final Product product;
-  const DetailsProductScreen({super.key, required this.product});
+  int quantity;
+  DetailsProductScreen(
+      {super.key, required this.product, required this.quantity});
 
   @override
   _DetailsProductScreenState createState() => _DetailsProductScreenState();
@@ -18,38 +21,19 @@ class DetailsProductScreen extends StatefulWidget {
 class _DetailsProductScreenState extends State<DetailsProductScreen> {
   bool isLoading = true;
 
-  // late StreamSubscription<CartItem> _streamSubscription;
-  // late Cart _cart;
-  // CartItem? _cartItem;
-
-  @override
-  void initState() {
-    super.initState();
-    Cart()
-        .addItem(widget.product.id, widget.product.name, widget.product.price);
-  }
-
-  // List<ImageProductdb> imagesProducts = [];
-
-  // _getImageProducts() async {
-  //   imagesProducts =
-  //       await productServices.getImagesProducts(widget.product.id.toString());
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   _getImageProducts();
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     // final cartBloc = BlocProvider.of<CartBloc>(context);
-    print(Product);
+    final cartController = Provider.of<CartController>(context);
+    CartItem cartItem = CartItem(
+        productId: widget.product.id,
+        name: widget.product.name,
+        price: widget.product.price,
+        quantity: widget.quantity);
+
+    print('current detail product = ${widget.product.id}');
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -209,55 +193,107 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                           decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(15.0)),
-                          child: StreamBuilder<CartItem>(
-                            stream: Cart().getItemStream(
-                                widget.product.id, widget.product.name),
-                            builder: (context, snapshot)
-                                // builder: (context, state)
-                                =>
-                                Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                    splashColor: Colors.transparent,
-                                    highlightColor: Colors.transparent,
-                                    icon: const Icon(Icons.remove),
-                                    onPressed: () {
-                                      // if (state.quantity > 1)
-                                      //   cartBloc.add(
-                                      //       OnDecreaseProductQuantityEvent());
-                                      if (snapshot.data!.quantity > 1) {
-                                        // increaseQuantity
-                                        Cart().decreaseQuantity(
-                                            snapshot.data!.productId);
-                                      }
-                                    }),
-                                const SizedBox(width: 10.0),
-                                const TextCustom(
-                                    text: '3', //state.quantity.toString(),
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.w500),
-                                const SizedBox(width: 10.0),
-                                IconButton(
-                                  splashColor: Colors.transparent,
-                                  highlightColor:
-                                      Color.fromARGB(0, 184, 123, 123),
-                                  icon: const Icon(Icons.add),
-                                  onPressed: () => {
-                                    //cartBloc.add(OnIncreaseProductQuantityEvent())
 
-                                    Cart().increaseQuantity(
-                                        snapshot.data!.productId)
-                                  },
-                                  // onPressed: () =>
-                                  //String id, String name, double price
-                                  // Cart().addItem(widget.product.id,widget.product.name,widget.product.price);
-                                ),
-                              ],
-                            ), //row here
+                          //                           Consumer<CartController>(
+                          // builder: (context, cartController, child) {
+
+                          child: Consumer<CartController>(
+                            builder: (context, cartController, child)
+                                // builder: (context, state)
+                                {
+                              int index = cartController.items.indexWhere(
+                                  (item) =>
+                                      item.productId == widget.product.id);
+
+                              if (index >= 0) {
+                                cartItem = cartController.items.firstWhere(
+                                    (item) =>
+                                        item.productId == widget.product.id);
+                              }
+
+                              ///
+                              print("index at stream =${index}");
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      icon: const Icon(Icons.remove),
+                                      onPressed: () {
+                                        if (widget.product.status ==
+                                            'not sold') {
+                                          setState(() {
+                                            if (index >= 0) {
+                                              cartController.decreaseQuantity(
+                                                  cartItem.productId);
+                                            } else {
+                                              cartController.addItem(
+                                                  cartItem.productId,
+                                                  cartItem.name,
+                                                  cartItem.price);
+                                              if (cartItem.quantity > 1) {
+                                                cartController.decreaseQuantity(
+                                                    cartItem.productId);
+                                              }
+                                            }
+                                          });
+                                        }
+                                        // increaseQuantity
+                                        // CartController().decreaseQuantity(
+                                        //     cartItem.productId);
+
+                                        // if (state.quantity > 1)
+                                        //   cartBloc.add(
+                                        //       OnDecreaseProductQuantityEvent());
+                                      }),
+                                  const SizedBox(width: 10.0),
+                                  TextCustom(
+                                      text: (index >= 0)
+                                          ? cartController.items[index].quantity
+                                              .toString()
+                                          : cartItem.quantity.toString(),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w500),
+                                  const SizedBox(width: 10.0),
+                                  IconButton(
+                                      splashColor: Colors.transparent,
+                                      highlightColor:
+                                          Color.fromARGB(0, 184, 123, 123),
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () {
+                                        if (widget.product.status ==
+                                            'not sold') {
+                                          setState(() {
+                                            if (index >= 0) {
+                                              cartController.increaseQuantity(
+                                                  cartItem.productId);
+                                            } else {
+                                              cartController.addItem(
+                                                  cartItem.productId,
+                                                  cartItem.name,
+                                                  cartItem.price);
+                                              cartController.increaseQuantity(
+                                                  cartItem.productId);
+                                            }
+                                          });
+                                        }
+                                        //cartBloc.add(OnIncreaseProductQuantityEvent())
+
+                                        // CartController()
+                                        //     .increaseQuantity(cartItem.productId)
+                                        // cartItem.quantity++
+
+                                        // onPressed: () =>
+                                        //String id, String name, double price
+                                        // Cart().addItem(widget.product.id,widget.product.name,widget.product.price);
+                                      }),
+                                ],
+                              );
+                            }, //row here
                           ),
                         ),
-                        (widget.product.status == 'sold')
+                        (widget.product.status == 'not sold')
                             ? Container(
                                 height: 50,
                                 width: 220,
@@ -273,10 +309,10 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                           color: Colors.white,
                                           fontSize: 18),
                                       onPressed: () {
-                                        Cart().addItem(
-                                            widget.product.id,
-                                            widget.product.name,
-                                            widget.product.price as double);
+                                        cartController.addItem(
+                                            cartItem.productId,
+                                            cartItem.name,
+                                            cartItem.price);
                                         // final newProduct = ProductCart(
                                         //     uidProduct:
                                         //         widget.product.id.toString(),
@@ -290,14 +326,18 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                         //     newProduct));
                                         // modalSuccess(context, 'Product Added',
                                         //     () => Navigator.pop(context));
+                                        print(cartController.items);
                                       },
                                     ),
                                     const SizedBox(width: 5.0),
+
                                     // BlocBuilder<CartBloc, CartState>(
                                     // builder: (context, state) =>
                                     //snapshot.data!.quantity
-                                    const TextCustom(
-                                        text: '500 br',
+                                    TextCustom(
+                                        text:
+                                            (cartItem.quantity * cartItem.price)
+                                                .toString(),
                                         // '\$ ${widget.product.price * state.quantity}',
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500,
