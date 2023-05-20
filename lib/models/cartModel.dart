@@ -1,3 +1,4 @@
+import 'package:delivery/services/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:delivery/models/product.dart';
 
@@ -5,12 +6,14 @@ class CartItem {
   final String productId;
   final String name;
   final double price;
+  final String imageUrl;
   int quantity;
 
   CartItem({
     required this.productId,
     required this.name,
     required this.price,
+    required this.imageUrl,
     required this.quantity,
   });
 }
@@ -31,7 +34,7 @@ class CartController with ChangeNotifier {
     return total;
   }
 
-  void addItem(String id, String name, double price) {
+  void addItem(String id, String name, double price, String imageUrl) {
     print('add item is called');
 
     int index = _items.indexWhere((item) => item.productId == id);
@@ -45,6 +48,7 @@ class CartController with ChangeNotifier {
         productId: id,
         name: name,
         price: price,
+        imageUrl: imageUrl,
         quantity: 1,
       ));
     }
@@ -61,9 +65,16 @@ class CartController with ChangeNotifier {
     notifyListeners();
   }
 
-  void placeOrder() {
+  Future placeOrder(String userId) async {
     // Code to place the order goes here
+    print('user id : ${userId}');
+
+    DatabaseService databaseService = DatabaseService(uid: userId);
+    var orderDetailId = await databaseService.orderProducts(items);
+
     clear();
+    print(orderDetailId);
+    return orderDetailId;
   }
 
   void increaseQuantity(String id) {

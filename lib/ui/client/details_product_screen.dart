@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/product.dart';
+import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
         productId: widget.product.id,
         name: widget.product.name,
         price: widget.product.price,
+        imageUrl: widget.product.picture,
         quantity: widget.quantity);
 
     print('current detail product = ${widget.product.id}');
@@ -231,7 +233,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                               cartController.addItem(
                                                   cartItem.productId,
                                                   cartItem.name,
-                                                  cartItem.price);
+                                                  cartItem.price,
+                                                  cartItem.imageUrl);
                                               if (cartItem.quantity > 1) {
                                                 cartController.decreaseQuantity(
                                                     cartItem.productId);
@@ -272,7 +275,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                               cartController.addItem(
                                                   cartItem.productId,
                                                   cartItem.name,
-                                                  cartItem.price);
+                                                  cartItem.price,
+                                                  cartItem.imageUrl);
                                               cartController.increaseQuantity(
                                                   cartItem.productId);
                                             }
@@ -312,7 +316,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                         cartController.addItem(
                                             cartItem.productId,
                                             cartItem.name,
-                                            cartItem.price);
+                                            cartItem.price,
+                                            cartItem.imageUrl);
                                         // final newProduct = ProductCart(
                                         //     uidProduct:
                                         //         widget.product.id.toString(),
@@ -324,8 +329,9 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                         //     quantity: cartBloc.state.quantity);
                                         // cartBloc.add(OnAddProductToCartEvent(
                                         //     newProduct));
-                                        // modalSuccess(context, 'Product Added',
-                                        //     () => Navigator.pop(context));
+                                        
+                                        modalSuccess(context, 'Product Added',
+                                            () => Navigator.pop(context));
                                         print(cartController.items);
                                       },
                                     ),

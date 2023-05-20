@@ -1,18 +1,24 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/cartModel.dart';
+import 'package:delivery/models/user.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/btn_frave.dart';
+import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 
 class CartClientScreen extends StatelessWidget {
-  final int quantityCart = 5;
+  // final int quantityCart = 5;
 
   const CartClientScreen({super.key});
   @override
   Widget build(BuildContext context) {
     //final cartBloc = BlocProvider.of<CartBloc>(context);
+    // final cartController = Provider.of<CartController>(context);
+    final user = Provider.of<Users>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -36,14 +42,15 @@ class CartClientScreen extends StatelessWidget {
               context, routeFrave(page: ClientHomeScreen()), (route) => false),
         ),
         actions: [
-          Center(
-              child:
-                  //BlocBuilder<CartBloc, CartState>(
-                  //   builder: (context, state)
-                  //     =>
-                  TextCustom(text: '$quantityCart Items', fontSize: 17)
-              // )
-              ),
+          Center(child:
+              //BlocBuilder<CartBloc, CartState>(
+              //   builder: (context, cartController)
+              //     =>
+              Consumer<CartController>(
+                  builder: (context, cartController, child) {
+            return TextCustom(
+                text: '${cartController.items.length} Items', fontSize: 17);
+          })),
           const SizedBox(width: 10.0)
         ],
       ),
@@ -51,135 +58,179 @@ class CartClientScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-                child:
-                    //   BlocBuilder<CartBloc, CartState>(
-                    //       builder: (context, state) => (state.quantityCart != 0)
-                    (quantityCart != 0)
-                        ? const TextCustom(text: 'my cart lists')
-                        //           ? ListView.builder(
-                        //               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        //               itemCount: state.quantityCart,
-                        //               itemBuilder: (_, i) => Dismissible(
-                        //                     key: Key(state.products![i].uidProduct),
-                        //                     direction: DismissDirection.endToStart,
-                        //                     background: Container(),
-                        //                     secondaryBackground: Container(
-                        //                       padding: const EdgeInsets.only(right: 35.0),
-                        //                       margin: const EdgeInsets.only(bottom: 15.0),
-                        //                       alignment: Alignment.centerRight,
-                        //                       decoration: BoxDecoration(
-                        //                           color: Colors.red,
-                        //                           borderRadius: BorderRadius.only(
-                        //                               topRight: Radius.circular(20.0),
-                        //                               bottomRight: Radius.circular(20.0))),
-                        //                       child: const Icon(Icons.delete_sweep_rounded,
-                        //                           color: Colors.white, size: 40),
-                        //                     ),
-                        //                     onDismissed: (direccion) =>
-                        //                         cartBloc.add(OnDeleteProductToCartEvent(i)),
-                        //                     child: Container(
-                        //                         height: 90,
-                        //                         alignment: Alignment.center,
-                        //                         margin: const EdgeInsets.only(bottom: 15.0),
-                        //                         decoration: BoxDecoration(
-                        //                             color: Colors.grey[100],
-                        //                             borderRadius:
-                        //                                 BorderRadius.circular(10.0)),
-                        //                         child: Row(
-                        //                           children: [
-                        //                             Container(
-                        //                               width: 100,
-                        //                               padding: const EdgeInsets.all(5.0),
-                        //                               decoration: BoxDecoration(
-                        //                                   image: DecorationImage(
-                        //                                       scale: 8,
-                        //                                       image: NetworkImage(
-                        //                                           '${Environment.endpointBase}${state.products![i].imageProduct}'))),
-                        //                             ),
-                        //                             Container(
-                        //                               width: 130,
-                        //                               padding: const EdgeInsets.all(10.0),
-                        //                               child: Column(
-                        //                                 crossAxisAlignment:
-                        //                                     CrossAxisAlignment.start,
-                        //                                 mainAxisAlignment:
-                        //                                     MainAxisAlignment.center,
-                        //                                 children: [
-                        //                                   TextCustom(
-                        //                                       text: state
-                        //                                           .products![i].nameProduct,
-                        //                                       fontWeight: FontWeight.w500,
-                        //                                       fontSize: 20),
-                        //                                   const SizedBox(height: 10.0),
-                        //                                   TextCustom(
-                        //                                       text:
-                        //                                           '\$ ${state.products![i].price * state.products![i].quantity}',
-                        //                                       color:
-                        //                                           ColorsFrave.primaryColor)
-                        //                                 ],
-                        //                               ),
-                        //                             ),
-                        //                             Expanded(
-                        //                               child: Container(
-                        //                                 child: Row(
-                        //                                   mainAxisAlignment:
-                        //                                       MainAxisAlignment.center,
-                        //                                   children: [
-                        //                                     Container(
-                        //                                         alignment: Alignment.center,
-                        //                                         padding:
-                        //                                             const EdgeInsets.all(
-                        //                                                 2.0),
-                        //                                         decoration: BoxDecoration(
-                        //                                             color: ColorsFrave
-                        //                                                 .primaryColor,
-                        //                                             shape: BoxShape.circle),
-                        //                                         child: InkWell(
-                        //                                           child: Icon(Icons.remove,
-                        //                                               color: Colors.white),
-                        //                                           onTap: () {
-                        //                                             if (state.products![i]
-                        //                                                     .quantity >
-                        //                                                 1)
-                        //                                               cartBloc.add(
-                        //                                                   OnDecreaseProductQuantityToCartEvent(
-                        //                                                       i));
-                        //                                           },
-                        //                                         )),
-                        //                                     const SizedBox(width: 10.0),
-                        //                                     TextCustom(
-                        //                                         text:
-                        //                                             '${state.products![i].quantity}',
-                        //                                         color: ColorsFrave
-                        //                                             .primaryColor),
-                        //                                     const SizedBox(width: 10.0),
-                        //                                     Container(
-                        //                                         alignment: Alignment.center,
-                        //                                         padding:
-                        //                                             const EdgeInsets.all(
-                        //                                                 2.0),
-                        //                                         decoration: BoxDecoration(
-                        //                                             color: ColorsFrave
-                        //                                                 .primaryColor,
-                        //                                             shape: BoxShape.circle),
-                        //                                         child: InkWell(
-                        //                                             child: const Icon(
-                        //                                                 Icons.add,
-                        //                                                 color:
-                        //                                                     Colors.white),
-                        //                                             onTap: () => cartBloc.add(
-                        //                                                 OnIncreaseQuantityProductToCartEvent(
-                        //                                                     i))))
-                        //                                   ],
-                        //                                 ),
-                        //                               ),
-                        //                             )
-                        //                           ],
-                        //                         )),
-                        //                   ))
-                        : _WithOutProducts()
-                // ),
-                ),
+              child: Consumer<CartController>(
+                  builder: (context, cartController, child) =>
+                      //   BlocBuilder<CartBloc, CartState>(
+                      //       builder: (context, cartController) => (cartController.quantityCart != 0)
+                      //(cartController.items.length>0)?
+                      (cartController.items.isNotEmpty)
+                          // ? const TextCustom(text: 'my cart lists')
+                          ? ListView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              itemCount: cartController.items.length,
+                              itemBuilder: (_, i) => Dismissible(
+                                    key: Key(cartController.items[i].productId),
+                                    direction: DismissDirection.endToStart,
+                                    background: Container(),
+                                    secondaryBackground: Container(
+                                      padding:
+                                          const EdgeInsets.only(right: 35.0),
+                                      margin:
+                                          const EdgeInsets.only(bottom: 15.0),
+                                      alignment: Alignment.centerRight,
+                                      decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(20.0),
+                                              bottomRight:
+                                                  Radius.circular(20.0))),
+                                      child: const Icon(
+                                          Icons.delete_sweep_rounded,
+                                          color: Colors.white,
+                                          size: 40),
+                                    ),
+                                    onDismissed: (direccion) =>
+                                        cartController.removeItem(
+                                            cartController.items[i].productId)
+                                    //     cartBloc.add(OnDeleteProductToCartEvent(i))
+                                    ,
+                                    child: Container(
+                                        height: 90,
+                                        alignment: Alignment.center,
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15.0),
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[100],
+                                            borderRadius:
+                                                BorderRadius.circular(10.0)),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 100,
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      scale: 8,
+
+                                                      //  child: Image.asset(listProduct[i].picture,
+
+                                                      image: AssetImage(
+                                                          cartController
+                                                              .items[i]
+                                                              .imageUrl))),
+                                            ),
+                                            Container(
+                                              width: 130,
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  TextCustom(
+                                                      text: cartController
+                                                          .items[i].name,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20),
+                                                  const SizedBox(height: 10.0),
+                                                  TextCustom(
+                                                      text:
+                                                          '\$ ${cartController.items[i].price * cartController.items[i].quantity}',
+                                                      color: ColorsFrave
+                                                          .primaryColor)
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                        alignment: Alignment
+                                                            .center,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(2.0),
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                color: ColorsFrave
+                                                                    .primaryColor,
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                        child: InkWell(
+                                                          child: const Icon(
+                                                              Icons.remove,
+                                                              color:
+                                                                  Colors.white),
+                                                          onTap: () {
+                                                            cartController
+                                                                .decreaseQuantity(
+                                                                    cartController
+                                                                        .items[
+                                                                            i]
+                                                                        .productId);
+                                                            // if (cartController.products![i]
+                                                            //         .quantity >
+                                                            //     1)
+                                                            //   cartBloc.add(
+                                                            //       OnDecreaseProductQuantityToCartEvent(
+                                                            //           i));
+                                                          },
+                                                        )),
+                                                    const SizedBox(width: 10.0),
+                                                    TextCustom(
+                                                        text:
+                                                            '${cartController.items[i].quantity}',
+                                                        color: ColorsFrave
+                                                            .primaryColor),
+                                                    const SizedBox(width: 10.0),
+                                                    Container(
+                                                        alignment: Alignment
+                                                            .center,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(2.0),
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                color: ColorsFrave
+                                                                    .primaryColor,
+                                                                shape: BoxShape
+                                                                    .circle),
+                                                        child: InkWell(
+                                                            child: const Icon(
+                                                                Icons.add,
+                                                                color: Colors
+                                                                    .white),
+                                                            onTap: () => {
+                                                                  cartController.increaseQuantity(
+                                                                      cartController
+                                                                          .items[
+                                                                              i]
+                                                                          .productId)
+                                                                  // cartBloc.add(
+                                                                  //   OnIncreaseQuantityProductToCartEvent(
+                                                                  //       i))
+                                                                }))
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )),
+                                  ))
+                          : _WithOutProducts()
+
+                  ///// consumer bracket below
+
+                  ),
+            ),
             Container(
               height: 200,
               padding:
@@ -192,45 +243,55 @@ class CartClientScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Colors.grey[50],
                     borderRadius: BorderRadius.circular(10.0)),
-                child:
-                    // BlocBuilder<CartBloc, CartState>(
-                    //   builder: (context, state) =>
-                    Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        TextCustom(text: 'Total'),
-                        TextCustom(text: '500 br'),
-                      ],
-                    ),
-                    const SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        TextCustom(text: 'Sub Total'),
-                        TextCustom(text: ' 200'),
-                      ],
-                    ),
-                    const SizedBox(height: 20.0),
-                    BtnFrave(
-                      text: 'Checkout',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: (quantityCart != 0)
-                          ? ColorsFrave.primaryColor
-                          : ColorsFrave.secundaryColor,
-                      onPressed: () {
-                        if (quantityCart != 0) {
-                          // Navigator.push(
-                          //     context, routeFrave(page: CheckOutScreen()));
-                        }
-                      },
-                    )
-                  ],
+                //child:
+                // BlocBuilder<CartBloc, CartState>(
+                //   builder: (context, cartController) =>
+
+                child: Consumer<CartController>(
+                  builder: (context, cartController, child) => Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const TextCustom(text: 'Total'),
+                          TextCustom(text: '${cartController.totalAmount}'),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const TextCustom(text: 'Sub Total'),
+                          TextCustom(text: '${cartController.totalAmount}'),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      BtnFrave(
+                        text: 'Checkout',
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: (cartController.items.isNotEmpty)
+                            ? ColorsFrave.primaryColor
+                            : ColorsFrave.secundaryColor,
+                        onPressed: () async {
+                          if (cartController.items.isNotEmpty) {
+                            dynamic result =
+                                await cartController.placeOrder(user.uid);
+                            print('${result}');
+                            if (result != null) {
+                              modalSuccess(context, 'your  order received',
+                                  () => Navigator.pop(context));
+                              print('my bag screen : cart added successfully');
+                            }
+                            // Navigator.push(
+                            //     context, routeFrave(page: CheckOutScreen()));
+                          }
+                        },
+                      )
+                    ],
+                  ),
                 ),
-                // ),
               ),
             ),
           ],
@@ -244,9 +305,9 @@ class _WithOutProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
-        SvgPicture.asset('Assets/empty-cart.svg', height: 450),
-        const TextCustom(
+      children: const [
+        //SvgPicture.asset('Assets/empty-cart.svg', height: 450),
+        TextCustom(
           text: 'Without products',
           fontSize: 21,
           fontWeight: FontWeight.w500,

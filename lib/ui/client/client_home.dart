@@ -1,4 +1,5 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/location_model.dart';
 import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
@@ -23,6 +24,8 @@ class ClientHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print('cient home');
     final user = Provider.of<Users?>(context);
+    final cartController = Provider.of<CartController>(context);
+
     Mylocation location;
 
     getLocation().then((data) {
@@ -77,15 +80,19 @@ class ClientHomeScreen extends StatelessWidget {
                               decoration: const BoxDecoration(
                                   color: Color(0xff0C6CF2),
                                   shape: BoxShape.circle),
-                              child: const Center(
+                              child: Center(
                                   child:
                                       //BlocBuilder<CartBloc, CartState>(builder: (context, state) =>
-                                      TextCustom(
-                                          //text: state.quantityCart.toString(),
-                                          text: "5",
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15)))),
+                                      Consumer<CartController>(
+                                          builder: (context, cartController,
+                                                  child) =>
+                                              TextCustom(
+                                                  //text: state.quantityCart.toString(),
+                                                  text:
+                                                      '${cartController.items.length} Items',
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15))))),
                     ],
                   ),
                 )
@@ -235,8 +242,8 @@ class _ListProducts extends StatelessWidget {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) =>
-                                DetailsProductScreen(product: listProduct[i],quantity:1))),
+                            builder: (_) => DetailsProductScreen(
+                                product: listProduct[i], quantity: 1))),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
