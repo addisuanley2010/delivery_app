@@ -76,14 +76,12 @@ class DatabaseService {
     String name,
     String email,
     String phone,
-    String lastName,
     String address,
   ) async {
     return await customersCollection.doc(uid).set({
       'name': name,
       'email': email,
       'phone': phone,
-      'lastName': lastName,
       'address': address,
     });
   }
@@ -91,13 +89,11 @@ class DatabaseService {
   //to register new delivery person
   Future addNewDelivery(
     String name,
-    String lastName,
     String phone,
     String email,
   ) async {
     return await customersCollection.doc(uid).set({
       'name': name,
-      'lastName': lastName,
       'phone': phone,
       'email': email,
       'role': 'delivery',

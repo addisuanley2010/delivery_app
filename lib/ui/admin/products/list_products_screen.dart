@@ -39,7 +39,7 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => AddNewProductScreen(),
+                    builder: (context) => const AddNewProductScreen(),
                   ),
                 );
               },
@@ -66,17 +66,17 @@ class _GridViewListProduct extends StatelessWidget {
               return const Text('Loading...');
             }
             final List<DocumentSnapshot> documents = snapshot.data!.docs;
-            return (documents.length != 0)
+            return (documents.isNotEmpty)
                 ? GridView.builder(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     itemCount: documents.length,
                     gridDelegate:
                         const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 4,
+                            maxCrossAxisExtent: 450,
+                            childAspectRatio: 5,
                             crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
+                            mainAxisSpacing: 10),
                     itemBuilder: (context, i) => InkWell(
                       // onTap: () => modalActiveOrInactiveProduct(context, listProducts[i].status, listProducts[i].nameProduct, listProducts[i].id, listProducts[i].picture),
                       // onLongPress: () => modalDeleteProduct(context, listProducts[i].nameProduct, listProducts[i].picture, listProducts[i].id.toString()),
@@ -84,10 +84,10 @@ class _GridViewListProduct extends StatelessWidget {
                         children: [
                           Container(
                             height: 100,
-                            width: 50,
+                            width: 80,
                             decoration: BoxDecoration(
                               image: DecorationImage(
-                                  scale: 7,
+                                  scale: 5,
                                   image: NetworkImage(
                                       documents[i].get('imageURL')),
                                   fit: BoxFit.fill),

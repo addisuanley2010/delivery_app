@@ -68,7 +68,6 @@ class AuthService {
   // register with delivery person
   Future registerDelivery(
     String name,
-    String lastName,
     String phone,
     String email,
     String password,
@@ -81,16 +80,15 @@ class AuthService {
       // create a new document(customers collection) for the user with the uid
       if (user != null) {
         await DatabaseService(uid: user.uid)
-            .addNewDelivery(name, lastName, phone, email);
+            .addNewDelivery(name, phone, email);
         return "registered successfully!";
       } else {
-        // print('unuble to create account');
         return "not registerd";
       }
       // return _userFromFirebaseUser(user);
     } catch (error) {
       // print('error:');
-      // print(error.toString());
+      print(error.toString());
       return null;
     }
   }

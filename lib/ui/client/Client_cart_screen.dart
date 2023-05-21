@@ -8,10 +8,8 @@ import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:flutter_svg/flutter_svg.dart';
 
 class CartClientScreen extends StatelessWidget {
-  // final int quantityCart = 5;
 
   const CartClientScreen({super.key});
   @override

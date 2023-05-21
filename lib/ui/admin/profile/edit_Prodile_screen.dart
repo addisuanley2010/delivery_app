@@ -16,7 +16,6 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _nameController;
-  late TextEditingController _lastNameController;
   late TextEditingController _phoneController;
   late TextEditingController _emailController;
   late TextEditingController _addressController;
@@ -34,8 +33,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       final customerData = customerSnapshot.data() as Map<String, dynamic>;
 
       _nameController = TextEditingController(text: customerData['name']);
-      _lastNameController =
-          TextEditingController(text: customerData['lastName']);
       _phoneController = TextEditingController(text: customerData['phone']);
       _emailController = TextEditingController(text: customerData['email']);
       _addressController = TextEditingController(text: customerData['address']);
@@ -99,7 +96,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 _nameController.text,
                                 _emailController.text,
                                 _phoneController.text,
-                                _lastNameController.text,
                                 _addressController.text);
                         _showSnackbar('Account updated successfully');
                       } catch (error) {
@@ -148,21 +144,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 20.0),
-                      const TextCustom(
-                          text: 'Lastname', color: ColorsFrave.secundaryColor),
-                      const SizedBox(height: 5.0),
-                      FormFieldFrave(
-                        controller: _lastNameController,
-                        hintText: 'lastname',
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your father name';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 10.0),
                       const TextCustom(
                           text: 'Phone', color: ColorsFrave.secundaryColor),
                       const SizedBox(height: 5.0),
