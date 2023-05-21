@@ -11,7 +11,7 @@ void modalSuccess(BuildContext context, String text, VoidCallback onPressed) {
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       content: SizedBox(
-        height: 250,
+        height: 251,
         child: Column(
           children: [
             Row(

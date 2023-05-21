@@ -34,7 +34,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
         imageUrl: widget.product.picture,
         quantity: widget.quantity);
 
-    print('current detail product = ${widget.product.id}');
+    //print('current detail product = ${widget.product.id}');
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -68,8 +68,11 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                 //     width: size.width,
                                 //     child:
                                 //         Image.asset(widget.product.picture),
-                                child: Image.network(
-                                  widget.product.picture,
+                                child: Image.asset(
+                                  'assets/phone/iphone.png',
+
+                                  // child: Image.network(
+                                  //   widget.product.picture,
 
                                   // child: Asset.network(
                                   //     widget.product.picture),
@@ -214,7 +217,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                               }
 
                               ///
-                              print("index at stream =${index}");
+                              //print("index at stream =${index}");
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -332,7 +335,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
 
                                         modalSuccess(context, 'Product Added',
                                             () => Navigator.pop(context));
-                                        print(cartController.items);
+                                        // print(cartController.items);
                                       },
                                     ),
                                     const SizedBox(width: 5.0),
