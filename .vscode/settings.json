@@ -1,4 +1,12 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "cmake.sourceDirectory": "C:/Users/Amex/Desktop/project/delivery/windows/flutter"
+    "cmake.sourceDirectory": "C:/Users/Amex/Desktop/project/delivery/windows/flutter",
+    "editor.fontSize": 15,
+    "workbench.activityBar.visible": true,
+    "workbench.preferredHighContrastLightColorTheme": "Monokai Pro (Filter Ristretto)",
+    "breadcrumbs.enabled": true,
+    "workbench.settings.editor": "ui",
+    "editor.minimap.enabled": true,
+    "editor.minimap.side": "right",
+    "editor.minimap.size": "proportional"
 }
