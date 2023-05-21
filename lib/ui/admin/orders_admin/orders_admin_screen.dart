@@ -184,6 +184,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import '../helpers/frave_indicator.dart';
 import '../helpers/pay_type.dart';
@@ -281,7 +282,7 @@ class _ListDelivery extends StatelessWidget {
                   itemCount: documents.length,
                   itemBuilder: (context, i) {
                     // Get the customerId from the order document
-                    String customerId = documents[i].get('client_id');
+                    String customerId = documents[i].get('clientId');
                     return StreamBuilder<DocumentSnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('customers')
@@ -314,11 +315,27 @@ class _ListDelivery extends StatelessWidget {
                                           as Map<String, dynamic>)['email'] ??
                                       ''
                                   : '';
-                              String address = documents[i].get('address_id');
+                              String address = customerData != null
+                                  ? (customerData
+                                          as Map<String, dynamic>)['address'] ??
+                                      ''
+                                  : '';
+
+                              Timestamp timestamp =
+                                  documents[i].get('createdAt');
+                              DateTime date = timestamp.toDate();
+                              String formattedDateTime =
+                                  DateFormat('yyyy-MM-dd HH:mm:ss')
+                                      .format(date);
                               Navigator.of(context).push(
                                 MaterialPageRoute(
+                                  // builder: (context) => OrderDetailsScreen(),
                                   builder: (context) => OrderDetailsScreen(
-                                      name: name, address: address,status:status,customerId:customerId),
+                                      name: name,
+                                      address: address,
+                                      status: status,
+                                      customerId: customerId,
+                                      date: formattedDateTime),
                                 ),
                               );
                             },
@@ -328,42 +345,66 @@ class _ListDelivery extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  TextCustom(
-                                      text: documents[i].get('address_id')),
+                                  const TextCustom(
+                                      text: "Order ID:", fontSize: 20),
+                                  // const TextCustom(
+                                  //     text: documents[id].id, fontSize: 16),
                                   const Divider(),
                                   const SizedBox(height: 10.0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TextCustom(
-                                          text: customerData != null
-                                              ? (customerData as Map<String,
-                                                      dynamic>)['email'] ??
-                                                  ''
-                                              : '',
-                                          fontSize: 16,
+                                      const TextCustom(
+                                          text: 'Date',
+                                          fontSize: 20,
                                           color: ColorsFrave.secundaryColor),
+                                      TextCustom(
+                                        text: DateFormat('yyyy-MM-dd').format(
+                                          (documents[i].get('createdAt')
+                                                  as Timestamp)
+                                              .toDate(),
+                                        ),
+                                        fontSize: 16,
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(height: 10.0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: const [
-                                      TextCustom(
-                                          text:
-                                              'Customer', // Change 'Client' to 'Customer'
-                                          fontSize: 16,
+                                    children: [
+                                      const TextCustom(
+                                          text: "Customer",
+                                          fontSize: 20,
                                           color: ColorsFrave.secundaryColor),
+                                      TextCustom(
+                                        text: customerData != null
+                                            ? (customerData as Map<String,
+                                                    dynamic>)['name'] ??
+                                                ''
+                                            : '',
+                                        fontSize: 16,
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(height: 10.0),
-                                  TextCustom(
-                                      text: documents[i].get('status'),
-                                      fontSize: 16,
-                                      color: ColorsFrave.secundaryColor),
-                                  const SizedBox(height: 5.0),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const TextCustom(
+                                          text: "Address Shipping",
+                                          fontSize: 20,
+                                          color: ColorsFrave.secundaryColor),
+                                      TextCustom(
+                                          text: customerData != null
+                                              ? (customerData as Map<String,
+                                                      dynamic>)['address'] ??
+                                                  ''
+                                              : ''),
+                                    ],
+                                  ),
                                   const SizedBox(height: 5.0),
                                 ],
                               ),
@@ -376,7 +417,7 @@ class _ListDelivery extends StatelessWidget {
                 )
               : Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SvgPicture.asset('assets/images/empty-cart.svg',
                           height: 290),

@@ -1,140 +1,9 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
-// class OrderDetailsScreen extends StatelessWidget {
-//   final DatabaseService databaseService = DatabaseService();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return StreamBuilder<QuerySnapshot>(
-//       stream: databaseService.ordersCollection.snapshots(),
-//       builder: (context, snapshot) {
-//         if (!snapshot.hasData) {
-//           return const CircularProgressIndicator();
-//         }
-//         print(snapshot.data!.docs);
-//         List<Order> orders = [];
-//         snapshot.data!.docs.forEach((doc) {
-//           orders.add(Order.fromSnapshot(doc));
-//         });
-
-//         return ListView.builder(
-//           itemCount: orders.length,
-//           itemBuilder: (context, index) {
-//             return ListTile(
-//               title: Text(orders[index].status),
-//               // subtitle: Text(customers[index].email),
-//             );
-//           },
-//         );
-//       },
-//     );
-//   }
-// }
-
-// class Customer {
-//   final String name;
-//   final String email;
-
-//   Customer({required this.name, required this.email});
-
-//   factory Customer.fromSnapshot(DocumentSnapshot snapshot) {
-//     return Customer(
-//       name: snapshot['name'],
-//       email: snapshot['email'],
-//     );
-//   }
-// }
-
-// class Order {
-//   final String customerId;
-//   final String status;
-
-//   Order({required this.customerId, required this.status});
-
-//   factory Order.fromSnapshot(DocumentSnapshot snapshot) {
-//     return Order(
-//       customerId: snapshot['customerId'],
-//       status: snapshot['status'],
-//     );
-//   }
-// }
-
-// class Product {
-//   final String name;
-//   final double price;
-
-//   Product({required this.name, required this.price});
-
-//   factory Product.fromSnapshot(DocumentSnapshot snapshot) {
-//     return Product(
-//       name: snapshot['name'],
-//       price: snapshot['price'].toDouble(),
-//     );
-//   }
-// }
-
-// class OrderDetail {
-//   final String orderId;
-//   final String productId;
-
-//   OrderDetail({required this.orderId, required this.productId});
-
-//   factory OrderDetail.fromSnapshot(DocumentSnapshot snapshot) {
-//     return OrderDetail(
-//       orderId: snapshot['orderId'],
-//       productId: snapshot['productId'],
-//     );
-//   }
-// }
-
-// class DatabaseService {
-//   final CollectionReference customersCollection =
-//       FirebaseFirestore.instance.collection('customers');
-//   final CollectionReference ordersCollection =
-//       FirebaseFirestore.instance.collection('orders');
-//   final CollectionReference productsCollection =
-//       FirebaseFirestore.instance.collection('products');
-//   final CollectionReference ordersDetailCollection =
-//       FirebaseFirestore.instance.collection('ordersDetail');
-
-//   Future<List<Customer>> getCustomers() async {
-//     QuerySnapshot querySnapshot = await customersCollection.get();
-//     return querySnapshot.docs.map((doc) => Customer.fromSnapshot(doc)).toList();
-//   }
-
-//   Future<List<Order>> getOrdersByCustomerId(String customerId) async {
-//     QuerySnapshot querySnapshot =
-//         await ordersCollection.where('customerId', isEqualTo: customerId).get();
-//     return querySnapshot.docs.map((doc) => Order.fromSnapshot(doc)).toList();
-//   }
-
-//   Future<Product> getProductById(String productId) async {
-//     DocumentSnapshot documentSnapshot =
-//         await productsCollection.doc(productId).get();
-//     return Product.fromSnapshot(documentSnapshot);
-//   }
-
-//   Future<List<OrderDetail>> getOrderDetailsByOrderId(String orderId) async {
-//     QuerySnapshot querySnapshot =
-//         await ordersDetailCollection.where('orderId', isEqualTo: orderId).get();
-//     return querySnapshot.docs
-//         .map((doc) => OrderDetail.fromSnapshot(doc))
-//         .toList();
-//   }
-// }
-
-//////////////////////////
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/ui/admin/components/btn_frave.dart';
 import 'package:flutter/material.dart';
 
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
-import 'package:intl/intl.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   // const OrderDetailsScreen({required OrdersResponse order});
@@ -142,19 +11,16 @@ class OrderDetailsScreen extends StatelessWidget {
   final String address;
   final String status;
   final String customerId;
-  final String date;
   const OrderDetailsScreen(
       {super.key,
       required this.name,
       required this.address,
       required this.status,
-      required this.customerId,
-      required this.date});
+      required this.customerId});
+  final int a = 2;
 
   @override
   Widget build(BuildContext context) {
-    final String a = status;
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -200,7 +66,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           .collection('orders')
                           .where('client_id', isEqualTo: customerId)
                           .snapshots();
-                      //                           final productData = productSnapshot.data?.data();
+                          //                           final productData = productSnapshot.data?.data();
 
                       return _ListProductsDetails(
                           listProductDetails: snapshot.data!.docs);
@@ -231,43 +97,41 @@ class OrderDetailsScreen extends StatelessWidget {
                 const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextCustom(
-                        text: 'Customers:',
+                  children: const [
+                    TextCustom(
+                        text: 'Cliente:',
                         color: ColorsFrave.secundaryColor,
                         fontSize: 16),
-                    TextCustom(text: name),
+                    // TextCustom(text: '${order.cliente}'),
+                    TextCustom(text: 'addisu anley'),
                   ],
                 ),
                 const SizedBox(height: 10.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextCustom(
+                  children: const [
+                    TextCustom(
                         text: 'Date:',
                         color: ColorsFrave.secundaryColor,
                         fontSize: 16),
-                    TextCustom(
-                      text: date,
-                      fontSize: 16,
-                    ),
+                    // TextCustom(
+                    //     text: DateCustom.getDateOrder(
+                    //         order.currentDate.toString()),
+                    //     fontSize: 16),
+                    TextCustom(text: "12/12/12", fontSize: 16),
                   ],
                 ),
                 const SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextCustom(
-                        text: 'Address shipping:',
-                        color: ColorsFrave.secundaryColor,
-                        fontSize: 16),
-                    TextCustom(text: address, maxLine: 2, fontSize: 16),
-                  ],
-                ),
+                const TextCustom(
+                    text: 'Address shipping:',
+                    color: ColorsFrave.secundaryColor,
+                    fontSize: 16),
                 const SizedBox(height: 5.0),
-
+                const TextCustom(
+                    text: "order.reference", maxLine: 2, fontSize: 16),
                 const SizedBox(height: 5.0),
-                (a == 'DELIVERED')
+                // (order.status == 'DISPATCHED')
+                (a == 1)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -297,7 +161,8 @@ class OrderDetailsScreen extends StatelessWidget {
               ],
             ),
           )),
-          (a == 'PAID OUT')
+          // (order.status == 'PAID OUT')
+          (a == 2)
               ? Container(
                   padding: const EdgeInsets.all(10.0),
                   width: MediaQuery.of(context).size.width,
@@ -354,8 +219,8 @@ class _ListProductsDetails extends StatelessWidget {
                     // text: "laptop",
                     text: documents[i].get('address_id'),
                     fontWeight: FontWeight.w500),
-               const  SizedBox(height: 5.0),
-              const  TextCustom(
+                SizedBox(height: 5.0),
+                TextCustom(
                     // text: 'Quantity: ${listProductDetails[i].address_id}',
                     text: 'Quantity: 100',
                     color: Colors.grey,
