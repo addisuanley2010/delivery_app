@@ -13,9 +13,7 @@ class ListProductsScreen extends StatefulWidget {
 
 class _ListProductsScreenState extends State<ListProductsScreen> {
   @override
-
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -68,65 +66,62 @@ class _GridViewListProduct extends StatelessWidget {
               return const Text('Loading...');
             }
             final List<DocumentSnapshot> documents = snapshot.data!.docs;
-            return (documents.length != 0) ? 
-       GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      itemCount: documents.length,
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200,
-        childAspectRatio: 4,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20
-      ), 
-      itemBuilder: (context, i) 
-        => InkWell(
-          // onTap: () => modalActiveOrInactiveProduct(context, listProducts[i].status, listProducts[i].nameProduct, listProducts[i].id, listProducts[i].picture),
-          // onLongPress: () => modalDeleteProduct(context, listProducts[i].nameProduct, listProducts[i].picture, listProducts[i].id.toString()),
-          child: Row(
-            children: [
-              Container(
-                height: 100,
-                width: 50,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    scale: 7,
-                     image:AssetImage('assets/phone/samsung.png',
-                     
-                  ),
-                  fit: BoxFit.fill
-                ),
-              ),),
-              
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color:Colors.grey[50] ,
-                    // color: ( documents[i].status == 1 ) ? Colors.grey[50] : Colors.red[100]
-                  ),
-                  child: TextCustom(text: documents[i].get('name'), fontSize: 16),
-                ),
-              ),
-            ],
-
-          ),
-        ),
-    ):
-          
-            Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/svg/empty.png', height: 290),
-                const SizedBox(height: 20.0),
-                const TextCustom(
-                    text: 'No Products Found !',
-                    color: ColorsFrave.primaryColor,
-                    fontSize: 20)
-              ],
-            ),
-          );
+            return (documents.length != 0)
+                ? GridView.builder(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
+                    itemCount: documents.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
+                            childAspectRatio: 4,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20),
+                    itemBuilder: (context, i) => InkWell(
+                      // onTap: () => modalActiveOrInactiveProduct(context, listProducts[i].status, listProducts[i].nameProduct, listProducts[i].id, listProducts[i].picture),
+                      // onLongPress: () => modalDeleteProduct(context, listProducts[i].nameProduct, listProducts[i].picture, listProducts[i].id.toString()),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  scale: 7,
+                                  image: NetworkImage(
+                                      documents[i].get('imageURL')),
+                                  fit: BoxFit.fill),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: Colors.grey[50],
+                                // color: ( documents[i].status == 1 ) ? Colors.grey[50] : Colors.red[100]
+                              ),
+                              child: TextCustom(
+                                  text: documents[i].get('name'), fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset('assets/svg/empty.png', height: 290),
+                        const SizedBox(height: 20.0),
+                        const TextCustom(
+                            text: 'No Products Found !',
+                            color: ColorsFrave.primaryColor,
+                            fontSize: 20)
+                      ],
+                    ),
+                  );
           }),
     );
   }
