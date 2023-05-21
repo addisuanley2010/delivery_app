@@ -251,8 +251,8 @@ class _ListProducts extends StatelessWidget {
                         Container(
                           child: Hero(
                               tag: listProduct[i].id,
-                              // child: Image.network(listProduct[i].picture,
-                              child: Image.asset('assets/phone/iphone.png',
+                             child: Image.network(listProduct[i].picture,
+                             // child: Image.asset('assets/phone/iphone.png',
                                   height: 150)),
                         ),
                         TextCustom(

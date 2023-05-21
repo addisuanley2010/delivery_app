@@ -114,17 +114,17 @@ class CartClientScreen extends StatelessWidget {
                                               width: 100,
                                               padding:
                                                   const EdgeInsets.all(5.0),
-                                              decoration: const BoxDecoration(
+                                              decoration: BoxDecoration(
                                                   image: DecorationImage(
                                                       scale: 8,
 
                                                       //  child: Image.asset(listProduct[i].picture,
-                                                      image: AssetImage(
-                                                        'assets/phone/iphone.png',
+                                                      // image: AssetImage(
+                                                      //   'assets/phone/iphone.png',
 
-                                                        // image: NetworkImage(
-                                                        //   cartController
-                                                        //       .items[i].imageUrl,
+                                                      image: NetworkImage(
+                                                        cartController
+                                                            .items[i].imageUrl,
                                                       ))),
                                             ),
                                             Container(
