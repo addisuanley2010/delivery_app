@@ -41,7 +41,7 @@ dependencies:
   cloud_firestore: ^4.5.1
   google_fonts: ^4.0.4
   flutter_svg: ^2.0.5
-
+  cached_network_image: ^3.0.0
   cupertino_icons: ^1.0.5
   font_awesome_flutter: ^10.4.0
   bloc: ^8.1.1

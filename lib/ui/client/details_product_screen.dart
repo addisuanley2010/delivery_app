@@ -68,7 +68,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                 //     width: size.width,
                                 //     child:
                                 //         Image.asset(widget.product.picture),
-                                child: Image.asset(
+                                child: Image.network(
                                   widget.product.picture,
 
                                   // child: Asset.network(
@@ -329,7 +329,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                         //     quantity: cartBloc.state.quantity);
                                         // cartBloc.add(OnAddProductToCartEvent(
                                         //     newProduct));
-                                        
+
                                         modalSuccess(context, 'Product Added',
                                             () => Navigator.pop(context));
                                         print(cartController.items);

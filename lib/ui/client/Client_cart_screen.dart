@@ -63,6 +63,7 @@ class CartClientScreen extends StatelessWidget {
                       //   BlocBuilder<CartBloc, CartState>(
                       //       builder: (context, cartController) => (cartController.quantityCart != 0)
                       //(cartController.items.length>0)?
+                     // cartController.items
                       (cartController.items.isNotEmpty)
                           // ? const TextCustom(text: 'my cart lists')
                           ? ListView.builder(
@@ -116,10 +117,10 @@ class CartClientScreen extends StatelessWidget {
 
                                                       //  child: Image.asset(listProduct[i].picture,
 
-                                                      image: AssetImage(
-                                                          cartController
-                                                              .items[i]
-                                                              .imageUrl))),
+                                                      image: NetworkImage(
+                                                        cartController
+                                                            .items[i].imageUrl,
+                                                      ))),
                                             ),
                                             Container(
                                               width: 130,

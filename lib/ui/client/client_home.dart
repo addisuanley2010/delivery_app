@@ -214,6 +214,7 @@ class _ListProducts extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
         final List<Product>? listProduct = snapshot.data;
         //print(listProduct);
+        // print(snapshot.data![0].picture);
         return !snapshot.hasData
             ? Column(
                 children: const [
@@ -250,7 +251,7 @@ class _ListProducts extends StatelessWidget {
                         Container(
                           child: Hero(
                               tag: listProduct[i].id,
-                              child: Image.asset(listProduct[i].picture,
+                              child: Image.network(listProduct[i].picture,
                                   height: 150)),
                         ),
                         TextCustom(
