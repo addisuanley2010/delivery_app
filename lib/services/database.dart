@@ -3,6 +3,7 @@ import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/ui/client/component/product.dart';
+import 'package:delivery/models/cartModel.dart';
 
 class DatabaseService {
   final String uid;
@@ -12,6 +13,10 @@ class DatabaseService {
 
   final CollectionReference customersCollection =
       FirebaseFirestore.instance.collection('customers');
+  final CollectionReference ordersCollection =
+      FirebaseFirestore.instance.collection('orders');
+  final CollectionReference orderDetailCollection =
+      FirebaseFirestore.instance.collection('orderDetail');
 
   final CollectionReference productCollection =
       FirebaseFirestore.instance.collection('products');
@@ -99,7 +104,44 @@ class DatabaseService {
     });
   }
 
-  // brew list from snapshot
+  // order  cart
+  Future orderProducts(List<CartItem> cart) async {
+    // return
+    print(' order db called : ${cart}');
+    var orderId = await ordersCollection.add({
+      'clientId': uid,
+      'deliveryId': '',
+      'addressId': '',
+      'status': 'PAID OUT',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+    //print('${orderId.id}');
+    //print('order id: ${orderId}');
+
+    // call add  orderDetail method
+    if (orderId.id != null) {
+      for (final cartItem in cart) {
+        var orderdetailId = await addOrderDetail(cartItem, orderId.id);
+        //print(orderdetailId);
+        return orderdetailId;
+      }
+    }
+  }
+
+  //  orderDetailCollection  adding
+  Future addOrderDetail(CartItem item, var orderId) async {
+    // return
+    var orderDetailId = await orderDetailCollection.add({
+      'orderId': orderId,
+      'productId': item.productId,
+      'quantity': item.quantity,
+      'price': item.price,
+    });
+    return orderDetailId.id;
+    //print('order detail id: ${orderDetailId.id}');
+  }
+
+  // customer list from snapshot
   List<Customers> _customersListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       //print(doc.data);
@@ -196,5 +238,37 @@ class Products {
   Stream<List<Product>> get productsList {
     //print('stream called');
     return productsCollection.snapshots().map(_productsListFromSnapshot);
+  }
+
+  //  get product by catagory
+
+  List<Product> _productsListByCatagoryFromSnapshot(QuerySnapshot snapshot) {
+    print('firebase search by catagory');
+    print(snapshot.docs); //the data returned is here
+    return snapshot.docs.map((doc) {
+      //print('doc id: ${doc.id}');
+      final productsList = Product(
+        id: doc.id,
+        name: doc['name'] ?? '',
+        catagoryId: doc['catagory'] ?? '',
+        picture: doc['imageURL'].trim() ?? '',
+        description: doc['description'] ?? '',
+        shopeId: doc['shopId'] ?? '',
+        price: doc['price'] ?? 0.0,
+        status: doc['status'] ?? '',
+      );
+      print('product: $productsList');
+      return productsList;
+    }).toList();
+  }
+
+// get product  by catagory stream
+  Stream<List<Product>> productsListByCatagory(String catId) {
+    print('.................');
+    print(catId);
+    return productsCollection
+        .where('catagory', isEqualTo: catId)
+        .snapshots()
+        .map(_productsListByCatagoryFromSnapshot);
   }
 }

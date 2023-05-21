@@ -141,7 +141,8 @@ class _ListProductSearch extends StatelessWidget {
                 onTap: () => Navigator.push(
                     context,
                     routeFrave(
-                        page: DetailsProductScreen(product: listProduct[i]))),
+                        page: DetailsProductScreen(
+                            product: listProduct[i], quantity: 1))),
                 child: Container(
                   height: 90,
                   width: MediaQuery.of(context).size.width,
