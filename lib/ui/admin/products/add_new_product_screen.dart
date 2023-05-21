@@ -175,8 +175,9 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   height: 150,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8.0)),
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                   child: _imageFile !=
                           null // Show the selected image if there is one
                       ? Container(
@@ -308,6 +309,4 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
       ),
     );
   }
-
- 
 }

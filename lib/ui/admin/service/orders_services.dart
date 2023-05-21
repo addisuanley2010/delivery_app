@@ -24,15 +24,15 @@
 //   }
 
 
-//   Future<List<OrdersResponse>> getOrdersByStatus( String status ) async {
+  // Future<List<OrdersResponse>> getOrdersByStatus( String status ) async {
 
-//     final token = await secureStorage.readToken();
+  //   final token = await secureStorage.readToken();
 
-//     final resp = await http.get(Uri.parse('${Environment.endpointApi}/get-orders-by-status/$status'),
-//       headers: {'Accept' : 'application/json', 'xx-token' : token!},
-//     );
-//     return OrdersByStatusResponse.fromJson(jsonDecode(resp.body)).ordersResponse;
-//   }
+  //   final resp = await http.get(Uri.parse('${Environment.endpointApi}/get-orders-by-status/$status'),
+  //     headers: {'Accept' : 'application/json', 'xx-token' : token!},
+  //   );
+  //   return OrdersByStatusResponse.fromJson(jsonDecode(resp.body)).ordersResponse;
+  // }
 
 
 //   Future<List<DetailsOrder>> gerOrderDetailsById(String idOrder) async {
