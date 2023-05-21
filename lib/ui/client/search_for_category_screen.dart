@@ -87,7 +87,7 @@ class ListProducts extends StatelessWidget {
                               // child: Image.network(
                               //     'http://192.168.1.35:7070/' +
                               //         listProduct[i].picture,
-                              child: Image.asset(listProduct[i].picture,
+                              child: Image.network(listProduct[i].picture,
                                   height: 150)),
                         ),
                         TextCustom(
