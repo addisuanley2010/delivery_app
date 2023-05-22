@@ -15,14 +15,10 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<Users?>(context);
     String role = '';
-    //var role = DatabaseService(uid: user!.uid).userData;
-    // return either the Home or Authenticate widget  depend on user login or logout
-
+  
     if (user == null) {
       return const Home();
     } else {
-      print('user not null :${user.uid}');
-      // return const SelectRoleScreen();
       //get role
       return StreamBuilder<UserData>(
         stream: DatabaseService(uid: user.uid).userData,
