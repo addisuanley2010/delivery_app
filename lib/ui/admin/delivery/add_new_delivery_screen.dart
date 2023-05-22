@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:delivery/services/database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:delivery/ui/admin/components/form_field_frave.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddNewDeliveryScreen extends StatefulWidget {
@@ -20,8 +22,15 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
   late TextEditingController _phoneController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  late TextEditingController _addressController;
 
   final _keyForm = GlobalKey<FormState>();
+/////////////////////
+
+  String imageUrl = '';
+  File? _imageFile;
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +38,7 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
     _phoneController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _addressController = TextEditingController();
   }
 
   @override
@@ -38,6 +48,7 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
     _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _addressController.dispose();
     super.dispose();
   }
 
@@ -46,6 +57,7 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
     _phoneController.clear();
     _emailController.clear();
     _passwordController.clear();
+    _addressController.clear();
   }
 
   @override
@@ -66,25 +78,73 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
         ),
         elevation: 0,
         actions: [
-          TextButton(
+          // TextButton(
+          //     onPressed: () async {
+          //       // if( _keyForm.currentState!.validate() ){
+          //       //   userBloc.add( OnRegisterDeliveryEvent(
+
+          //       //     userBloc.state.pictureProfilePath
+          //       //   ));
+
+          //       // }
+
+          //       AuthService authService = AuthService(uid: user.uid);
+          //       await authService.registerDelivery(
+          //         _nameController.text,
+          //         _phoneController.text,
+          //         _emailController.text,
+          //         _passwordController.text,
+          //         _addressController.text,
+          //       );
+          //       // ignore: use_build_context_synchronously
+          //       Navigator.pop(context);
+          //     },
+          //     child: const TextCustom(
+          //         text: ' Save ', color: ColorsFrave.primaryColor))
+            TextButton(
               onPressed: () async {
-                // if( _keyForm.currentState!.validate() ){
-                //   userBloc.add( OnRegisterDeliveryEvent(
+                if (_imageFile == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please select an image')));
+                  return;
+                }
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  Reference referenceRoot = FirebaseStorage.instance.ref();
+                  Reference referenceDirImages = referenceRoot.child('profile');
+                  String uniqueFileName =
+                      DateTime.now().millisecondsSinceEpoch.toString();
+                  Reference referenceImageToUpload =
+                      referenceDirImages.child(uniqueFileName);
+                  await referenceImageToUpload.putFile(_imageFile!);
 
-                //     userBloc.state.pictureProfilePath
-                //   ));
+                  imageUrl = await referenceImageToUpload.getDownloadURL();
 
-                // }
 
-                AuthService authService = AuthService(uid: user.uid);
+
+            AuthService authService = AuthService(uid: user.uid);
                 await authService.registerDelivery(
                   _nameController.text,
                   _phoneController.text,
                   _emailController.text,
                   _passwordController.text,
+                  _addressController.text,
+                  imageUrl,
                 );
-                // ignore: use_build_context_synchronously
-                Navigator.pop(context);
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Registerd successfully!')));
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                } catch (error) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Error: $error')));
+                }
               },
               child: const TextCustom(
                   text: ' Save ', color: ColorsFrave.primaryColor))
@@ -97,8 +157,12 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
           children: [
             const SizedBox(height: 20.0),
-            Align(alignment: Alignment.center, child: _PictureRegistre()),
+            Align(alignment: Alignment.center, child: pickImage()),
             const SizedBox(height: 20.0),
+               if (_isLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
             const TextCustom(text: 'Name'),
             const SizedBox(height: 5.0),
             FormFieldFrave(
@@ -106,8 +170,6 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
               controller: _nameController,
               // validator: RequiredValidator(errorText: 'Name is required'),
             ),
-        
-           
             const SizedBox(height: 10.0),
             const TextCustom(text: 'Phone'),
             const SizedBox(height: 5.0),
@@ -127,6 +189,14 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
               // validator: validatedEmail
             ),
             const SizedBox(height: 15.0),
+            const TextCustom(text: 'address'),
+            const SizedBox(height: 5.0),
+            FormFieldFrave(
+              controller: _addressController,
+              hintText: 'bahir dar',
+              // validator: validatedEmail
+            ),
+            const SizedBox(height: 15.0),
             const TextCustom(text: 'Password'),
             const SizedBox(height: 5.0),
             FormFieldFrave(
@@ -140,15 +210,8 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
       ),
     );
   }
-}
 
-class _PictureRegistre extends StatelessWidget {
-  // final ImagePicker _picker = ImagePicker();
-
-  @override
-  Widget build(BuildContext context) {
-    // final userBloc = BlocProvider.of<UserBloc>(context);
-
+  Widget pickImage() {
     return Container(
       height: 150,
       width: 150,
@@ -156,7 +219,48 @@ class _PictureRegistre extends StatelessWidget {
           border:
               Border.all(style: BorderStyle.solid, color: Colors.grey[300]!),
           shape: BoxShape.circle),
-      child: const Text("This is image picker widget i will do later"),
+      child: InkWell(
+        onTap: () async {
+          ImagePicker imagePicker = ImagePicker();
+          XFile? file =
+              await imagePicker.pickImage(source: ImageSource.gallery);
+          if (file == null) {
+            return;
+          }
+          String uniqueFileName =
+              DateTime.now().millisecondsSinceEpoch.toString();
+          setState(() {
+            _imageFile = File(file.path);
+          });
+        },
+        child: Container(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              shape: BoxShape.circle,
+            ),
+            child: _imageFile != null 
+                ? Container(
+                    
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: FileImage(_imageFile!),
+                      ),
+                    ),
+                  )
+                : const Center(
+                    child: Text(
+                      ' select image',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  )),
+      ),
     );
   }
 }

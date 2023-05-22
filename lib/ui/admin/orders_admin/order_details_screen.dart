@@ -14,7 +14,7 @@ class OrderDetailsScreen extends StatelessWidget {
   final String customerId;
   final String date;
   final String orderId;
-  final int totalCost;
+  final double totalCost;
   const OrderDetailsScreen(
       {super.key,
       required this.name,

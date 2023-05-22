@@ -89,12 +89,13 @@ class _ListDelivery extends StatelessWidget {
                     Container(
                       height: 50,
                       width: 50,
-                      decoration: const BoxDecoration(
+                      decoration:  BoxDecoration(
                           shape: BoxShape.circle,
-                          image: DecorationImage(image: NetworkImage(''))),
+                          image: DecorationImage(image: NetworkImage(documents[i].get('imageUrl'))),
                     ),
-                    const SizedBox(width: 15.0),
-                    Column(
+                    
+                  ) ,
+                  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextCustom(
@@ -105,7 +106,7 @@ class _ListDelivery extends StatelessWidget {
                             text: documents[i].get('phone'), color: Colors.grey),
                       ],
                     )
-                  ],
+                   ],
                 ),
               ),
             ),
