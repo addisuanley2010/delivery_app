@@ -140,7 +140,6 @@ class LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
-                      
                     ),
                     const SizedBox(height: 20.0),
                     const TextCustom(text: 'Password'),
@@ -158,7 +157,7 @@ class LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
-                        suffixIcon: IconButton(
+                      suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
                             showPassword = !showPassword;
@@ -232,10 +231,10 @@ class LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20.0),
                     InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
+                          Navigator.pushReplacement(
+                            context,
                             MaterialPageRoute(
-                              builder: (context) => const Register(),
-                            ),
+                                builder: (context) => const Register()),
                           );
                         },
                         child: const TextCustom(

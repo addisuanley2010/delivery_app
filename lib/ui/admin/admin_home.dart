@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/pages/home.dart';
 import 'package:delivery/ui/admin/delivery/list_deliverys_screen.dart';
 import 'package:delivery/ui/admin/orders_admin/orders_admin_screen.dart';
 import 'package:delivery/ui/admin/products/list_products_screen.dart';
@@ -21,6 +22,7 @@ class AdminHome extends StatelessWidget {
   final AuthService _auth = AuthService();
   late String name;
   late String email;
+  late String imageUrl;
 
   Future<void> getPersonalInformation() async {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -32,6 +34,7 @@ class AdminHome extends StatelessWidget {
       final customerData = customerSnapshot.data() as Map<String, dynamic>;
       name = customerData['name'];
       email = customerData['email'];
+      imageUrl = customerData['imageUrl'];
     }
   }
 
@@ -193,9 +196,8 @@ class AdminHome extends StatelessWidget {
                     icon: Icons.power_settings_new_sharp,
                     colorIcon: 0xffF02849,
                     onPressed: () async {
+                  
                       await _auth.signOut();
-                      // ignore: use_build_context_synchronously
-                      Navigator.pop(context);
                     },
                   ),
                 ],
@@ -218,9 +220,7 @@ class AdminHome extends StatelessWidget {
       child: InkWell(
         child: CircleAvatar(
           radius: 100,
-          backgroundImage: NetworkImage(
-              "https://firebasestorage.googleapis.com/v0/b/deliver-d327d.appspot.com/o/addisu.jpeg?alt=media&token=726b56e8-c4c5-4b40-aed3-324f596f1de7"),
-        ),
+          backgroundImage: NetworkImage(imageUrl),)
       ),
     );
   }

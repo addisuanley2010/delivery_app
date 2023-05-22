@@ -80,12 +80,16 @@ class DatabaseService {
     String email,
     String phone,
     String address,
+    // String image,
+    // String role,
   ) async {
     return await customersCollection.doc(uid).set({
       'name': name,
       'email': email,
       'phone': phone,
       'address': address,
+      // 'imageUrl':image,
+      // 'role':role,
     });
   }
 
