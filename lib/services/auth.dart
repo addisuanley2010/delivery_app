@@ -78,7 +78,7 @@ class AuthService {
           email: email, password: password);
       User user = result.user!;
       if (user != null) {
-        await DatabaseService(uid: user.uid).addNewDelivery(name, phone, email,address,imageUrl);
+        await DatabaseService(uid: uid!).addNewDelivery(name, phone, email,address,imageUrl,uid);
         return "registered successfully!";
       } else {
         return "not registerd";

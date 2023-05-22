@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/models/user.dart';
 import 'package:delivery/ui/admin/products/add_new_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
+import 'package:provider/provider.dart';
 
 class ListProductsScreen extends StatefulWidget {
   const ListProductsScreen({super.key});
@@ -14,6 +16,8 @@ class ListProductsScreen extends StatefulWidget {
 class _ListProductsScreenState extends State<ListProductsScreen> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -55,11 +59,16 @@ class _ListProductsScreenState extends State<ListProductsScreen> {
 class _GridViewListProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users>(context);
+
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(16.0),
       child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('products').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('products')
+              .where('shopId', isEqualTo: user.uid)
+              .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
