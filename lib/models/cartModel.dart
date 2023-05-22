@@ -35,15 +35,15 @@ class CartController with ChangeNotifier {
   }
 
   void addItem(String id, String name, double price, String imageUrl) {
-    print('add item is called');
+    // print('add item is called');
 
     int index = _items.indexWhere((item) => item.productId == id);
-    print('index = ${index}');
+    //print('index = ${index}');
     if (index >= 0) {
-      print('item found in the cart list');
+      // print('item found in the cart list');
       // _items[index].quantity += 1;
     } else {
-      print('item not found in the cart list, it is added');
+      //print('item not found in the cart list, it is added');
       _items.add(CartItem(
         productId: id,
         name: name,
@@ -67,29 +67,29 @@ class CartController with ChangeNotifier {
 
   Future placeOrder(String userId) async {
     // Code to place the order goes here
-    print('user id : ${userId}');
+    //print('user id : ${userId}');
 
     DatabaseService databaseService = DatabaseService(uid: userId);
-    var orderDetailId = await databaseService.orderProducts(items);
+    var orderDetailId = await databaseService.orderProducts(items,totalAmount);
 
     clear();
-    print(orderDetailId);
+    //print(orderDetailId);
     return orderDetailId;
   }
 
   void increaseQuantity(String id) {
-    print('increase quantity called');
+    //print('increase quantity called');
     int index = _items.indexWhere((item) => item.productId == id);
-    print(_items[index].quantity);
+    //print(_items[index].quantity);
     if (index >= 0) {
       _items[index].quantity += 1;
-      print(_items[index].quantity);
+      // print(_items[index].quantity);
       notifyListeners();
     }
   }
 
   void decreaseQuantity(String id) {
-    print('decrease quantity called');
+    //print('decrease quantity called');
     int index = _items.indexWhere((item) => item.productId == id);
     if (index >= 0) {
       if (_items[index].quantity > 1) {

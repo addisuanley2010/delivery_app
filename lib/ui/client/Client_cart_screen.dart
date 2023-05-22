@@ -63,7 +63,7 @@ class CartClientScreen extends StatelessWidget {
                       //   BlocBuilder<CartBloc, CartState>(
                       //       builder: (context, cartController) => (cartController.quantityCart != 0)
                       //(cartController.items.length>0)?
-                     // cartController.items
+                      // cartController.items
                       (cartController.items.isNotEmpty)
                           // ? const TextCustom(text: 'my cart lists')
                           ? ListView.builder(
@@ -97,7 +97,9 @@ class CartClientScreen extends StatelessWidget {
                                     //     cartBloc.add(OnDeleteProductToCartEvent(i))
                                     ,
                                     child: Container(
-                                        height: 90,
+                                        //holds list of(rows of) cart item added
+                                        //  height: 90,  buttom overflowed by 7.0 pixel,
+                                        height: 120,
                                         alignment: Alignment.center,
                                         margin:
                                             const EdgeInsets.only(bottom: 15.0),
@@ -106,6 +108,7 @@ class CartClientScreen extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(10.0)),
                                         child: Row(
+                                          //this is single row(data of single item) , this is repeated(loop) by listView
                                           children: [
                                             Container(
                                               width: 100,
@@ -116,6 +119,8 @@ class CartClientScreen extends StatelessWidget {
                                                       scale: 8,
 
                                                       //  child: Image.asset(listProduct[i].picture,
+                                                      // image: AssetImage(
+                                                      //   'assets/phone/iphone.png',
 
                                                       image: NetworkImage(
                                                         cartController
@@ -279,8 +284,9 @@ class CartClientScreen extends StatelessWidget {
                           if (cartController.items.isNotEmpty) {
                             dynamic result =
                                 await cartController.placeOrder(user.uid);
-                            print('${result}');
+                            // print('${result}');
                             if (result != null) {
+                              // ignore: use_build_context_synchronously
                               modalSuccess(context, 'your  order received',
                                   () => Navigator.pop(context));
                               print('my bag screen : cart added successfully');

@@ -142,6 +142,7 @@ class ProfileClientScreen extends StatelessWidget {
                   //     (route) => false);
 
                   await _auth.signOut();
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
                 },
               ),
