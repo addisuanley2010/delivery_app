@@ -43,15 +43,11 @@ class AuthService {
     String address,
   ) async {
     try {
-      //print(email);
-      //print("before something");
+     
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-      print(user);
-      print('user email aded');
 
-      // create a new document(customers collection) for the user with the uid
       if (user != null) {
         await DatabaseService(uid: user.uid)
             .updateUserData(name, email, phone, address);
@@ -72,16 +68,15 @@ class AuthService {
     String phone,
     String email,
     String password,
+    String address,
+    String imageUrl,
   ) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-
-      // create a new document(customers collection) for the user with the uid
       if (user != null) {
-        await DatabaseService(uid: user.uid)
-            .addNewDelivery(name, phone, email);
+        await DatabaseService(uid: user.uid).addNewDelivery(name, phone, email,address,imageUrl);
         return "registered successfully!";
       } else {
         return "not registerd";

@@ -141,7 +141,7 @@ class _ListDelivery extends StatelessWidget {
                                           as Map<String, dynamic>)['address'] ??
                                       ''
                                   : '';
-                              int totalCost = documents[i].get('totalCost');
+                              double totalCost = documents[i].get('totalCost');
                               Timestamp timestamp =
                                   documents[i].get('createdAt');
                               DateTime date = timestamp.toDate();
