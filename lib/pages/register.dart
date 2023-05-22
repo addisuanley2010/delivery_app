@@ -4,6 +4,7 @@ import 'package:delivery/pages/login.dart';
 import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/client/component/modal_picture.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/user.dart';
@@ -23,8 +24,10 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
-//location data
-
+  String imageUrl = '';
+  File? _imageFile;
+  bool _isLoading = false;
+  /////////////////////////////////////////////////////////////////////
   // text field state
   late String name, email, phone, address, password, confirmpassword;
   String pictureProfilePath = '';
@@ -102,45 +105,18 @@ class _RegisterState extends State<Register> {
           text: 'Create a Account',
         ),
         centerTitle: true,
-        actions: [
-          InkWell(
-            onTap: () async {
-              if (_formkey.currentState!.validate()) {
-                //print("successful");
-                dynamic result = await _auth.registerWithEmailAndPassword(
-                    email, password, name, phone, address);
-                if (result == null) {
-                  print('null');
-                  //setState(() {});
-                } else {
-                  print('success full');
-                  Users user = result;
-                  print(user.uid);
-                }
-              } else {
-                print("please fill the form correctly");
-              }
-            },
-            child: Container(
-              margin: const EdgeInsets.only(right: 10.0),
-              alignment: Alignment.center,
-              child: const TextCustom(
-                  text: 'Save', color: AppColors.primaryColor, fontSize: 15),
-            ),
-          ),
-        ],
       ),
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Container(
-          color: Color.fromARGB(255, 255, 254, 255),
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          color: const Color.fromARGB(255, 255, 254, 255),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Form(
             key: _formkey,
             child: Column(
               children: [
                 const SizedBox(height: 10),
-                Align(alignment: Alignment.center, child: _PictureRegistre()),
+                Align(alignment: Alignment.center, child: pickImage()),
                 const SizedBox(height: 10),
                 Container(
                   width: double.infinity,
@@ -201,6 +177,10 @@ class _RegisterState extends State<Register> {
                     },
                   ),
                 ),
+                if (_isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
@@ -342,30 +322,90 @@ class _RegisterState extends State<Register> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  height: 50,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_formkey.currentState!.validate()) {
-                        //print("successful");
-                        dynamic result =
-                            await _auth.registerWithEmailAndPassword(
-                                name, email, phone, password, address);
-                        if (result == null) {
-                          print('null');
-                        } else {
-                          Navigator.pop(context);
-                          print('success full');
-                          Users user = result;
-                          print(user.uid);
-                        }
-                      } else {
-                        print("please fill the form correctly");
-                      }
-                    },
-                    child: const Text("Sign Up"),
-                  ),
-                ),
+                    height: 50,
+                    width: double.infinity,
+                    // child: ElevatedButton(
+                    //   onPressed: () async {
+                    //     if (_formkey.currentState!.validate()) {
+                    //       //print("successful");
+                    //       dynamic result =
+                    //           await _auth.registerWithEmailAndPassword(
+                    //               name, email, phone, password, address);
+                    //       if (result == null) {
+                    //         print('null');
+                    //       } else {
+                    //         Navigator.pop(context);
+                    //         print('success full');
+                    //         Users user = result;
+                    //         print(user.uid);
+                    //       }
+                    //     } else {
+                    //       print("please fill the form correctly");
+                    //     }
+                    //   },
+                    //   child: const Text("Sign Up"),
+                    // ),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formkey.currentState!.validate()) {
+                            if (_imageFile == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('Please select an image')));
+                              return;
+                            }
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            try {
+                              Reference referenceRoot =
+                                  FirebaseStorage.instance.ref();
+                              Reference referenceDirImages =
+                                  referenceRoot.child('profile');
+                              String uniqueFileName = DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString();
+                              Reference referenceImageToUpload =
+                                  referenceDirImages.child(uniqueFileName);
+                              await referenceImageToUpload.putFile(_imageFile!);
+
+                              imageUrl =
+                                  await referenceImageToUpload.getDownloadURL();
+
+                              dynamic result =
+                                  await _auth.registerWithEmailAndPassword(
+                                      name,
+                                      email,
+                                      phone,
+                                      password,
+                                      address,
+                                      imageUrl);
+                              if (result == null) {
+                                //         print('null');
+                              } else {
+                                Navigator.pop(context);
+                              }
+
+                              setState(() {
+                                _isLoading = false;
+                              });
+
+                              // ignore: use_build_context_synchronously
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('Registerd successfully!')));
+                              // ignore: use_build_context_synchronously
+                              Navigator.pop(context);
+                            } catch (error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Error: $error')));
+                            }
+                          }
+                        },
+                        child: const TextCustom(
+                            text: ' Sign Up ',
+                            color: ColorsFrave.primaryColor))),
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
@@ -400,6 +440,55 @@ class _RegisterState extends State<Register> {
       ),
     );
   }
+
+  Widget pickImage() {
+    return Container(
+      height: 100,
+      width: 100,
+      decoration: BoxDecoration(
+          border:
+              Border.all(style: BorderStyle.solid, color: Colors.grey[300]!),
+          shape: BoxShape.circle),
+      child: InkWell(
+        onTap: () async {
+          ImagePicker imagePicker = ImagePicker();
+          XFile? file =
+              await imagePicker.pickImage(source: ImageSource.gallery);
+          if (file == null) {
+            return;
+          }
+          String uniqueFileName =
+              DateTime.now().millisecondsSinceEpoch.toString();
+          setState(() {
+            _imageFile = File(file.path);
+          });
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            shape: BoxShape.circle,
+          ),
+          child: _imageFile != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: FileImage(_imageFile!),
+                    ),
+                  ),
+                )
+              : const Center(
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Color.fromARGB(255, 115, 117, 196),
+                    size: 58.0,
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
 }
 
 class _PictureRegistre extends StatelessWidget {
@@ -407,8 +496,6 @@ class _PictureRegistre extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final userBloc = BlocProvider.of<UserBloc>(context);
-
     return Container(
       height: 150,
       width: 150,

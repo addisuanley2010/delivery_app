@@ -78,30 +78,7 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
         ),
         elevation: 0,
         actions: [
-          // TextButton(
-          //     onPressed: () async {
-          //       // if( _keyForm.currentState!.validate() ){
-          //       //   userBloc.add( OnRegisterDeliveryEvent(
-
-          //       //     userBloc.state.pictureProfilePath
-          //       //   ));
-
-          //       // }
-
-          //       AuthService authService = AuthService(uid: user.uid);
-          //       await authService.registerDelivery(
-          //         _nameController.text,
-          //         _phoneController.text,
-          //         _emailController.text,
-          //         _passwordController.text,
-          //         _addressController.text,
-          //       );
-          //       // ignore: use_build_context_synchronously
-          //       Navigator.pop(context);
-          //     },
-          //     child: const TextCustom(
-          //         text: ' Save ', color: ColorsFrave.primaryColor))
-            TextButton(
+          TextButton(
               onPressed: () async {
                 if (_imageFile == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -119,20 +96,16 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
                   Reference referenceImageToUpload =
                       referenceDirImages.child(uniqueFileName);
                   await referenceImageToUpload.putFile(_imageFile!);
-
                   imageUrl = await referenceImageToUpload.getDownloadURL();
-
-
-
-            AuthService authService = AuthService(uid: user.uid);
-                await authService.registerDelivery(
-                  _nameController.text,
-                  _phoneController.text,
-                  _emailController.text,
-                  _passwordController.text,
-                  _addressController.text,
-                  imageUrl,
-                );
+                  AuthService authService = AuthService(uid: user.uid);
+                  await authService.registerDelivery(
+                    _nameController.text,
+                    _phoneController.text,
+                    _emailController.text,
+                    _passwordController.text,
+                    _addressController.text,
+                    imageUrl,
+                  );
                   setState(() {
                     _isLoading = false;
                   });
@@ -159,7 +132,7 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
             const SizedBox(height: 20.0),
             Align(alignment: Alignment.center, child: pickImage()),
             const SizedBox(height: 20.0),
-               if (_isLoading)
+            if (_isLoading)
               const Center(
                 child: CircularProgressIndicator(),
               ),
@@ -240,9 +213,8 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
               color: Colors.grey[200],
               shape: BoxShape.circle,
             ),
-            child: _imageFile != null 
+            child: _imageFile != null
                 ? Container(
-                    
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
