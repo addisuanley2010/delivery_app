@@ -164,6 +164,7 @@ class DatabaseService {
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
     return UserData(
         uid: uid,
+        role: snapshot['role'],
         name: snapshot['name'],
         email: snapshot['email'],
         phone: snapshot['phone'],
@@ -177,6 +178,7 @@ class DatabaseService {
 
   // get user doc stream
   Stream<UserData> get userData {
+    print('get data called');
     return customersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }
 }
