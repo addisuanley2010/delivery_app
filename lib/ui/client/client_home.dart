@@ -128,7 +128,7 @@ class ClientHomeScreen extends StatelessWidget {
                         child:
                             // BlocBuilder<UserBloc, UserState>( builder: (context, state) =>
                             const TextCustom(
-                          //  text: "(state.addressName != '')  ? state.addressName  : 'without direction'",
+                          //  text: "(state.addressName != '') f ? state.addressName  : 'without direction'",
                           text: "Addis Abeba",
                           color: ColorsFrave.primaryColor,
                           fontSize: 17,

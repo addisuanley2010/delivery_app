@@ -1,3 +1,4 @@
+import 'package:delivery/screens/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/ui/admin/components/btn_frave.dart';
 import 'package:delivery/ui/admin/components/form_field_frave.dart';
@@ -214,7 +215,12 @@ class LoginScreenState extends State<LoginScreen> {
                                 });
                           } else {
                             // ignore: use_build_context_synchronously
-                            Navigator.pop(context);
+                            // Navigator.pop(context);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Wrapper()),
+                            );
                           }
                         }
                       },
