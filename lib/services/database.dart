@@ -63,12 +63,14 @@ class DatabaseService {
     String email,
     String phone,
     String address,
+    String imageUrl,
   ) async {
     return await customersCollection.doc(uid).set({
       'name': name,
       'email': email,
       'phone': phone,
       'address': address,
+      'imageUrl': imageUrl,
       'role': 'user'
     });
   }
@@ -99,8 +101,8 @@ class DatabaseService {
       'name': name,
       'phone': phone,
       'email': email,
-      'address':address,
-      'imageUrl':imageUrl,
+      'address': address,
+      'imageUrl': imageUrl,
       'role': 'delivery',
     });
   }

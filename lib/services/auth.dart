@@ -41,6 +41,8 @@ class AuthService {
     String phone,
     String password,
     String address,
+    String imageUrl,
+
   ) async {
     try {
      
@@ -50,7 +52,7 @@ class AuthService {
 
       if (user != null) {
         await DatabaseService(uid: user.uid)
-            .updateUserData(name, email, phone, address);
+            .updateUserData(name, email, phone, address,imageUrl);
       } else {
         // print('unuble to create account');
       }
