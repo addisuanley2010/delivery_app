@@ -15,7 +15,6 @@ class AddNewDeliveryScreen extends StatefulWidget {
 
 class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
   late TextEditingController _nameController;
-  late TextEditingController _lastnameController;
   late TextEditingController _phoneController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
@@ -25,7 +24,6 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController();
-    _lastnameController = TextEditingController();
     _phoneController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
@@ -35,7 +33,6 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
   void dispose() {
     clearTextEditingController();
     _nameController.dispose();
-    _lastnameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -44,7 +41,6 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
 
   void clearTextEditingController() {
     _nameController.clear();
-    _lastnameController.clear();
     _phoneController.clear();
     _emailController.clear();
     _passwordController.clear();
@@ -81,7 +77,6 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
                 AuthService authService = AuthService(uid: user.uid);
                 await authService.registerDelivery(
                   _nameController.text,
-                  _lastnameController.text,
                   _phoneController.text,
                   _emailController.text,
                   _passwordController.text,
@@ -109,15 +104,9 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
               controller: _nameController,
               // validator: RequiredValidator(errorText: 'Name is required'),
             ),
-            const SizedBox(height: 20.0),
-            const TextCustom(text: 'Lastname'),
-            const SizedBox(height: 5.0),
-            FormFieldFrave(
-              controller: _lastnameController,
-              hintText: 'lastname',
-              // validator: RequiredValidator(errorText: 'Lastname is required'),
-            ),
-            const SizedBox(height: 20.0),
+        
+           
+            const SizedBox(height: 10.0),
             const TextCustom(text: 'Phone'),
             const SizedBox(height: 5.0),
             FormFieldFrave(

@@ -27,6 +27,8 @@ class LoginScreenState extends State<LoginScreen> {
   String email = '';
   String password = '';
   String errorMessage = '';
+  bool showPassword = true;
+
 //   double? deviceHeight, deviceWidth; //have no use now
 
   @override
@@ -124,7 +126,7 @@ class LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 5.0),
                     FormFieldFrave(
                       controller: _emailController,
-                      hintText: 'email@frave.com',
+                      hintText: 'email@bdu.com',
                       keyboardType: TextInputType.emailAddress,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
@@ -138,6 +140,7 @@ class LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
+                      
                     ),
                     const SizedBox(height: 20.0),
                     const TextCustom(text: 'Password'),
@@ -145,7 +148,7 @@ class LoginScreenState extends State<LoginScreen> {
                     FormFieldFrave(
                       controller: _passwordController,
                       hintText: '********',
-                      isPassword: true,
+                      isPassword: showPassword,
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter password';
@@ -155,6 +158,19 @@ class LoginScreenState extends State<LoginScreen> {
                         }
                         return null;
                       },
+                        suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                        icon: Icon(
+                          showPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     Align(
