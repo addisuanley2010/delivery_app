@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:delivery/models/location_model.dart';
 import 'package:delivery/pages/login.dart';
+import 'package:delivery/screens/wrapper.dart';
 import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/client/component/modal_picture.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
@@ -118,6 +119,10 @@ class _RegisterState extends State<Register> {
                 const SizedBox(height: 10),
                 Align(alignment: Alignment.center, child: pickImage()),
                 const SizedBox(height: 10),
+                if (_isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 Container(
                   width: double.infinity,
                   height: 50,
@@ -177,10 +182,7 @@ class _RegisterState extends State<Register> {
                     },
                   ),
                 ),
-                if (_isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
@@ -324,27 +326,6 @@ class _RegisterState extends State<Register> {
                 Container(
                     height: 50,
                     width: double.infinity,
-                    // child: ElevatedButton(
-                    //   onPressed: () async {
-                    //     if (_formkey.currentState!.validate()) {
-                    //       //print("successful");
-                    //       dynamic result =
-                    //           await _auth.registerWithEmailAndPassword(
-                    //               name, email, phone, password, address);
-                    //       if (result == null) {
-                    //         print('null');
-                    //       } else {
-                    //         Navigator.pop(context);
-                    //         print('success full');
-                    //         Users user = result;
-                    //         print(user.uid);
-                    //       }
-                    //     } else {
-                    //       print("please fill the form correctly");
-                    //     }
-                    //   },
-                    //   child: const Text("Sign Up"),
-                    // ),
                     child: ElevatedButton(
                         onPressed: () async {
                           if (_formkey.currentState!.validate()) {
@@ -396,7 +377,12 @@ class _RegisterState extends State<Register> {
                                       content:
                                           Text('Registerd successfully!')));
                               // ignore: use_build_context_synchronously
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Wrapper()),
+                              );
                             } catch (error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Error: $error')));
@@ -416,10 +402,10 @@ class _RegisterState extends State<Register> {
                       //onTap: () => Navigator.pushNamed(context, '/Register'),
                       TextButton(
                         onPressed: () => {
-                          Navigator.of(context).push(
+                          Navigator.pushReplacement(
+                            context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
-                            ),
+                                builder: (context) => const LoginScreen()),
                           )
                         },
                         child: const Text(

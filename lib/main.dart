@@ -1,5 +1,4 @@
 import 'package:delivery/models/cartModel.dart';
-
 import 'firebase_options.dart';
 import 'package:delivery/screens/wrapper.dart';
 import 'package:delivery/models/user.dart';
@@ -42,7 +41,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Wrapper(),
+      home: Container(
+        decoration:const  BoxDecoration(
+          image: DecorationImage(image: AssetImage('assets/images/bg2.png'))
+        ),
+        child: const Wrapper()),
     );
   }
 }
