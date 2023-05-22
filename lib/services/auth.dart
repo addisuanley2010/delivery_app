@@ -76,11 +76,9 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
-
-      // create a new document(customers collection) for the user with the uid
+      print(user);
       if (user != null) {
-        await DatabaseService(uid: user.uid)
-            .addNewDelivery(name, phone, email);
+        await DatabaseService(uid: user.uid).addNewDelivery(name, phone, email);
         return "registered successfully!";
       } else {
         return "not registerd";

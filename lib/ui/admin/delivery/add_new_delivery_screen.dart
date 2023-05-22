@@ -9,6 +9,8 @@ import 'package:delivery/ui/admin/components/form_field_frave.dart';
 import 'package:provider/provider.dart';
 
 class AddNewDeliveryScreen extends StatefulWidget {
+  const AddNewDeliveryScreen({super.key});
+
   @override
   _AddNewDeliveryScreenState createState() => _AddNewDeliveryScreenState();
 }
