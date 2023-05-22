@@ -1,4 +1,5 @@
 import 'package:delivery/models/user.dart';
+import 'package:delivery/pages/home.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:delivery/ui/admin/components/item_account.dart';
 import 'package:delivery/ui/admin/profile/change_password_screen.dart';
@@ -143,7 +144,10 @@ class ProfileClientScreen extends StatelessWidget {
 
                   await _auth.signOut();
                   // ignore: use_build_context_synchronously
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => Home()),
+                  );
                 },
               ),
             ],
