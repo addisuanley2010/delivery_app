@@ -88,8 +88,8 @@ class ListProducts extends StatelessWidget {
                               //     'http://192.168.1.35:7070/' +
                               //         listProduct[i].picture,
 
-                              child: Image.network(listProduct[i].picture,
-                                  //   child: Image.asset('assets/phone/iphone.png',
+                            //  child: Image.network(listProduct[i].picture,
+                                     child: Image.asset('assets/phone/iphone.png',
                                   height: 150)),
                         ),
                         TextCustom(

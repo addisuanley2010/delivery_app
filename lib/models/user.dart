@@ -10,11 +10,13 @@ class UserData {
   final String email;
   final String phone;
   final String address;
+  final String role;
 
   UserData(
       {required this.uid,
       required this.name,
       required this.email,
       required this.address,
+      required this.role,
       required this.phone});
 }
