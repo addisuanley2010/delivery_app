@@ -20,7 +20,7 @@ class SearchForCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(categoryId);
+    //print(categoryId);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -58,7 +58,7 @@ class ListProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(listProduct);
+    //print(listProduct);
     return (listProduct.isNotEmpty)
         ? StaggeredDualView(
             spacing: 15,
@@ -87,7 +87,9 @@ class ListProducts extends StatelessWidget {
                               // child: Image.network(
                               //     'http://192.168.1.35:7070/' +
                               //         listProduct[i].picture,
+
                               child: Image.network(listProduct[i].picture,
+                                  //   child: Image.asset('assets/phone/iphone.png',
                                   height: 150)),
                         ),
                         TextCustom(

@@ -69,6 +69,7 @@ class DatabaseService {
       'email': email,
       'phone': phone,
       'address': address,
+      'role': 'user'
     });
   }
 
@@ -101,13 +102,14 @@ class DatabaseService {
   }
 
   // order  cart
-  Future orderProducts(List<CartItem> cart) async {
+  Future orderProducts(List<CartItem> cart, double totalAmount) async {
     // return
-    print(' order db called : ${cart}');
+    //print(' order db called : ${cart}');
     var orderId = await ordersCollection.add({
       'clientId': uid,
       'deliveryId': '',
       'addressId': '',
+      'totalCost': totalAmount,
       'status': 'PAID OUT',
       'createdAt': FieldValue.serverTimestamp(),
     });
@@ -119,7 +121,8 @@ class DatabaseService {
       for (final cartItem in cart) {
         var orderdetailId = await addOrderDetail(cartItem, orderId.id);
         //print(orderdetailId);
-        return orderdetailId;
+        print('order id : ${orderId}');
+        // return orderdetailId;
       }
     }
   }
@@ -127,12 +130,16 @@ class DatabaseService {
   //  orderDetailCollection  adding
   Future addOrderDetail(CartItem item, var orderId) async {
     // return
+
     var orderDetailId = await orderDetailCollection.add({
       'orderId': orderId,
       'productId': item.productId,
+      'name': item.name,
       'quantity': item.quantity,
       'price': item.price,
+      'imageUrl': item.imageUrl,
     });
+    print('order detail = ${orderDetailId}');
     return orderDetailId.id;
     //print('order detail id: ${orderDetailId.id}');
   }
@@ -206,11 +213,11 @@ class Products {
       FirebaseFirestore.instance.collection('products');
 
   List<Product> _productsListFromSnapshot(QuerySnapshot snapshot) {
-    print('firebase called');
+    //print('firebase called');
     // print(snapshot.);
     //print(snapshot.docs[5].data()); //the data returned is here
     return snapshot.docs.map((doc) {
-      print('doc id: ${doc['imageURL'].trim()}');
+      //print('doc id: ${doc['imageURL'].trim()}');
       //print('doc data: ${doc.data()}');
       // String url =
       //     "   https://firebasestorage.googleapis.com/v0/b/deliver-d327d.appspot.com/o/addisu.jpeg?alt=media&token=726b56e8-c4c5-4b40-aed3-324f596f1de7";
@@ -240,8 +247,8 @@ class Products {
   //  get product by catagory
 
   List<Product> _productsListByCatagoryFromSnapshot(QuerySnapshot snapshot) {
-    print('firebase search by catagory');
-    print(snapshot.docs); //the data returned is here
+    //print('firebase search by catagory');
+    // print(snapshot.docs); //the data returned is here
     return snapshot.docs.map((doc) {
       //print('doc id: ${doc.id}');
       // print(doc['imageURL']);
@@ -262,8 +269,8 @@ class Products {
 
 // get product  by catagory stream
   Stream<List<Product>> productsListByCatagory(String catId) {
-    print('.................');
-    print(catId);
+    //print('.................');
+    //print(catId);
     return productsCollection
         .where('catagory', isEqualTo: catId)
         .snapshots()

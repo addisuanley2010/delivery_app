@@ -1,6 +1,7 @@
 import 'dart:io';
-
+import 'package:delivery/models/location_model.dart';
 import 'package:delivery/pages/login.dart';
+import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/client/component/modal_picture.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
+//location data
+
   // text field state
   late String name, email, phone, address, password, confirmpassword;
   String pictureProfilePath = '';
@@ -34,7 +37,7 @@ class _RegisterState extends State<Register> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _confirmpasswordController;
-  //late TextEditingController _addressController;
+  late TextEditingController _addressController;
 
   final _keyForm = GlobalKey<FormState>();
 
@@ -45,7 +48,7 @@ class _RegisterState extends State<Register> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmpasswordController = TextEditingController();
-    // _addressController = TextEditingController();
+    _addressController = TextEditingController();
 
     super.initState();
   }
@@ -56,6 +59,7 @@ class _RegisterState extends State<Register> {
     _emailController.clear();
     _passwordController.clear();
     _confirmpasswordController.clear();
+    _addressController.clear();
   }
 
   String getPictureProfilePath() {
@@ -69,7 +73,14 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    var _nameController;
+    Mylocation location;
+
+    getLocation().then((data) {
+      location = data;
+      // print('latitude:  ${location.lat}');
+      //print('longtude:  ${location.long}');
+    });
+
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -97,7 +108,7 @@ class _RegisterState extends State<Register> {
               if (_formkey.currentState!.validate()) {
                 //print("successful");
                 dynamic result = await _auth.registerWithEmailAndPassword(
-                    email, password, name, phone, 'addis abeba');
+                    email, password, name, phone, address);
                 if (result == null) {
                   print('null');
                   //setState(() {});
@@ -157,6 +168,36 @@ class _RegisterState extends State<Register> {
                     },
                     onChanged: (val) {
                       setState(() => name = val);
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: const ShapeDecoration(
+                    color: AppColors.placeholderBg,
+                    shape: StadiumBorder(),
+                  ),
+                  child: TextFormField(
+                    controller: _addressController,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.person),
+                      hintText: 'address',
+                      hintStyle: TextStyle(
+                        color: AppColors.placeholder,
+                      ),
+                      contentPadding: EdgeInsets.only(left: 40),
+                    ),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'Please Enter address';
+                      }
+                      return null;
+                    },
+                    onChanged: (val) {
+                      setState(() => address = val);
                     },
                   ),
                 ),
@@ -309,7 +350,7 @@ class _RegisterState extends State<Register> {
                         //print("successful");
                         dynamic result =
                             await _auth.registerWithEmailAndPassword(
-                                name, email, phone, password, 'addis abeba');
+                                name, email, phone, password, address);
                         if (result == null) {
                           print('null');
                         } else {

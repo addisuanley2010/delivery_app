@@ -22,7 +22,7 @@ class ClientHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('cient home');
+    //print('cient home');
     final user = Provider.of<Users?>(context);
     final cartController = Provider.of<CartController>(context);
 
@@ -207,7 +207,7 @@ class ClientHomeScreen extends StatelessWidget {
 class _ListProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('product list called');
+   // print('product list called');
 
     return StreamBuilder<List<Product>>(
       stream: Products().productsList,
@@ -251,7 +251,8 @@ class _ListProducts extends StatelessWidget {
                         Container(
                           child: Hero(
                               tag: listProduct[i].id,
-                              child: Image.network(listProduct[i].picture,
+                             child: Image.network(listProduct[i].picture,
+                             // child: Image.asset('assets/phone/iphone.png',
                                   height: 150)),
                         ),
                         TextCustom(

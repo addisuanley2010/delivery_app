@@ -42,8 +42,8 @@ class AuthService {
     String address,
   ) async {
     try {
-      print(email);
-      print("before something");
+      //print(email);
+      //print("before something");
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
