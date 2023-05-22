@@ -43,7 +43,6 @@ class AuthService {
     String address,
   ) async {
     try {
-     
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user!;
@@ -76,7 +75,8 @@ class AuthService {
           email: email, password: password);
       User user = result.user!;
       if (user != null) {
-        await DatabaseService(uid: user.uid).addNewDelivery(name, phone, email,address,imageUrl);
+        await DatabaseService(uid: user.uid)
+            .addNewDelivery(name, phone, email, address, imageUrl);
         return "registered successfully!";
       } else {
         return "not registerd";
