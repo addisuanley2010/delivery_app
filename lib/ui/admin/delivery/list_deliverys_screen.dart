@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/models/user.dart';
 import 'package:delivery/ui/admin/delivery/add_new_delivery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
+import 'package:provider/provider.dart';
 
 class ListDeliverysScreen extends StatefulWidget {
   @override
@@ -56,6 +58,8 @@ class _ListDeliverysScreenState extends State<ListDeliverysScreen> {
 class _ListDelivery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users>(context);
+
     return Container(
         color: Colors.white,
         padding: const EdgeInsets.all(16.0),
@@ -63,6 +67,7 @@ class _ListDelivery extends StatelessWidget {
             stream: FirebaseFirestore.instance
                 .collection('customers')
                 .where('role', isEqualTo: 'delivery')
+                .where('shopId', isEqualTo: user.uid)
                 .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

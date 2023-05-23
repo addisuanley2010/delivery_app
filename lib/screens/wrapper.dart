@@ -20,12 +20,10 @@ class Wrapper extends StatelessWidget {
     } else {
       //get role
       return Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bg2.png'),
-          ),
-        ),
-        // color: const Color.fromARGB(255, 255, 255, 255),
+      decoration: const BoxDecoration(
+        image: DecorationImage(image:AssetImage('assets/images/bg2.png'),
+        fit: BoxFit.cover),
+      ),
         child: StreamBuilder<UserData>(
             stream: DatabaseService(uid: user.uid).userData,
             builder: (context, snapshot) {

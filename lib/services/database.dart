@@ -83,7 +83,7 @@ class DatabaseService {
     // String image,
     // String role,
   ) async {
-    return await customersCollection.doc(uid).set({
+    return await customersCollection.doc(uid).update({
       'name': name,
       'email': email,
       'phone': phone,
@@ -99,17 +99,20 @@ class DatabaseService {
     String phone,
     String email,
     String address,
-    String imageUrl,
+    String imageUrl, 
+    String? uid,
   ) async {
-    return await customersCollection.doc(uid).set({
+    return await customersCollection.add({
       'name': name,
       'phone': phone,
       'email': email,
+      'shopId': uid,
       'address': address,
       'imageUrl': imageUrl,
       'role': 'delivery',
     });
   }
+    //return await productCollection.add({
 
   // order  cart
   Future orderProducts(List<CartItem> cart, double totalAmount) async {
