@@ -8,6 +8,7 @@ class CartItem {
   final double price;
   final String imageUrl;
   int quantity;
+  String shopId;
 
   CartItem({
     required this.productId,
@@ -15,6 +16,7 @@ class CartItem {
     required this.price,
     required this.imageUrl,
     required this.quantity,
+    required this.shopId,
   });
 }
 //cartController
@@ -34,7 +36,8 @@ class CartController with ChangeNotifier {
     return total;
   }
 
-  void addItem(String id, String name, double price, String imageUrl) {
+  void addItem(
+      String id, String name, double price, String imageUrl, String shopId) {
     // print('add item is called');
 
     int index = _items.indexWhere((item) => item.productId == id);
@@ -45,12 +48,12 @@ class CartController with ChangeNotifier {
     } else {
       //print('item not found in the cart list, it is added');
       _items.add(CartItem(
-        productId: id,
-        name: name,
-        price: price,
-        imageUrl: imageUrl,
-        quantity: 1,
-      ));
+          productId: id,
+          name: name,
+          price: price,
+          imageUrl: imageUrl,
+          quantity: 1,
+          shopId: shopId));
     }
     notifyListeners();
   }
@@ -70,7 +73,7 @@ class CartController with ChangeNotifier {
     //print('user id : ${userId}');
 
     DatabaseService databaseService = DatabaseService(uid: userId);
-    var orderDetailId = await databaseService.orderProducts(items,totalAmount);
+    var orderDetailId = await databaseService.orderProducts(items, totalAmount);
 
     clear();
     //print(orderDetailId);

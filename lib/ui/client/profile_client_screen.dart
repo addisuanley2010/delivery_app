@@ -3,6 +3,7 @@ import 'package:delivery/pages/home.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:delivery/ui/admin/components/item_account.dart';
 import 'package:delivery/ui/admin/profile/change_password_screen.dart';
+import 'package:delivery/ui/client/client_orders_screen.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/bottom_navigation_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
@@ -94,13 +95,12 @@ class ProfileClientScreen extends StatelessWidget {
                 // onPressed: () => Navigator.push(
                 //     context, routeFrave(page: ListAddressesScreen())),
               ),
-              const ItemAccount(
+              ItemAccount(
                 text: 'Orders',
                 icon: Icons.shopping_bag_outlined,
                 colorIcon: 0xffFBAD49,
-                // onPressed: ()
-                // // => Navigator.push(
-                // //     context, routeFrave(page: ClientOrdersScreen())),
+                onPressed: () => Navigator.push(
+                    context, routeFrave(page: ClientOrdersScreen())),
               ),
               const ItemAccount(
                 text: 'Dark mode',

@@ -20,9 +20,12 @@ class Wrapper extends StatelessWidget {
     } else {
       //get role
       return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(image:AssetImage('assets/images/bg2.png'),),
-      ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/bg2.png'),
+          ),
+        ),
+        // color: const Color.fromARGB(255, 255, 255, 255),
         child: StreamBuilder<UserData>(
             stream: DatabaseService(uid: user.uid).userData,
             builder: (context, snapshot) {
@@ -40,11 +43,11 @@ class Wrapper extends StatelessWidget {
               } else if (snapshot.hasError) {
                 // Error retrieving data
                 return const Scaffold(
-                  backgroundColor: Colors.white54,
-                  body: Text('loading...'));
+                    backgroundColor: Colors.white54, body: Text('loading...'));
               } else {
                 // Data is not yet available
                 return const Center(
+                  
                   child: SizedBox(
                     width: 50,
                     height: 50,
