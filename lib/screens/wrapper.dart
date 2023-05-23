@@ -41,11 +41,11 @@ class Wrapper extends StatelessWidget {
               } else if (snapshot.hasError) {
                 // Error retrieving data
                 return const Scaffold(
-                  backgroundColor: Colors.white54,
-                  body: Text('loading...'));
+                    backgroundColor: Colors.white54, body: Text('loading...'));
               } else {
                 // Data is not yet available
                 return const Center(
+                  
                   child: SizedBox(
                     width: 50,
                     height: 50,

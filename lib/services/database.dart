@@ -151,6 +151,7 @@ class DatabaseService {
       'quantity': item.quantity,
       'price': item.price,
       'imageUrl': item.imageUrl,
+      'shopId': item.shopId
     });
     print('order detail = ${orderDetailId}');
     return orderDetailId.id;
@@ -229,15 +230,10 @@ class Products {
 
   List<Product> _productsListFromSnapshot(QuerySnapshot snapshot) {
     //print('firebase called');
-    // print(snapshot.);
     //print(snapshot.docs[5].data()); //the data returned is here
     return snapshot.docs.map((doc) {
       //print('doc id: ${doc['imageURL'].trim()}');
       //print('doc data: ${doc.data()}');
-      // String url =
-      //     "   https://firebasestorage.googleapis.com/v0/b/deliver-d327d.appspot.com/o/addisu.jpeg?alt=media&token=726b56e8-c4c5-4b40-aed3-324f596f1de7";
-      // String trimmedUrl = url.trim(); // remove extra white space characters
-
       final productsList = Product(
         id: doc.id,
         name: doc['name'] ?? '',

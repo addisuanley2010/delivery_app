@@ -32,7 +32,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
         name: widget.product.name,
         price: widget.product.price,
         imageUrl: widget.product.picture,
-        quantity: widget.quantity);
+        quantity: widget.quantity,
+        shopId: widget.product.shopeId);
 
     //print('current detail product = ${widget.product.id}');
 
@@ -237,7 +238,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                                   cartItem.productId,
                                                   cartItem.name,
                                                   cartItem.price,
-                                                  cartItem.imageUrl);
+                                                  cartItem.imageUrl,
+                                                  cartItem.shopId);
                                               if (cartItem.quantity > 1) {
                                                 cartController.decreaseQuantity(
                                                     cartItem.productId);
@@ -279,7 +281,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                                   cartItem.productId,
                                                   cartItem.name,
                                                   cartItem.price,
-                                                  cartItem.imageUrl);
+                                                  cartItem.imageUrl,
+                                                  cartItem.shopId);
                                               cartController.increaseQuantity(
                                                   cartItem.productId);
                                             }
@@ -320,7 +323,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                             cartItem.productId,
                                             cartItem.name,
                                             cartItem.price,
-                                            cartItem.imageUrl);
+                                            cartItem.imageUrl,
+                                            cartItem.shopId);
                                         // final newProduct = ProductCart(
                                         //     uidProduct:
                                         //         widget.product.id.toString(),
