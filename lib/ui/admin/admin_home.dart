@@ -176,7 +176,7 @@ class AdminHome extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const AddItem(),
+                            builder: (context) => const TestShop(),
                           ),
                         );
                       }),
@@ -196,7 +196,6 @@ class AdminHome extends StatelessWidget {
                     icon: Icons.power_settings_new_sharp,
                     colorIcon: 0xffF02849,
                     onPressed: () async {
-                  
                       await _auth.signOut();
                     },
                   ),
@@ -214,13 +213,39 @@ class AdminHome extends StatelessWidget {
       height: 150,
       width: 150,
       decoration: BoxDecoration(
-          border:
-              Border.all(style: BorderStyle.solid, color: Colors.grey[200]!),
-          shape: BoxShape.circle),
-      child: InkWell(
-        child: CircleAvatar(
-          radius: 100,
-          backgroundImage: NetworkImage(imageUrl),)
+        border: Border.all(style: BorderStyle.solid, color: Colors.grey[200]!),
+        shape: BoxShape.circle,
+      ),
+      child: Stack(
+        children: [
+          InkWell(
+            child: CircleAvatar(
+              radius: 100,
+              backgroundImage: NetworkImage(imageUrl),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              padding: const EdgeInsets.all(5),
+              child: IconButton(
+                  onPressed: () {
+                    //more task here , I will do it at the end of this month
+                    //not mandatory
+                  },
+                  icon: const Icon(
+                    Icons.camera_alt,
+                    color: Colors.lightBlueAccent,
+                    size: 30,
+                  )),
+            ),
+          ),
+        ],
       ),
     );
   }

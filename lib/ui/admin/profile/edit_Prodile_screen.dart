@@ -125,7 +125,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ],
       ),
       body: FutureBuilder(
-          // future: getPersonalInformation(),
+          future: getPersonalInformation(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -139,7 +139,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     children: [
-                      // pickImage(),
+                     // pickImage(),
                       const TextCustom(
                           text: 'Name', color: ColorsFrave.secundaryColor),
                       const SizedBox(height: 5.0),

@@ -186,8 +186,8 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
 
   Widget pickImage() {
     return Container(
-      height: 150,
-      width: 150,
+      height: 100,
+      width: 100,
       decoration: BoxDecoration(
           border:
               Border.all(style: BorderStyle.solid, color: Colors.grey[300]!),
@@ -207,32 +207,30 @@ class _AddNewDeliveryScreenState extends State<AddNewDeliveryScreen> {
           });
         },
         child: Container(
-            height: 200,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              shape: BoxShape.circle,
-            ),
-            child: _imageFile != null
-                ? Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: FileImage(_imageFile!),
-                      ),
+          decoration: BoxDecoration(
+            color: Colors.grey[200],
+            shape: BoxShape.circle,
+          ),
+          child: _imageFile != null
+              ? Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: FileImage(_imageFile!),
                     ),
-                  )
-                : const Center(
-                    child: Text(
-                      ' select image',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 18.0,
-                      ),
-                    ),
-                  )),
+                  ),
+                )
+              : const Center(
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Color.fromARGB(255, 115, 117, 196),
+                    size: 58.0,
+                  ),
+                ),
+        ),
       ),
     );
   }
+  
 }
