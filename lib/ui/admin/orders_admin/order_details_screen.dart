@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/models/user.dart';
 import 'package:delivery/ui/admin/components/btn_frave.dart';
 import 'package:flutter/material.dart';
 
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   // const OrderDetailsScreen({required OrdersResponse order});
@@ -83,14 +85,14 @@ class OrderDetailsScreen extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:  [
-                   const TextCustom(
+                  children: [
+                    const TextCustom(
                         text: 'Total',
                         color: ColorsFrave.secundaryColor,
                         fontSize: 22,
                         fontWeight: FontWeight.w500),
                     TextCustom(
-                        text: '${totalCost.toDouble()} birr',
+                        text: '$totalCost birr',
                         fontSize: 22,
                         fontWeight: FontWeight.w500),
                   ],
@@ -195,10 +197,13 @@ class _ListProductsDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users>(context);
+
     return StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('orderDetail')
             .where('orderId', isEqualTo: orderId)
+            .where('shopId', isEqualTo: user.uid)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
