@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/ui/admin/components/btn_frave.dart';
+import 'package:delivery/ui/admin/helpers/modal_select_delivery.dart';
 import 'package:flutter/material.dart';
 
 import 'package:delivery/constants/constants.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
-  // const OrderDetailsScreen({required OrdersResponse order});
   final String name;
   final String address;
   final String status;
@@ -17,6 +17,7 @@ class OrderDetailsScreen extends StatelessWidget {
   final String date;
   final String orderId;
   final double totalCost;
+
   const OrderDetailsScreen(
       {super.key,
       required this.name,
@@ -77,94 +78,94 @@ class OrderDetailsScreen extends StatelessWidget {
                     }
                   })),
           Expanded(
-              child: Container(
-            padding: const EdgeInsets.all(10.0),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextCustom(
-                        text: 'Total',
-                        color: ColorsFrave.secundaryColor,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500),
-                    TextCustom(
-                        text: '$totalCost birr',
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500),
-                  ],
-                ),
-                const Divider(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextCustom(
-                        text: 'Customers:',
-                        color: ColorsFrave.secundaryColor,
-                        fontSize: 16),
-                    TextCustom(text: name),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextCustom(
-                        text: 'Date:',
-                        color: ColorsFrave.secundaryColor,
-                        fontSize: 16),
-                    TextCustom(
-                      text: date,
-                      fontSize: 16,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const TextCustom(
-                        text: 'Address shipping:',
-                        color: ColorsFrave.secundaryColor,
-                        fontSize: 16),
-                    TextCustom(text: address, maxLine: 2, fontSize: 16),
-                  ],
-                ),
-                const SizedBox(height: 5.0),
-                const SizedBox(height: 5.0),
-                (a == 'DELIVERED')
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const TextCustom(
-                              text: 'Delivery',
-                              fontSize: 17,
-                              color: ColorsFrave.secundaryColor),
-                          Row(
-                            children: [
-                              Container(
-                                height: 40,
-                                width: 40,
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: NetworkImage(''
-                                            // '${Environment.endpointBase}${order.deliveryImage}'
-                                            ))),
-                              ),
-                              const SizedBox(width: 10.0),
-                              const TextCustom(
-                                  text: "order.delivery", fontSize: 17)
-                            ],
-                          )
-                        ],
-                      )
-                    : const SizedBox()
-              ],
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TextCustom(
+                          text: 'Total',
+                          color: ColorsFrave.secundaryColor,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500),
+                      TotalCost(
+                        orderId: orderId,
+                      ),
+                    ],
+                  ),
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TextCustom(
+                          text: 'Customers:',
+                          color: ColorsFrave.secundaryColor,
+                          fontSize: 16),
+                      TextCustom(text: name),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TextCustom(
+                          text: 'Date:',
+                          color: ColorsFrave.secundaryColor,
+                          fontSize: 16),
+                      TextCustom(
+                        text: date,
+                        fontSize: 16,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TextCustom(
+                          text: 'Address shipping:',
+                          color: ColorsFrave.secundaryColor,
+                          fontSize: 16),
+                      TextCustom(text: address, maxLine: 2, fontSize: 16),
+                    ],
+                  ),
+                  const SizedBox(height: 5.0),
+                  const SizedBox(height: 5.0),
+                  (a == 'DELIVERED')
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const TextCustom(
+                                text: 'Delivery',
+                                fontSize: 17,
+                                color: ColorsFrave.secundaryColor),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: NetworkImage(''
+                                              // '${Environment.endpointBase}${order.deliveryImage}'
+                                              ))),
+                                ),
+                                const SizedBox(width: 10.0),
+                                const TextCustom(
+                                    text: "order.delivery", fontSize: 17)
+                              ],
+                            )
+                          ],
+                        )
+                      : const SizedBox()
+                ],
+              ),
             ),
-          )),
+          ),
           (a == 'PAID OUT')
               ? Container(
                   padding: const EdgeInsets.all(10.0),
@@ -176,8 +177,14 @@ class OrderDetailsScreen extends StatelessWidget {
                         text: 'SELECT DELIVERY',
                         fontWeight: FontWeight.w500,
                         onPressed: () {
-                          // modalSelectDelivery(
-                          //   context, order.orderId.toString())
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: ListDeliveryModal(),
+                              );
+                            },
+                          );
                         },
                       )
                     ],
@@ -192,8 +199,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
 class _ListProductsDetails extends StatelessWidget {
   final String orderId;
-
-  const _ListProductsDetails({required this.orderId});
+  _ListProductsDetails({required this.orderId});
 
   @override
   Widget build(BuildContext context) {
@@ -245,14 +251,15 @@ class _ListProductsDetails extends StatelessWidget {
                             ],
                           ),
                           Expanded(
-                              child: Container(
-                            alignment: Alignment.centerRight,
-                            child: TextCustom(
-                              text:
-                                  ('${documents[i].get('quantity') * documents[i].get('price')}  birr')
-                                      .toString(),
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              child: TextCustom(
+                                text:
+                                    ('${documents[i].get('quantity') * documents[i].get('price')}  birr')
+                                        .toString(),
+                              ),
                             ),
-                          ))
+                          ),
                         ],
                       ),
                     );
@@ -271,6 +278,47 @@ class _ListProductsDetails extends StatelessWidget {
                     ],
                   ),
                 );
+        });
+  }
+}
+
+class TotalCost extends StatelessWidget {
+  final String orderId;
+  TotalCost({required this.orderId});
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<Users>(context);
+
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('orderDetail')
+            .where('orderId', isEqualTo: orderId)
+            .where('shopId', isEqualTo: user.uid)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final List<DocumentSnapshot> documents = snapshot.data!.docs;
+          double total = 0.0;
+          for (var document in documents) {
+            total += document.get('quantity') * document.get('price');
+          }
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: TextCustom(
+                      text: ('$total birr').toString(),
+                      fontSize: 22,
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+          );
         });
   }
 }
