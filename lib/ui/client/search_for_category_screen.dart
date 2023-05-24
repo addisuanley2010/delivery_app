@@ -1,4 +1,5 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/product.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/client/client_home.dart';
@@ -8,6 +9,7 @@ import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:delivery/ui/client/details_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class SearchForCategoryScreen extends StatelessWidget {
   final String categoryId;
@@ -20,6 +22,8 @@ class SearchForCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final addressController = Provider.of<AddressController>(context);
+
     //print(categoryId);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -40,7 +44,8 @@ class SearchForCategoryScreen extends StatelessWidget {
         child: StreamBuilder<List<Product>>(
             // future: productServices
             // .searchPorductsForCategory(idCategory.toString()),
-            stream: Products().productsListByCatagory(categoryId),
+            stream: Products(addressId: addressController.address.id)
+                .productsListByCatagory(categoryId),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Product>> snapshot) =>
                     (!snapshot.hasData)
@@ -88,8 +93,8 @@ class ListProducts extends StatelessWidget {
                               //     'http://192.168.1.35:7070/' +
                               //         listProduct[i].picture,
 
-                            //  child: Image.network(listProduct[i].picture,
-                                     child: Image.asset('assets/phone/iphone.png',
+                              //  child: Image.network(listProduct[i].picture,
+                              child: Image.asset('assets/phone/iphone.png',
                                   height: 150)),
                         ),
                         TextCustom(

@@ -7,6 +7,7 @@ import 'package:delivery/ui/client/client_orders_screen.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/bottom_navigation_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
+import 'package:delivery/ui/client/selectShopScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -88,12 +89,12 @@ class ProfileClientScreen extends StatelessWidget {
                 onPressed: () => Navigator.push(
                     context, routeFrave(page: const ChangePasswordScreen())),
               ),
-              const ItemAccount(
+              ItemAccount(
                 text: 'Add addresses',
                 icon: Icons.my_location_rounded,
                 colorIcon: 0xffFB5019,
-                // onPressed: () => Navigator.push(
-                //     context, routeFrave(page: ListAddressesScreen())),
+                onPressed: () => Navigator.push(
+                    context, routeFrave(page: SelectShopScreen())),
               ),
               ItemAccount(
                 text: 'Orders',

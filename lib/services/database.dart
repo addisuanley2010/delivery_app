@@ -1,9 +1,14 @@
+import 'dart:js';
+
+import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/customers.dart';
 import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/models/cartModel.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:provider/provider.dart';
 
 class DatabaseService {
   final String uid;
@@ -99,7 +104,7 @@ class DatabaseService {
     String phone,
     String email,
     String address,
-    String imageUrl, 
+    String imageUrl,
     String? uid,
   ) async {
     return await customersCollection.add({
@@ -112,7 +117,7 @@ class DatabaseService {
       'role': 'delivery',
     });
   }
-    //return await productCollection.add({
+  //return await productCollection.add({
 
   // order  cart
   Future orderProducts(List<CartItem> cart, double totalAmount) async {
@@ -225,12 +230,17 @@ class Category {
 
 ////////////////////////
 class Products {
+  final String addressId;
+  Products({required this.addressId});
+
   final CollectionReference productsCollection =
       FirebaseFirestore.instance.collection('products');
 
   List<Product> _productsListFromSnapshot(QuerySnapshot snapshot) {
     //print('firebase called');
-    //print(snapshot.docs[5].data()); //the data returned is here
+    //print(snapshot.docs[0].data()); //the data returned is here
+    //print(snapshot.docs[1].data()); //the data returned is here
+    //print('hello');
     return snapshot.docs.map((doc) {
       //print('doc id: ${doc['imageURL'].trim()}');
       //print('doc data: ${doc.data()}');
@@ -251,8 +261,13 @@ class Products {
 
 // get catagoty stream
   Stream<List<Product>> get productsList {
+   // print('get product with address provider called ');
+    print('current address= ${addressId}');
     //print('stream called');
-    return productsCollection.snapshots().map(_productsListFromSnapshot);
+    return productsCollection
+        .where('addressId', isEqualTo: addressId)
+        .snapshots()
+        .map(_productsListFromSnapshot);
   }
 
   //  get product by catagory
