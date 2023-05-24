@@ -1,5 +1,6 @@
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/addressModel.dart';
+import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/client/client_home.dart';
@@ -60,7 +61,8 @@ class _ListAddressesClient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final address = Provider.of<AddressController?>(context);
+    final addressController = Provider.of<AddressController?>(context);
+    final cartController = Provider.of<CartController?>(context);
     return (listAdresses.isNotEmpty)
         ? ListView.builder(
             padding:
@@ -68,8 +70,15 @@ class _ListAddressesClient extends StatelessWidget {
             itemCount: listAdresses.length,
             itemBuilder: (context, i) => GestureDetector(
               onTap: () => {
-                address!.setAddress(listAdresses[i].id, listAdresses[i].name,
-                    listAdresses[i].lat, listAdresses[i].long),
+                if (listAdresses[i].id != addressController!.address.id)
+                  {
+                    cartController!.clear(),
+                  },
+                addressController.setAddress(
+                    listAdresses[i].id,
+                    listAdresses[i].name,
+                    listAdresses[i].lat,
+                    listAdresses[i].long),
                 Navigator.push(context, routeFrave(page: ClientHomeScreen()))
               },
               child: Container(
