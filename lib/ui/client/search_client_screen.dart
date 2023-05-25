@@ -1,3 +1,4 @@
+import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/product.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/components/components.dart';
@@ -7,6 +8,7 @@ import 'package:delivery/ui/client/component/bottom_navigation_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:delivery/ui/client/details_product_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchClientScreen extends StatefulWidget {
   const SearchClientScreen({super.key});
@@ -101,8 +103,10 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
   //       final List<Product> listProduct = ClientHomeScreen().products;
 
   Widget listProducts() {
+    final addressController = Provider.of<AddressController>(context);
+
     return StreamBuilder<List<Product>>(
-        stream: Products().productsList,
+        stream: Products(addressId: addressController.address.id).productsList,
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           final List<Product>? listProduct = snapshot.data;
           if (snapshot.data == null) return _HistorySearch();

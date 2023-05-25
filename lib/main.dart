@@ -1,3 +1,4 @@
+import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'firebase_options.dart';
 import 'package:delivery/screens/wrapper.dart';
@@ -12,7 +13,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   runApp(
     MultiProvider(
       providers: [
@@ -23,6 +23,9 @@ void main() async {
         ),
         ChangeNotifierProvider<CartController>(
           create: (_) => CartController(),
+        ),
+        ChangeNotifierProvider<AddressController>(
+          create: (_) => AddressController(),
         ),
       ],
       child: const MyApp(),
@@ -42,10 +45,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Container(
-        decoration:const  BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/images/bg2.png'))
-        ),
-        child: const Wrapper()),
+          decoration: const BoxDecoration(
+              image:
+                  DecorationImage(image: AssetImage('assets/images/bg2.png'))),
+          child: const Wrapper()),
     );
   }
 }

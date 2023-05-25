@@ -1,4 +1,5 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/location_model.dart';
 import 'package:delivery/models/product.dart';
@@ -24,7 +25,8 @@ class ClientHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //print('cient home');
     final user = Provider.of<Users?>(context);
-    final cartController = Provider.of<CartController>(context);
+    //final cartController = Provider.of<CartController>(context);
+    final addressController = Provider.of<AddressController>(context);
 
     Mylocation location;
 
@@ -33,7 +35,7 @@ class ClientHomeScreen extends StatelessWidget {
       // print('latitude:  ${location.lat}');
       //print('longtude:  ${location.long}');
     });
-
+    print('address new = ${addressController.address.name}');
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -194,7 +196,7 @@ class ClientHomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20.0),
-            _ListProducts(),
+            _ListProducts(addressId: addressController.address.id),
             const SizedBox(height: 20.0),
           ],
         ),
@@ -205,12 +207,15 @@ class ClientHomeScreen extends StatelessWidget {
 }
 
 class _ListProducts extends StatelessWidget {
+  final String addressId;
+  const _ListProducts({required this.addressId});
+
   @override
   Widget build(BuildContext context) {
    // print('product list called');
 
     return StreamBuilder<List<Product>>(
-      stream: Products().productsList,
+      stream: Products(addressId: addressId).productsList,
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
         final List<Product>? listProduct = snapshot.data;
         //print(listProduct);
@@ -251,7 +256,7 @@ class _ListProducts extends StatelessWidget {
                         Container(
                           child: Hero(
                               tag: listProduct[i].id,
-                           //  child: Image.network(listProduct[i].picture,
+                              //  child: Image.network(listProduct[i].picture,
                               child: Image.asset('assets/phone/iphone.png',
                                   height: 150)),
                         ),
