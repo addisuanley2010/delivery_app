@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/models/user.dart';
 import 'package:delivery/ui/admin/orders_admin/order_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../helpers/frave_indicator.dart';
 import '../helpers/pay_type.dart';
@@ -20,6 +22,7 @@ class OrdersAdminScreen extends StatefulWidget {
 class _ListDeliverysScreenState extends State<OrdersAdminScreen> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: DefaultTabController(
@@ -83,6 +86,8 @@ class _ListDelivery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+            final user = Provider.of<Users>(context);
+
     return Container(
       color: Colors.white,
       padding: const EdgeInsets.all(16.0),
@@ -90,6 +95,7 @@ class _ListDelivery extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection('orders')
             .where('status', isEqualTo: tabName)
+            .where('shopId',isEqualTo:user.uid)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
