@@ -126,7 +126,8 @@ class DatabaseService {
     var orderId = await ordersCollection.add({
       'clientId': uid,
       'deliveryId': '',
-      'addressId': '',
+     // 'addressId': car,
+      'shopId': cart[0].shopId,
       'totalCost': totalAmount,
       'status': 'PAID OUT',
       'createdAt': FieldValue.serverTimestamp(),
@@ -261,7 +262,7 @@ class Products {
 
 // get catagoty stream
   Stream<List<Product>> get productsList {
-   // print('get product with address provider called ');
+    // print('get product with address provider called ');
     print('current address= ${addressId}');
     //print('stream called');
     return productsCollection
