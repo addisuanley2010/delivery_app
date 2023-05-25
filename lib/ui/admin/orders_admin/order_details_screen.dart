@@ -177,11 +177,12 @@ class OrderDetailsScreen extends StatelessWidget {
                         text: 'SELECT DELIVERY',
                         fontWeight: FontWeight.w500,
                         onPressed: () {
+                          print("hello men $orderId");
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return Dialog(
-                                child: ListDeliveryModal(),
+                                child: ListDeliveryModal(orderId: orderId),
                               );
                             },
                           );
