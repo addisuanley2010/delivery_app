@@ -41,9 +41,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Delivery App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Roboto'),
       home: Container(
           decoration: const BoxDecoration(
               image:

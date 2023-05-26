@@ -3,24 +3,26 @@ import 'package:flutter/material.dart';
 class Address {
   final String id;
   final String name;
-  final String lat;
-  final String long;
+  final double lat;
+  final double long;
+  final double distance;
 
   Address({
     required this.id,
     required this.name,
     required this.lat,
     required this.long,
+    required this.distance,
   });
 }
 
 class AddressController with ChangeNotifier {
-  Address _address = Address(id: '', name: '', lat: '', long: '');
+  Address _address = Address(id: '', name: '', lat: 0, long: 0, distance: 0);
 
   Address get address => _address;
 
   void clear() {
-    _address = Address(id: '', name: '', lat: '', long: '');
+    _address = Address(id: '', name: '', lat: 0, long: 0, distance: 0);
     notifyListeners();
   }
 
@@ -37,8 +39,8 @@ class AddressController with ChangeNotifier {
   void setAddress(
     String id,
     String name,
-    String lat,
-    String long,
+    double lat,
+    double long,
   ) {
     // print('set address is called');
 
@@ -47,6 +49,7 @@ class AddressController with ChangeNotifier {
       name: name,
       lat: lat,
       long: long,
+      distance: 0,
     );
   }
 

@@ -3,12 +3,13 @@ import 'package:delivery/models/location_model.dart';
 import 'package:delivery/pages/login.dart';
 import 'package:delivery/screens/wrapper.dart';
 import 'package:delivery/services/locationService.dart';
+import 'package:delivery/ui/client/component/btn_frave.dart';
+import 'package:delivery/ui/client/component/form_field_frave.dart';
 import 'package:delivery/ui/client/component/modal_picture.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
-import 'package:delivery/models/user.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -28,9 +29,13 @@ class _RegisterState extends State<Register> {
   String imageUrl = '';
   File? _imageFile;
   bool _isLoading = false;
-  /////////////////////////////////////////////////////////////////////
+
   // text field state
-  late String name, email, phone, address, password, confirmpassword;
+  String email = '';
+  String password = '';
+  String errorMessage = '';
+  bool showPassword = true;
+  late String name, phone, address, confirmpassword;
   String pictureProfilePath = '';
 
   final AuthService _auth = AuthService();
@@ -115,6 +120,7 @@ class _RegisterState extends State<Register> {
           child: Form(
             key: _formkey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
                 Align(alignment: Alignment.center, child: pickImage()),
@@ -123,275 +129,207 @@ class _RegisterState extends State<Register> {
                   const Center(
                     child: CircularProgressIndicator(),
                   ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: const ShapeDecoration(
-                    color: AppColors.placeholderBg,
-                    shape: StadiumBorder(),
+                //form fields
+                const TextCustom(text: 'Full Name'),
+                const SizedBox(height: 5.0),
+                FormFieldFrave(
+                  controller: _nameController,
+                  hintText: 'your full name',
+                  prefixIcon: const Icon(Icons.person),
+                  keyboardType: TextInputType.name,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Please Enter your Name';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                const TextCustom(text: 'Address'),
+                const SizedBox(height: 5.0),
+                FormFieldFrave(
+                  controller: _addressController,
+                  hintText: 'enter address',
+                  prefixIcon: const Icon(
+                    Icons.location_on,
+                    color: Colors.grey,
                   ),
-                  child: TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.person),
-                      hintText: 'full name Name',
-                      hintStyle: TextStyle(
-                        color: AppColors.placeholder,
-                      ),
-                      contentPadding: EdgeInsets.only(left: 40),
-                    ),
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Please Enter Name';
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Please Enter address';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                const TextCustom(text: 'Email'),
+                const SizedBox(height: 5.0),
+                FormFieldFrave(
+                  controller: _emailController,
+                  hintText: 'email@bdu.com',
+                  prefixIcon: const Icon(Icons.email),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    } else {
+                      final emailRegex =
+                          RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                      if (!emailRegex.hasMatch(value)) {
+                        return 'Please enter a valid email';
                       }
-                      return null;
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                const TextCustom(text: 'phone'),
+                const SizedBox(height: 5.0),
+                FormFieldFrave(
+                  controller: _phoneController,
+                  hintText: '0930....',
+                  prefixIcon: const Icon(Icons.phone),
+                  keyboardType: TextInputType.phone,
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Please a Enter phone';
+                    }
+                    if (value.length != 10) {
+                      return 'Please a Enter correct length';
+                    }
+                    if (!RegExp("^0[0-9]").hasMatch(value)) {
+                      return 'Please a valid  phone';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                const TextCustom(text: 'Password'),
+                const SizedBox(height: 5.0),
+                FormFieldFrave(
+                  controller: _passwordController,
+                  hintText: '********',
+                  isPassword: showPassword,
+                  prefixIcon: const Icon(Icons.lock),
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter password';
+                    }
+                    if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
                     },
-                    onChanged: (val) {
-                      setState(() => name = val);
-                    },
+                    icon: Icon(
+                      showPassword ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: const ShapeDecoration(
-                    color: AppColors.placeholderBg,
-                    shape: StadiumBorder(),
-                  ),
-                  child: TextFormField(
-                    controller: _addressController,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.person),
-                      hintText: 'address',
-                      hintStyle: TextStyle(
-                        color: AppColors.placeholder,
-                      ),
-                      contentPadding: EdgeInsets.only(left: 40),
-                    ),
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Please Enter address';
-                      }
-                      return null;
-                    },
-                    onChanged: (val) {
-                      setState(() => address = val);
-                    },
-                  ),
-                ),
-                
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: const ShapeDecoration(
-                    color: AppColors.placeholderBg,
-                    shape: StadiumBorder(),
-                  ),
-                  child: TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'email',
-                      prefixIcon: Icon(Icons.email),
-                      hintStyle: TextStyle(
-                        color: AppColors.placeholder,
-                      ),
-                      contentPadding: EdgeInsets.only(left: 40),
-                    ),
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Please a Enter';
-                      }
-                      if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                          .hasMatch(value)) {
-                        return 'Please a valid Email';
-                      }
-                      return null;
-                    },
-                    onChanged: (val) {
-                      setState(() => email = val);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: const ShapeDecoration(
-                    color: AppColors.placeholderBg,
-                    shape: StadiumBorder(),
-                  ),
-                  child: TextFormField(
-                    controller: _phoneController,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'phone number ',
-                      prefixIcon: Icon(Icons.phone),
-                      hintStyle: TextStyle(
-                        color: AppColors.placeholder,
-                      ),
-                      contentPadding: EdgeInsets.only(left: 40),
-                    ),
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Please a Enter';
-                      }
-                      if (value.length != 10) {
-                        return 'Please a Enter correct length';
-                      }
-                      if (!RegExp("^0[0-9]").hasMatch(value)) {
-                        return 'Please a valid Email';
-                      }
-                      return null;
-                    },
-                    onChanged: (val) {
-                      setState(() => phone = val);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  decoration: const ShapeDecoration(
-                    color: AppColors.placeholderBg,
-                    shape: StadiumBorder(),
-                  ),
-                  child: TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.lock),
-                      hintText: 'password',
-                      hintStyle: TextStyle(
-                        color: AppColors.placeholder,
-                      ),
-                      contentPadding: EdgeInsets.only(left: 40),
-                    ),
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Please a Enter';
-                      }
-                      if (value.length < 6) {
-                        return 'Please a Enter correct length';
-                      }
+                const SizedBox(height: 20.0),
+                const TextCustom(text: 'Confirm Password'),
+                const SizedBox(height: 5.0),
+                FormFieldFrave(
+                  controller: _confirmpasswordController,
+                  hintText: 'confirm your password',
+                  isPassword: showPassword,
+                  prefixIcon: const Icon(Icons.lock),
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Please re-enter password';
+                    }
 
-                      return null;
+                    if (password != confirmpassword) {
+                      return "Password does not match";
+                    }
+
+                    return null;
+                  },
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
                     },
-                    onChanged: (val) {
-                      setState(() => password = val);
-                    },
+                    icon: Icon(
+                      showPassword ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
+                BtnFrave(
+                  text: 'sign up',
+                  fontSize: 21,
                   height: 50,
-                  decoration: const ShapeDecoration(
-                    color: AppColors.placeholderBg,
-                    shape: StadiumBorder(),
-                  ),
-                  child: TextFormField(
-                    controller: _confirmpasswordController,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.lock),
-                      hintText: 'confirm password',
-                      hintStyle: TextStyle(
-                        color: AppColors.placeholder,
-                      ),
-                      contentPadding: EdgeInsets.only(left: 40),
-                    ),
-                    validator: (String? value) {
-                      if (value!.isEmpty) {
-                        return 'Please re-enter password';
+                  fontWeight: FontWeight.w500,
+                  onPressed: () async {
+                    if (_formkey.currentState!.validate()) {
+                      if (_imageFile == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Please select an image')));
+                        return;
                       }
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      try {
+                        Reference referenceRoot =
+                            FirebaseStorage.instance.ref();
+                        Reference referenceDirImages =
+                            referenceRoot.child('profile');
+                        String uniqueFileName =
+                            DateTime.now().millisecondsSinceEpoch.toString();
+                        Reference referenceImageToUpload =
+                            referenceDirImages.child(uniqueFileName);
+                        await referenceImageToUpload.putFile(_imageFile!);
 
-                      if (password != confirmpassword) {
-                        return "Password does not match";
+                        imageUrl =
+                            await referenceImageToUpload.getDownloadURL();
+
+                        dynamic result =
+                            await _auth.registerWithEmailAndPassword(
+                                _nameController.text,
+                                _emailController.text,
+                                _phoneController.text,
+                                _passwordController.text,
+                                _addressController.text,
+                                imageUrl);
+                        if (result == null) {
+                          //         print('null');
+                        } else {
+                          Navigator.pop(context);
+                        }
+
+                        setState(() {
+                          _isLoading = false;
+                        });
+
+                        // ignore: use_build_context_synchronously
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Registerd successfully!')));
+                        // ignore: use_build_context_synchronously
+                        // Navigator.pop(context);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Wrapper()),
+                        );
+                      } catch (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error: $error')));
                       }
-
-                      return null;
-                    },
-                    onChanged: (val) {
-                      setState(() => confirmpassword = val);
-                    },
-                  ),
+                    }
+                  },
                 ),
-                const SizedBox(height: 20),
-                Container(
-                    height: 50,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formkey.currentState!.validate()) {
-                            if (_imageFile == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Please select an image')));
-                              return;
-                            }
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            try {
-                              Reference referenceRoot =
-                                  FirebaseStorage.instance.ref();
-                              Reference referenceDirImages =
-                                  referenceRoot.child('profile');
-                              String uniqueFileName = DateTime.now()
-                                  .millisecondsSinceEpoch
-                                  .toString();
-                              Reference referenceImageToUpload =
-                                  referenceDirImages.child(uniqueFileName);
-                              await referenceImageToUpload.putFile(_imageFile!);
-
-                              imageUrl =
-                                  await referenceImageToUpload.getDownloadURL();
-
-                              dynamic result =
-                                  await _auth.registerWithEmailAndPassword(
-                                      name,
-                                      email,
-                                      phone,
-                                      password,
-                                      address,
-                                      imageUrl);
-                              if (result == null) {
-                                //         print('null');
-                              } else {
-                                Navigator.pop(context);
-                              }
-
-                              setState(() {
-                                _isLoading = false;
-                              });
-
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content:
-                                          Text('Registerd successfully!')));
-                              // ignore: use_build_context_synchronously
-                              // Navigator.pop(context);
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Wrapper()),
-                              );
-                            } catch (error) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Error: $error')));
-                            }
-                          }
-                        },
-                        child: const TextCustom(
-                            text: ' Sign Up ',
-                            color: ColorsFrave.primaryColor))),
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,

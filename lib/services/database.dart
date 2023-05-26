@@ -1,5 +1,4 @@
-// import 'dart:js';
-
+import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/customers.dart';
 import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
@@ -12,7 +11,6 @@ class DatabaseService {
   DatabaseService({required this.uid});
 
   // collection reference
-
   final CollectionReference customersCollection =
       FirebaseFirestore.instance.collection('customers');
   final CollectionReference ordersCollection =

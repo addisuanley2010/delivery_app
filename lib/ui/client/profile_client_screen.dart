@@ -119,8 +119,16 @@ class ProfileClientScreen extends StatelessWidget {
                         onPressed: () => Navigator.push(context,
                             routeFrave(page: const ChangePasswordScreen())),
                       ),
-                      ItemAccount(
+                      const ItemAccount(
                         text: 'Add addresses',
+                        icon: Icons.my_location_rounded,
+                        colorIcon: 0xffFB5019,
+                        // onPressed: () => Navigator.push(
+                        //     context, routeFrave(page: SelectShopScreen())
+                        //     ),
+                      ),
+                      ItemAccount(
+                        text: 'select addresss',
                         icon: Icons.my_location_rounded,
                         colorIcon: 0xffFB5019,
                         onPressed: () => Navigator.push(
