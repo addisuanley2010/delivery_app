@@ -39,9 +39,10 @@ class Wrapper extends StatelessWidget {
                   return const DeliveryHome();
                 }
               } else if (snapshot.hasError) {
-                // Error retrieving data
-                return const Scaffold(
-                    backgroundColor: Colors.white54, body: Text('loading...'));
+                // return const Scaffold(
+                //     backgroundColor: Colors.white54, body: Text('loading...'));
+                                  return const Home();
+
               } else {
                 // Data is not yet available
                 return const Center(

@@ -24,6 +24,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
   late TextEditingController _priceController;
+  late TextEditingController _amountController;
 
   final _keyForm = GlobalKey<FormState>();
 
@@ -39,6 +40,7 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
     _nameController = TextEditingController();
     _descriptionController = TextEditingController();
     _priceController = TextEditingController();
+    _amountController = TextEditingController();
   }
 
   @override
@@ -49,6 +51,8 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
     _descriptionController.dispose();
     _priceController.clear();
     _priceController.dispose();
+    _amountController.clear();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -95,11 +99,13 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
                   DatabaseService databaseService =
                       DatabaseService(uid: user.uid);
                   double doubleValue = double.parse(_priceController.text);
+                  int intAmount = int.parse(_amountController.text);
 
                   await databaseService.addProduct(
                       _nameController.text,
                       _descriptionController.text,
                       doubleValue,
+                      intAmount,
                       _selectedCategory ?? '',
                       imageUrl);
 
@@ -150,7 +156,16 @@ class _AddNewProductScreenState extends State<AddNewProductScreen> {
             const SizedBox(height: 5.0),
             FormFieldFrave(
               controller: _priceController,
-              hintText: '\$ 0.00',
+              hintText: ' 0.00 birr',
+              keyboardType: TextInputType.number,
+              // validator: RequiredValidator(errorText: 'Price is required'),
+            ),
+            const SizedBox(height: 20.0),
+            const TextCustom(text: 'Amount'),
+            const SizedBox(height: 5.0),
+            FormFieldFrave(
+              controller: _amountController,
+              hintText: '10',
               keyboardType: TextInputType.number,
               // validator: RequiredValidator(errorText: 'Price is required'),
             ),
