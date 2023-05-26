@@ -5,8 +5,6 @@ import 'package:delivery/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/models/cartModel.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:provider/provider.dart';
 
 class DatabaseService {
   final String uid;
@@ -31,6 +29,7 @@ class DatabaseService {
     String name,
     String description,
     double price,
+    int intAmount,
     String category,
     String url,
   ) async {
@@ -39,6 +38,7 @@ class DatabaseService {
       'name': name,
       'description': description,
       'price': price,
+      'amount': intAmount,
       'shopId': uid,
       'catagory': category,
       'imageURL': url,
@@ -92,6 +92,35 @@ class DatabaseService {
       'address': address,
       // 'imageUrl':image,
       // 'role':role,
+    });
+  }
+
+  Future updateProductData(
+    String productID,
+    String name,
+    String description,
+    double price,
+    String amount,
+    // String image,
+    // String role,
+  ) async {
+    return await productCollection.doc(productID).update({
+      'name': name,
+      'description': description,
+      'price': price,
+      'amount': amount,
+      // 'imageUrl':image,
+      // 'role':role,
+    });
+  }
+
+  Future updateProductStatus(
+    String productId,
+    String status,
+  ) async {
+    return await productCollection.doc(productId).update({
+      'status':status,
+
     });
   }
 

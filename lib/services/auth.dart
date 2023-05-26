@@ -29,7 +29,7 @@ class AuthService {
       User? user = result.user;
       return user;
     } catch (error) {
-      // print(error.toString());
+       print('my error is {$error.toString()}');
       return null;
     }
   }

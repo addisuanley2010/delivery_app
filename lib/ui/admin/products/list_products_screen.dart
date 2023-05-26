@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/ui/admin/products/add_new_product_screen.dart';
+import 'package:delivery/ui/admin/products/detail_products.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
@@ -87,7 +88,22 @@ class _GridViewListProduct extends StatelessWidget {
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 10),
                     itemBuilder: (context, i) => InkWell(
-                      // onTap: () => modalActiveOrInactiveProduct(context, listProducts[i].status, listProducts[i].nameProduct, listProducts[i].id, listProducts[i].picture),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>  ProductDetails(
+                              productName: documents[i].get('name'),
+                              productDescription: documents[i].get('description'),
+                              productPrice:  documents[i].get('price'),
+                              imageURL:documents[i].get('imageURL'),
+                              amount:documents[i].get('amount'),
+                              status:documents[i].get('status'),
+                              productId:documents[i].id,
+                            ),
+                          ),
+                        );
+                      },
                       // onLongPress: () => modalDeleteProduct(context, listProducts[i].nameProduct, listProducts[i].picture, listProducts[i].id.toString()),
                       child: Row(
                         children: [
@@ -110,8 +126,20 @@ class _GridViewListProduct extends StatelessWidget {
                                 color: Colors.grey[50],
                                 // color: ( documents[i].status == 1 ) ? Colors.grey[50] : Colors.red[100]
                               ),
-                              child: TextCustom(
-                                  text: documents[i].get('name'), fontSize: 16),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  TextCustom(
+                                      text: documents[i].get('name'),
+                                      fontSize: 16),
+                                  TextCustom(
+                                      text: (documents[i].get('amount') != '')
+                                          ? 'amount : ${documents[i].get('amount').toString()}'
+                                          : '',
+                                      fontSize: 16),
+                                ],
+                              ),
                             ),
                           ),
                         ],

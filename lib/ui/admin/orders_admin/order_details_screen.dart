@@ -30,7 +30,6 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('detail called');
     final String a = status;
 
     return Scaffold(
