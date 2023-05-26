@@ -1,7 +1,9 @@
+import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/products/product_update.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ProductDetails extends StatelessWidget {
+class ProductDetails extends StatefulWidget {
   final String productName;
   final String productDescription;
   final double productPrice;
@@ -19,10 +21,33 @@ class ProductDetails extends StatelessWidget {
     required this.status,
     required this.productId,
   }) : super(key: key);
-  double? deviceHeight, deviceWidth; //have no use now
 
   @override
+  State<ProductDetails> createState() => _ProductDetailsState();
+}
+
+class _ProductDetailsState extends State<ProductDetails> {
+  double? deviceHeight, deviceWidth;
+  bool isDeleting = false;
+  //have no use now
+  @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    void _showSnackbar(String message) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: const Color.fromARGB(255, 181, 74, 110),
+          content: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 15,
+            ),
+          ),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+
     deviceHeight = MediaQuery.of(context).size.height * 0.4;
     deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -44,7 +69,7 @@ class ProductDetails extends StatelessWidget {
                   width: deviceWidth,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(imageURL),
+                      image: NetworkImage(widget.imageURL),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -66,7 +91,7 @@ class ProductDetails extends StatelessWidget {
                           ),
                           const SizedBox(width: 16.0),
                           Text(
-                            productName,
+                            widget.productName,
                             style: const TextStyle(
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
@@ -77,7 +102,7 @@ class ProductDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 16.0),
                       Text(
-                        'Price: $productPrice birr',
+                        'Price: ${widget.productPrice} birr',
                         style: const TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -86,7 +111,7 @@ class ProductDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 16.0),
                       Text(
-                        'Amount: $amount',
+                        'Amount: ${widget.amount}',
                         style: const TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -95,7 +120,7 @@ class ProductDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 16.0),
                       Text(
-                        'Status: $status',
+                        'Status: ${widget.status}',
                         style: const TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -115,7 +140,7 @@ class ProductDetails extends StatelessWidget {
                           ),
                           const SizedBox(width: 8.0),
                           Text(
-                            productDescription,
+                            widget.productDescription,
                             style: const TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
@@ -126,7 +151,7 @@ class ProductDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 8.0),
                       Text(
-                        productDescription,
+                        widget.productDescription,
                         style: const TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
@@ -155,27 +180,149 @@ class ProductDetails extends StatelessWidget {
                             onPressed: () {
                               Navigator.pushReplacement(
                                 context,
-                                MaterialPageRoute(builder: (context) => ProductUpdate(productId:productId)),
+                                MaterialPageRoute(
+                                    builder: (context) => ProductUpdate(
+                                        productId: widget.productId)),
                               );
                             },
                             icon: const Icon(Icons.update),
                             label: const Text('Update'),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.orange,
+                              backgroundColor: Colors.orange,
                               textStyle: const TextStyle(fontSize: 16),
                             ),
                           ),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              // Handle delete action
-                            },
-                            icon: const Icon(Icons.delete),
-                            label: const Text('Delete'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              textStyle: const TextStyle(fontSize: 16),
-                            ),
-                          ),
+                          widget.status == 'not sold'
+                              ? ElevatedButton.icon(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Confirm Deletion"),
+                                          content: const Text(
+                                              "Are you sure you want to delete?"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                              child: const Text("CANCEL"),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () async {
+                                                setState(() {
+                                                  isDeleting = true;
+                                                });
+
+                                                isDeleting
+                                                    ? CircularProgressIndicator()
+                                                    : "";
+
+                                                // Perform the deletion logic
+                                                await DatabaseService(
+                                                        uid: currentUser!.uid)
+                                                    .updateProductStatus(
+                                                        widget.productId,
+                                                        'sold');
+
+                                                setState(() {
+                                                  isDeleting = false;
+                                                });
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+
+                                                _showSnackbar(
+                                                    " status changed to sold");
+                                              },
+                                              child: const Text(
+                                                "DELETE",
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                  label: const Text('Delete'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    textStyle: const TextStyle(fontSize: 16),
+                                  ),
+                                )
+                              : ElevatedButton.icon(
+                                  onPressed: () async {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Confirm Deletion"),
+                                          content: const Text(
+                                              "Are you sure you want to delete?"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                              child: const Text("CANCEL"),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () async {
+                                                // Show the circular progress indicator
+
+                                                setState(() {
+                                                  isDeleting = true;
+                                                });
+
+                                                isDeleting
+                                                    ? CircularProgressIndicator
+                                                    : "";
+
+                                                // Perform the deletion logic
+                                                await DatabaseService(
+                                                        uid: currentUser!.uid)
+                                                    .updateProductStatus(
+                                                        widget.productId,
+                                                        'not sold');
+
+                                                // Stop the// circular progress indicator
+                                                Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
+
+                                                _showSnackbar(
+                                                    " status changed to not sold");
+
+                                                setState(() {
+                                                  isDeleting = false;
+                                                });
+                                              },
+                                              child: const Text(
+                                                "RESTORE",
+                                                style: TextStyle(
+                                                    color: Colors.red),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                  label: const Text('Restore'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    textStyle: const TextStyle(fontSize: 16),
+                                  ),
+                                )
                         ],
                       ),
                     ],

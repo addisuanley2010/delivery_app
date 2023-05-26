@@ -2,7 +2,6 @@ import 'dart:io';
 // ignore: depend_on_referenced_packages
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
@@ -35,8 +34,8 @@ class _ProductUpdateState extends State<ProductUpdate> {
   String imageUrl = '';
   File? _imageFile;
   bool _isLoading = false;
-  String? _selectedCategory;
-  String? _selectedName;
+  // String? _selectedCategory;
+  // String? _selectedName;
 
   @override
   void initState() {
@@ -101,7 +100,7 @@ class _ProductUpdateState extends State<ProductUpdate> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Users>(context);
+    // final user = Provider.of<Users>(context);
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -255,9 +254,9 @@ class _ProductUpdateState extends State<ProductUpdate> {
                                       }
                                     }
                                   },
-                            child: _isLoading
-                                ? const CircularProgressIndicator()
-                                : const TextCustom(
+                            child:
+                             
+                                 const TextCustom(
                                     text: 'Update Product',
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

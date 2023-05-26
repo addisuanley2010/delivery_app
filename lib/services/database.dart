@@ -40,7 +40,7 @@ class DatabaseService {
       'name': name,
       'description': description,
       'price': price,
-      'amount':intAmount,
+      'amount': intAmount,
       'shopId': uid,
       'catagory': category,
       'imageURL': url,
@@ -97,8 +97,6 @@ class DatabaseService {
     });
   }
 
-
-
   Future updateProductData(
     String productID,
     String name,
@@ -118,7 +116,15 @@ class DatabaseService {
     });
   }
 
+  Future updateProductStatus(
+    String productId,
+    String status,
+  ) async {
+    return await productCollection.doc(productId).update({
+      'status':status,
 
+    });
+  }
 
   //to register new delivery person
   Future addNewDelivery(
@@ -148,7 +154,7 @@ class DatabaseService {
     var orderId = await ordersCollection.add({
       'clientId': uid,
       'deliveryId': '',
-     // 'addressId': car,
+      // 'addressId': car,
       'shopId': cart[0].shopId,
       'totalCost': totalAmount,
       'status': 'PAID OUT',
