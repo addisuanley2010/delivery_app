@@ -98,22 +98,22 @@ class AdminHome extends StatelessWidget {
                           ),
                         );
                       }),
-                  ItemAccount(
-                      text: 'Change Role',
-                      icon: Icons.swap_horiz_rounded,
-                      colorIcon: 0xffE62755,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const SelectRoleScreen(),
-                          ),
-                        );
-                      }),
-                  const ItemAccount(
-                    text: 'Dark mode',
-                    icon: Icons.dark_mode_rounded,
-                    colorIcon: 0xff051E2F,
-                  ),
+                  // ItemAccount(
+                  //     text: 'Change Role',
+                  //     icon: Icons.swap_horiz_rounded,
+                  //     colorIcon: 0xffE62755,
+                  //     onPressed: () {
+                  //       Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const SelectRoleScreen(),
+                  //         ),
+                  //       );
+                  //     }),
+                  // const ItemAccount(
+                  //   text: 'Dark mode',
+                  //   icon: Icons.dark_mode_rounded,
+                  //   colorIcon: 0xff051E2F,
+                  // ),
                   const SizedBox(height: 15.0),
                   const TextCustom(text: 'shop', color: Colors.grey),
                   const SizedBox(height: 10.0),
