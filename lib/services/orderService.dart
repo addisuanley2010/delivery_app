@@ -13,33 +13,41 @@ class OrderService {
       FirebaseFirestore.instance.collection('orderDetail');
 
   // get order response for single user/client stream
-  Stream<List<Orders>> get getOrdersByClientId {
+  Stream<List<Orders>?> get getOrdersByClientId {
     print('get order called');
     print(uid);
+    print(getOrdersCollection
+        .where('clientId', isEqualTo: uid)
+        .snapshots()
+        .toSet());
     return getOrdersCollection
         .where('clientId', isEqualTo: uid)
         .snapshots()
         .map(_getOrdersListFromSnapshot);
   }
 
-  //change to order object
-  List<Orders> _getOrdersListFromSnapshot(QuerySnapshot snapshot) {
-    print(snapshot.docs[0].data());
-
-    return snapshot.docs.map((doc) {
-      DateTime createdAt = (doc['createdAt'] as Timestamp)
-          .toDate(); // Convert Firestore Timestamp to DateTime
-
-      return Orders(
-        orderId: doc.id,
-        clientId: doc['clientId'] ?? '',
-        deliveryId: doc['deliveryId'] ?? '',
-        addressId: doc['addressId'] ?? '',
-        totalCost: doc['totalCost'] ?? 0,
-        createdAt: createdAt,
-        status: doc['status'] ?? '',
-      );
-    }).toList();
+  List<Orders>? _getOrdersListFromSnapshot(QuerySnapshot snapshot) {
+    //print('change to object called');
+    // print(snapshot.docs[1].data());
+    try {
+      return snapshot.docs.map((doc) {
+        DateTime createdAt = (doc['createdAt'] as Timestamp)
+            .toDate(); // Convert Firestore Timestamp to DateTime
+        print(createdAt);
+        return Orders(
+          orderId: doc.id,
+          clientId: doc['clientId'] ?? '',
+          deliveryId: doc['deliveryId'] ?? '',
+          addressId: doc['addressId'] ?? '',
+          totalCost: doc['totalCost'] ?? 0,
+          createdAt: createdAt,
+          status: doc['status'] ?? '',
+        );
+      }).toList();
+    } catch (e) {
+      print('Error mapping orders: $e');
+      return null; // or throw the error again if you want to handle it in another part of your code
+    }
   }
 
 ///////////////////////the below code is for order detail needed for future

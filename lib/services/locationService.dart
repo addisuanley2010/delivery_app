@@ -1,10 +1,11 @@
+import 'dart:math';
+
 import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/location_model.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/orderDetailModel.dart';
-import 'package:delivery/models/orderModel.dart';
 
 class ListShopesService {
   final String uid;
@@ -16,24 +17,70 @@ class ListShopesService {
       FirebaseFirestore.instance.collection('orderDetail');
 
   // get address list
-  Stream<List<Address>> get getAddress {
+  Stream<List<Address>?> get getAddress {
     print('get address called');
     print(uid);
-    return getAddressCollection.snapshots().map(_getAddressListFromSnapshot);
+
+    const currentLat = 52.132633;
+    const currentLon = 5.291266;
+
+    final addressList = getAddressCollection.snapshots().map((snapshot) {
+      return _getAddressListFromSnapshot(snapshot, currentLat, currentLon)!
+        ..sort((a, b) => a.distance.compareTo(b.distance));
+    });
+
+    return addressList;
   }
 
-  //change to Adress object
-  List<Address> _getAddressListFromSnapshot(QuerySnapshot snapshot) {
-    print(snapshot.docs[0].data());
+  List<Address>? _getAddressListFromSnapshot(
+      QuerySnapshot snapshot, double currentLat, double currentLon) {
+    print('change to object called');
+    try {
+      return snapshot.docs.map((doc) {
+        final addressLat = doc['latitude'] ?? 0.0;
+        final addressLon = doc['longitude'] ?? 0.0;
 
-    return snapshot.docs.map((doc) {
-      return Address(
-        id: doc.id,
-        name: doc['name'] ?? '',
-        lat: doc['latitude'] ?? '',
-        long: doc['longitude'] ?? '',
-      );
-    }).toList();
+        //const distanceString = 0.0; // Assume distance is stored as a String
+        // const distance = distanceString??
+        //     0.0; // Convert distance to double
+
+        final calculatedDistance = distanceBetween(currentLat, currentLon,
+            addressLat, addressLon); // Calculate the distance
+
+        return Address(
+          id: doc.id,
+          name: doc['name'] ?? '',
+          lat: addressLat.toDouble(),
+          long: addressLon.toDouble(),
+          distance:
+              calculatedDistance, // Assign the calculated distance as a property
+        );
+      }).toList();
+    } catch (e) {
+      print('Error mapping orders: $e');
+      return null; // or throw the error again if you want to handle it in another part of your code
+    }
+  }
+
+  double distanceBetween(double lat1, double lon1, double lat2, double lon2) {
+    print('distance between called');
+    const earthRadiusKm = 6371;
+
+    final dLat = _degreesToRadians(lat2 - lat1);
+    final dLon = _degreesToRadians(lon2 - lon1);
+
+    final lat1Radians = _degreesToRadians(lat1);
+    final lat2Radians = _degreesToRadians(lat2);
+
+    final a = pow(sin(dLat / 2), 2) +
+        pow(sin(dLon / 2), 2) * cos(lat1Radians) * cos(lat2Radians);
+    final c = 2 * atan2(sqrt(a), sqrt(1 - a));
+    print((earthRadiusKm * c).toStringAsFixed(2));
+    return earthRadiusKm * c;
+  }
+
+  double _degreesToRadians(double degrees) {
+    return degrees * pi / 180;
   }
 
 ///////////////////////the below code is for order detail needed for future

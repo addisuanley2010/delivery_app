@@ -37,7 +37,7 @@ class ClientOrdersScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: StreamBuilder<List<Orders>>(
+      body: StreamBuilder<List<Orders>?>(
           stream: OrderService(uid: user!.uid).getOrdersByClientId,
           builder: (context, snapshot) => (!snapshot.hasData)
               ? Column(
@@ -86,7 +86,8 @@ class _ListOrdersClient extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextCustom(
-                            text: 'ORDER # ${listOrders[i].orderId}',
+                           // text: 'ORDER # ${listOrders[i].orderId}',
+                            text: 'ORDER # ${i}',
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: ColorsFrave.primaryColor),

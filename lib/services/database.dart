@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/customers.dart';
 import 'package:delivery/models/product.dart';
@@ -15,7 +13,6 @@ class DatabaseService {
   DatabaseService({required this.uid});
 
   // collection reference
-
   final CollectionReference customersCollection =
       FirebaseFirestore.instance.collection('customers');
   final CollectionReference ordersCollection =
@@ -126,7 +123,7 @@ class DatabaseService {
     var orderId = await ordersCollection.add({
       'clientId': uid,
       'deliveryId': '',
-     // 'addressId': car,
+      // 'addressId': car,
       'shopId': cart[0].shopId,
       'totalCost': totalAmount,
       'status': 'PAID OUT',

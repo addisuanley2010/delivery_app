@@ -37,7 +37,7 @@ class BottomNavigationFrave extends StatelessWidget {
               iconData: Icons.search,
               text: 'Search',
               onPressed: () => Navigator.pushReplacement(
-                  context, routeFrave(page: const SearchClientScreen())),
+                  context, routeFrave(page: SearchClientScreen())),
             ),
             _ItemButton(
               i: 2,

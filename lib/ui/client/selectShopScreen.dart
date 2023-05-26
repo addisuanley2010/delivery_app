@@ -37,7 +37,7 @@ class SelectShopScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: StreamBuilder<List<Address>>(
+      body: StreamBuilder<List<Address>?>(
           stream: ListShopesService(uid: user!.uid).getAddress,
           builder: (context, snapshot) => (!snapshot.hasData)
               ? Column(
@@ -94,39 +94,39 @@ class _ListAddressesClient extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextCustom(
-                            text: 'address # ${listAdresses[i].id}',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: ColorsFrave.primaryColor),
-                        TextCustom(
-                            text: listAdresses[i].name,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: ColorsFrave.secundaryColor),
+                        const Text('የሱቅ ስም',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'NotoSansEthiopic')),
+                        Text(listAdresses[i].name,
+                            style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'NotoSansEthiopic')),
                       ],
                     ),
-                    const Divider(),
+                    const Divider(
+                      height: 3,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const TextCustom(
-                            text: 'Latitude',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
-                        TextCustom(
-                            text: ' ${listAdresses[i].lat}', fontSize: 16)
-                      ],
-                    ),
-                    const SizedBox(height: 10.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const TextCustom(
-                            text: 'Longitude',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
-                        TextCustom(text: listAdresses[i].long, fontSize: 15)
+                        const Text('ርቀት በ ኪ.ሜ',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: 'NotoSansEthiopic')),
+                        Text(
+                            '${listAdresses[i].distance.toStringAsFixed(2)} KM',
+                            style: const TextStyle(
+                                fontSize: 20,
+                                color: ColorsFrave.secundaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'NotoSansEthiopic')),
                       ],
                     ),
                   ],

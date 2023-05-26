@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 class FormFieldFrave extends StatelessWidget {
   final TextEditingController? controller;
   final String? hintText;
@@ -9,6 +10,7 @@ class FormFieldFrave extends StatelessWidget {
   final bool readOnly;
   final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
 
   const FormFieldFrave(
       {super.key,
@@ -19,7 +21,8 @@ class FormFieldFrave extends StatelessWidget {
       this.maxLine = 1,
       this.readOnly = false,
       this.validator,
-      this.suffixIcon});
+      this.suffixIcon,
+      this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +40,9 @@ class FormFieldFrave extends StatelessWidget {
           contentPadding: const EdgeInsets.only(left: 15.0),
           hintText: hintText,
           hintStyle: GoogleFonts.getFont('Roboto', color: Colors.grey),
-          suffixIcon: suffixIcon
-          ),
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon),
       validator: validator,
-      
     );
   }
 }

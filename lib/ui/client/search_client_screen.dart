@@ -1,5 +1,6 @@
 import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/product.dart';
+import 'package:delivery/models/user.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/components/components.dart';
 import 'package:delivery/ui/client/client_home.dart';
@@ -11,19 +12,36 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SearchClientScreen extends StatefulWidget {
-  const SearchClientScreen({super.key});
-
   @override
   _SearchClientScreenState createState() => _SearchClientScreenState();
 }
 
 class _SearchClientScreenState extends State<SearchClientScreen> {
   late TextEditingController _searchController;
+  late String address;
+  List<Product> filteredProducts = [];
+  List<Product> listProduct = [];
 
   @override
   void initState() {
-    _searchController = TextEditingController();
     super.initState();
+    _searchController = TextEditingController();
+    Future.delayed(Duration.zero, () {
+      final addressController =
+          Provider.of<AddressController>(context, listen: false);
+      address = addressController.address.id;
+      fetchProducts(); // Call the method to fetch and populate the products list
+    });
+  }
+
+  void fetchProducts() {
+    Products(addressId: address).productsList.listen((snapshot) {
+      if (snapshot != null) {
+        setState(() {
+          listProduct = snapshot;
+        });
+      }
+    });
   }
 
   @override
@@ -35,9 +53,11 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final productBloc = BlocProvider.of<ProductsBloc>(context);
-    const searchProduct = 0;
-
+    final user = Provider.of<Users?>(context);
+    //final cartController = Provider.of<CartController>(context);
+    //final addressController = Provider.of<AddressController>(context);
+    // address = addressController.address.id;
+    //Products(addressId: addressController.address.id).productsList,
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -66,9 +86,12 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
                       child: TextFormField(
                         controller: _searchController,
                         onChanged: (value) {
-                          // productBloc.add(OnSearchProductEvent(value));
-                          // if (value.length != 0)
-                          //   productServices.searchProductsForName(value);
+                          setState(() {
+                            filteredProducts = List<Product>.from(
+                                listProduct.where((product) => product.name
+                                    .toLowerCase()
+                                    .contains(value.toLowerCase())));
+                          });
                         },
                         decoration: InputDecoration(
                             border: InputBorder.none,
@@ -82,13 +105,10 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
                 ],
               ),
               const SizedBox(height: 20.0),
-              // BlocBuilder<ProductsBloc, ProductsState>(
-              //   builder: (_, state) =>
               Expanded(
-                  //child: (state.searchProduct.length != 0)
-                  child:
-                      (searchProduct != 0) ? listProducts() : _HistorySearch()),
-              // )
+                  child: (filteredProducts.isNotEmpty)
+                      ? listProducts()
+                      : _HistorySearch()),
             ],
           ),
         ),
@@ -96,11 +116,6 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
       bottomNavigationBar: const BottomNavigationFrave(1),
     );
   }
-
-  // return FutureBuilder<List<Product>>(
-  //     //future: ClientHomeScreen().products,
-  //     builder: (_, snapshot) {
-  //       final List<Product> listProduct = ClientHomeScreen().products;
 
   Widget listProducts() {
     final addressController = Provider.of<AddressController>(context);
@@ -122,15 +137,12 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
             );
           }
 
-          // final listProduct = snapshot.data!;
-
-          return _ListProductSearch(listProduct: listProduct!);
+          return _ListProductSearch(listProduct: filteredProducts);
         });
   }
 }
 
 class _ListProductSearch extends StatelessWidget {
-  //final List<Productsdb> listProduct;
   final List<Product> listProduct;
 
   const _ListProductSearch({required this.listProduct});
@@ -157,10 +169,11 @@ class _ListProductSearch extends StatelessWidget {
                     children: [
                       Container(
                         width: 90,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             image: DecorationImage(
                                 scale: 8,
-                                image: AssetImage(listProduct[i].picture))),
+                                // image: AssetImage(listProduct[i].picture)
+                                image: AssetImage('assets/phone/iphone.png'))),
                       ),
                       const SizedBox(width: 5.0),
                       Expanded(

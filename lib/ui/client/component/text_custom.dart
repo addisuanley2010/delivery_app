@@ -26,6 +26,7 @@ class TextCustom extends StatelessWidget {
         overflow: textOverflow,
         maxLines: maxLine,
         textAlign: textAlign,
+        
         style: GoogleFonts.getFont('Roboto',
             fontSize: fontSize, color: color, fontWeight: fontWeight));
   }
