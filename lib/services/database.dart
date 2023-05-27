@@ -167,6 +167,13 @@ class DatabaseService {
         //print(orderdetailId);
         print('order id : ${orderId}');
         // return orderdetailId;
+
+        productCollection.doc(cartItem.productId).update(
+            {'amount': FieldValue.increment(-cartItem.quantity)}).then((value) {
+          print('Product amount decreased successfully');
+        }).catchError((error) {
+          print('Failed to decrease product amount: $error');
+        });
       }
     }
   }
