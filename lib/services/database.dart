@@ -168,12 +168,33 @@ class DatabaseService {
         print('order id : ${orderId}');
         // return orderdetailId;
 
-        productCollection.doc(cartItem.productId).update(
+        await productCollection.doc(cartItem.productId).update(
             {'amount': FieldValue.increment(-cartItem.quantity)}).then((value) {
           print('Product amount decreased successfully');
         }).catchError((error) {
           print('Failed to decrease product amount: $error');
         });
+
+        final DocumentSnapshot productSnapshot =
+            await productCollection.doc(cartItem.productId).get();
+
+        final Map<String, dynamic>? productData =
+            productSnapshot.data() as Map<String, dynamic>?;
+        print('hello${productData}');
+        if (productData != null) {
+          if (productData['amount'] == 0) {
+            print('product amount is 0');
+            productCollection
+                .doc(cartItem.productId)
+                .update({'status': 'sold'}).then((value) {
+              print('status changed to sold successfully');
+            }).catchError((error) {
+              print('Failed to decrease product amount: $error');
+            });
+          } else {
+            print('product amount is not 0');
+          }
+        }
       }
     }
   }
