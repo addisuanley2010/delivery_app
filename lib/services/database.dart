@@ -296,6 +296,7 @@ class Products {
     print('current address= ${addressId}');
     //print('stream called');
     return productsCollection
+        .where('status', isEqualTo: 'not sold')
         .where('addressId', isEqualTo: addressId)
         .snapshots()
         .map(_productsListFromSnapshot);
