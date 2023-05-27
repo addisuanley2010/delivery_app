@@ -119,8 +119,7 @@ class DatabaseService {
     String status,
   ) async {
     return await productCollection.doc(productId).update({
-      'status':status,
-
+      'status': status,
     });
   }
 
@@ -174,8 +173,6 @@ class DatabaseService {
 
   //  orderDetailCollection  adding
   Future addOrderDetail(CartItem item, var orderId) async {
-    // return
-
     var orderDetailId = await orderDetailCollection.add({
       'orderId': orderId,
       'productId': item.productId,
@@ -328,5 +325,58 @@ class Products {
         .where('catagory', isEqualTo: catId)
         .snapshots()
         .map(_productsListByCatagoryFromSnapshot);
+  }
+}
+
+// check inventory
+class Inventory {
+  // final String productId;
+  // Inventory({required this.productId});
+
+  final CollectionReference productsCollection =
+      FirebaseFirestore.instance.collection('products');
+
+  Future<String?> checkInventoryFromCart(List<CartItem> items) async {
+    String available = '';
+
+    for (CartItem cartItem in items) {
+      final DocumentSnapshot productSnapshot =
+          await productsCollection.doc(cartItem.productId).get();
+
+      final Map<String, dynamic>? productData =
+          productSnapshot.data() as Map<String, dynamic>?;
+
+      if (productData != null) {
+        final int remainingQuantity = productData['amount'];
+
+        if (cartItem.quantity > remainingQuantity) {
+          available = cartItem.productId;
+          break;
+        }
+      }
+    }
+    return available;
+  }
+
+  ////  check quantity when  a user clicks increase quantity button
+  Future<String> checkInventoryFromIncreaseQuantity(
+      String productId, int quantity) async {
+    String isAvailable = 'true';
+
+    DocumentSnapshot productSnapshot = await FirebaseFirestore.instance
+        .collection('products')
+        .doc(productId)
+        .get();
+    final Map<String, dynamic>? productData =
+        productSnapshot.data() as Map<String, dynamic>?;
+
+    if (productData != null) {
+      final int remainingQuantity = productData['amount'];
+
+      if (quantity >= remainingQuantity) {
+        isAvailable = 'false';
+      }
+    }
+    return isAvailable;
   }
 }

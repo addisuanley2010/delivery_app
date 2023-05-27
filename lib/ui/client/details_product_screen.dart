@@ -269,24 +269,48 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                       highlightColor:
                                           Color.fromARGB(0, 184, 123, 123),
                                       icon: const Icon(Icons.add),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (widget.product.status ==
                                             'not sold') {
-                                          setState(() {
-                                            if (index >= 0) {
-                                              cartController.increaseQuantity(
-                                                  cartItem.productId);
+                                          // setState(()  {    // it may have some functionality i comment it unconditionaly
+                                          if (index >= 0) {
+                                            dynamic result =
+                                                await cartController
+                                                    .increaseQuantity(
+                                                        cartItem.productId);
+                                            print('${result}');
+                                            if (result == true) {
+                                              print('increase quantity called');
                                             } else {
-                                              cartController.addItem(
-                                                  cartItem.productId,
-                                                  cartItem.name,
-                                                  cartItem.price,
-                                                  cartItem.imageUrl,
-                                                  cartItem.shopId);
-                                              cartController.increaseQuantity(
-                                                  cartItem.productId);
+                                              // ignore: use_build_context_synchronously
+                                              modalSuccess(
+                                                  context,
+                                                  'can not add above this quantity',
+                                                  () => Navigator.pop(context));
                                             }
-                                          });
+                                          } else {
+                                            cartController.addItem(
+                                                cartItem.productId,
+                                                cartItem.name,
+                                                cartItem.price,
+                                                cartItem.imageUrl,
+                                                cartItem.shopId);
+                                            dynamic result =
+                                                await cartController
+                                                    .increaseQuantity(
+                                                        cartItem.productId);
+                                            print('${result}');
+                                            if (result == true) {
+                                              print('increase quantity called');
+                                            } else {
+                                              // ignore: use_build_context_synchronously
+                                              modalSuccess(
+                                                  context,
+                                                  'can not add above this quantity',
+                                                  () => Navigator.pop(context));
+                                            }
+                                          }
+                                          // });   //end of set state
                                         }
                                         //cartBloc.add(OnIncreaseProductQuantityEvent())
 
