@@ -3,6 +3,7 @@ import 'package:delivery/pages/home.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/admin_home.dart';
 import 'package:delivery/ui/client/client_home.dart';
+import 'package:delivery/ui/client/guestPage.dart';
 import 'package:delivery/ui/delivery/deliveryHome.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +21,10 @@ class Wrapper extends StatelessWidget {
     } else {
       //get role
       return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(image:AssetImage('assets/images/bg2.png'),
-        fit: BoxFit.cover),
-      ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/bg2.png'), fit: BoxFit.cover),
+        ),
         child: StreamBuilder<UserData>(
             stream: DatabaseService(uid: user.uid).userData,
             builder: (context, snapshot) {
@@ -35,18 +36,17 @@ class Wrapper extends StatelessWidget {
                   return AdminHome();
                 } else if (role == 'user') {
                   return ClientHomeScreen();
+                  //return GuestHomeScreen();
                 } else {
                   return const DeliveryHome();
                 }
               } else if (snapshot.hasError) {
                 // return const Scaffold(
                 //     backgroundColor: Colors.white54, body: Text('loading...'));
-                                  return const Home();
-
+                return const Home();
               } else {
                 // Data is not yet available
                 return const Center(
-                  
                   child: SizedBox(
                     width: 50,
                     height: 50,
