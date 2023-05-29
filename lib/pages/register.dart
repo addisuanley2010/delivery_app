@@ -245,7 +245,7 @@ class _RegisterState extends State<Register> {
                       return 'Please re-enter password';
                     }
 
-                    if (password != confirmpassword) {
+                    if (_passwordController.text != _confirmpasswordController.text) {
                       return "Password does not match";
                     }
 

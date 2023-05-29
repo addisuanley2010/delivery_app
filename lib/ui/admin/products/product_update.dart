@@ -78,7 +78,7 @@ class _ProductUpdateState extends State<ProductUpdate> {
           TextEditingController(text: productData['description']);
       _priceController =
           TextEditingController(text: productData['price'].toString());
-      _amountController = TextEditingController(text: productData['amount']);
+      _amountController = TextEditingController(text: productData['amount'].toString());
       _imageController = TextEditingController(text: productData['imageURL']);
     }
   }
@@ -232,6 +232,8 @@ class _ProductUpdateState extends State<ProductUpdate> {
                                       try {
                                         double price =
                                             double.parse(_priceController.text);
+                                            int amount =
+                                            int.parse( _amountController.text);
                                         await DatabaseService(
                                                 uid: currentUser!.uid)
                                             .updateProductData(
@@ -239,7 +241,7 @@ class _ProductUpdateState extends State<ProductUpdate> {
                                                 _nameController.text,
                                                 _descriptionController.text,
                                                 price,
-                                                _amountController.text);
+                                                amount);
                                         // ignore: use_build_context_synchronously
                                         Navigator.pop(context);
 

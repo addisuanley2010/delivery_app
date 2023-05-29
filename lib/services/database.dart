@@ -100,7 +100,7 @@ class DatabaseService {
     String name,
     String description,
     double price,
-    String amount,
+    int amount,
     // String image,
     // String role,
   ) async {
