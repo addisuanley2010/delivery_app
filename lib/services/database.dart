@@ -119,8 +119,7 @@ class DatabaseService {
     String status,
   ) async {
     return await productCollection.doc(productId).update({
-      'status':status,
-
+      'status': status,
     });
   }
 
@@ -168,14 +167,40 @@ class DatabaseService {
         //print(orderdetailId);
         print('order id : ${orderId}');
         // return orderdetailId;
+
+        await productCollection.doc(cartItem.productId).update(
+            {'amount': FieldValue.increment(-cartItem.quantity)}).then((value) {
+          print('Product amount decreased successfully');
+        }).catchError((error) {
+          print('Failed to decrease product amount: $error');
+        });
+
+        final DocumentSnapshot productSnapshot =
+            await productCollection.doc(cartItem.productId).get();
+
+        final Map<String, dynamic>? productData =
+            productSnapshot.data() as Map<String, dynamic>?;
+        print('hello${productData}');
+        if (productData != null) {
+          if (productData['amount'] == 0) {
+            print('product amount is 0');
+            productCollection
+                .doc(cartItem.productId)
+                .update({'status': 'sold'}).then((value) {
+              print('status changed to sold successfully');
+            }).catchError((error) {
+              print('Failed to decrease product amount: $error');
+            });
+          } else {
+            print('product amount is not 0');
+          }
+        }
       }
     }
   }
 
   //  orderDetailCollection  adding
   Future addOrderDetail(CartItem item, var orderId) async {
-    // return
-
     var orderDetailId = await orderDetailCollection.add({
       'orderId': orderId,
       'productId': item.productId,
@@ -286,13 +311,24 @@ class Products {
     }).toList();
   }
 
-// get catagoty stream
-  Stream<List<Product>> get productsList {
+// get product stream
+  Stream<List<Product>> get productsListByAddress {
     // print('get product with address provider called ');
     print('current address= ${addressId}');
     //print('stream called');
     return productsCollection
+        .where('status', isEqualTo: 'not sold')
         .where('addressId', isEqualTo: addressId)
+        .snapshots()
+        .map(_productsListFromSnapshot);
+  }
+
+  Stream<List<Product>> get productsAllList {
+    // print('get product with address provider called ');
+    print('current address= ${addressId}');
+    //print('stream called');
+    return productsCollection
+        .where('status', isEqualTo: 'not sold')
         .snapshots()
         .map(_productsListFromSnapshot);
   }
@@ -328,5 +364,58 @@ class Products {
         .where('catagory', isEqualTo: catId)
         .snapshots()
         .map(_productsListByCatagoryFromSnapshot);
+  }
+}
+
+// check inventory
+class Inventory {
+  // final String productId;
+  // Inventory({required this.productId});
+
+  final CollectionReference productsCollection =
+      FirebaseFirestore.instance.collection('products');
+
+  Future<String?> checkInventoryFromCart(List<CartItem> items) async {
+    String available = '';
+
+    for (CartItem cartItem in items) {
+      final DocumentSnapshot productSnapshot =
+          await productsCollection.doc(cartItem.productId).get();
+
+      final Map<String, dynamic>? productData =
+          productSnapshot.data() as Map<String, dynamic>?;
+
+      if (productData != null) {
+        final int remainingQuantity = productData['amount'];
+
+        if (cartItem.quantity > remainingQuantity) {
+          available = cartItem.productId;
+          break;
+        }
+      }
+    }
+    return available;
+  }
+
+  ////  check quantity when  a user clicks increase quantity button
+  Future<String> checkInventoryFromIncreaseQuantity(
+      String productId, int quantity) async {
+    String isAvailable = 'true';
+
+    DocumentSnapshot productSnapshot = await FirebaseFirestore.instance
+        .collection('products')
+        .doc(productId)
+        .get();
+    final Map<String, dynamic>? productData =
+        productSnapshot.data() as Map<String, dynamic>?;
+
+    if (productData != null) {
+      final int remainingQuantity = productData['amount'];
+
+      if (quantity >= remainingQuantity) {
+        isAvailable = 'false';
+      }
+    }
+    return isAvailable;
   }
 }

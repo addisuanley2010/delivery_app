@@ -23,7 +23,7 @@ class CartItem {
 
 class CartController with ChangeNotifier {
   List<CartItem> _items = [];
-
+  String message = 'this product has no qauntity above this';
   List<CartItem> get items => _items;
 
   int get itemCount => _items.length;
@@ -71,23 +71,45 @@ class CartController with ChangeNotifier {
   Future placeOrder(String userId) async {
     // Code to place the order goes here
     //print('user id : ${userId}');
+    // befor order check if required amount is present in database product table
+    String? finishedItem = await Inventory().checkInventoryFromCart(_items);
 
-    DatabaseService databaseService = DatabaseService(uid: userId);
-    var orderDetailId = await databaseService.orderProducts(items, totalAmount);
+    //print(_items[index].quantity);
+    if (finishedItem == '') {
+      DatabaseService databaseService = DatabaseService(uid: userId);
+      var orderDetailId =
+          await databaseService.orderProducts(items, totalAmount);
 
-    clear();
-    //print(orderDetailId);
-    return orderDetailId;
+      clear();
+      //print(orderDetailId);
+      return true;
+    } else {
+      print(
+          'you can not add product $finishedItem with this quantity , please decrease its amount');
+      return finishedItem;
+    }
   }
 
-  void increaseQuantity(String id) {
+//  here the mabelashet
+  Future increaseQuantity(String id) async {
     //print('increase quantity called');
     int index = _items.indexWhere((item) => item.productId == id);
+    // check if quantity in databse available
+
+    String isAvailabel = await Inventory()
+        .checkInventoryFromIncreaseQuantity(id, _items[index].quantity);
+
     //print(_items[index].quantity);
-    if (index >= 0) {
-      _items[index].quantity += 1;
-      // print(_items[index].quantity);
-      notifyListeners();
+    if (isAvailabel == 'true') {
+      if (index >= 0) {
+        _items[index].quantity += 1;
+        // print(_items[index].quantity);
+        notifyListeners();
+      }
+      return true;
+    } else {
+      print('you can not add above this quantity , unavaillabe');
+      return false;
     }
   }
 

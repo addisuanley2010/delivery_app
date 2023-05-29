@@ -211,16 +211,35 @@ class CartClientScreen extends StatelessWidget {
                                                                 Icons.add,
                                                                 color: Colors
                                                                     .white),
-                                                            onTap: () => {
-                                                                  cartController.increaseQuantity(
+                                                            onTap: () async {
+                                                              //you can not add above this quantity , unavaillabe
+                                                              dynamic result = await cartController
+                                                                  .increaseQuantity(
                                                                       cartController
                                                                           .items[
                                                                               i]
-                                                                          .productId)
-                                                                  // cartBloc.add(
-                                                                  //   OnIncreaseQuantityProductToCartEvent(
-                                                                  //       i))
-                                                                }))
+                                                                          .productId);
+
+                                                              print(
+                                                                  '${result}');
+                                                              if (result ==
+                                                                  true) {
+                                                                print(
+                                                                    'increase quantity called');
+                                                              } else {
+                                                                // ignore: use_build_context_synchronously
+                                                                modalSuccess(
+                                                                    context,
+                                                                    'can not add above this',
+                                                                    () => Navigator
+                                                                        .pop(
+                                                                            context));
+                                                              }
+
+                                                              // cartBloc.add(
+                                                              //   OnIncreaseQuantityProductToCartEvent(
+                                                              //       i))
+                                                            }))
                                                   ],
                                                 ),
                                               ),
@@ -282,11 +301,18 @@ class CartClientScreen extends StatelessWidget {
                             dynamic result =
                                 await cartController.placeOrder(user.uid);
                             // print('${result}');
-                            if (result != null) {
+                            if (result == true) {
+                              print('my bag screen : cart added successfully');
                               // ignore: use_build_context_synchronously
                               modalSuccess(context, 'your  order received',
                                   () => Navigator.pop(context));
-                              print('my bag screen : cart added successfully');
+                            } else {
+                              // ignore: use_build_context_synchronously
+                              modalSuccess(
+                                  context,
+                                  'you can not add product $result with this quantity ,'
+                                  ' please decrease its amount',
+                                  () => Navigator.pop(context));
                             }
                             // Navigator.push(
                             //     context, routeFrave(page: CheckOutScreen()));
