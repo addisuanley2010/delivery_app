@@ -8,7 +8,7 @@ class ProductDetails extends StatefulWidget {
   final String productDescription;
   final double productPrice;
   final String imageURL;
-  final String amount;
+  final int amount;
   final String status;
   final String productId;
   ProductDetails({
