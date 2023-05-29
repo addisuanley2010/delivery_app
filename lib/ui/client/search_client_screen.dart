@@ -35,7 +35,7 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
   }
 
   void fetchProducts() {
-    Products(addressId: address).productsList.listen((snapshot) {
+    Products(addressId: address).productsListByAddress.listen((snapshot) {
       if (snapshot != null) {
         setState(() {
           listProduct = snapshot;
@@ -121,7 +121,7 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
     final addressController = Provider.of<AddressController>(context);
 
     return StreamBuilder<List<Product>>(
-        stream: Products(addressId: addressController.address.id).productsList,
+        stream: Products(addressId: addressController.address.id).productsListByAddress,
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           final List<Product>? listProduct = snapshot.data;
           if (snapshot.data == null) return _HistorySearch();

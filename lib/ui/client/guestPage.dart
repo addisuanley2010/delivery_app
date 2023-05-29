@@ -18,8 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'component/date_custom.dart';
 
-class ClientHomeScreen extends StatelessWidget {
-  ClientHomeScreen({super.key});
+class GuestHomeScreen extends StatelessWidget {
+  GuestHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +215,7 @@ class _ListProducts extends StatelessWidget {
     // print('product list called');
 
     return StreamBuilder<List<Product>>(
-      stream: Products(addressId: addressId).productsListByAddress,
+      stream: Products(addressId: addressId).productsAllList,
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
         final List<Product>? listProduct = snapshot.data;
         //print(listProduct);
