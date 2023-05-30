@@ -17,6 +17,7 @@ class OrderDetail {
     required this.imageUrl,
   });
 
+
   // Define a factory constructor to create OrderDetail objects from map data
   factory OrderDetail.fromMap(Map<String, dynamic> data) {
     print(data);

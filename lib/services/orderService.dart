@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/orderDetailModel.dart';
 import 'package:delivery/models/orderModel.dart';
 import 'package:delivery/models/orderResponse.dart';
+import 'package:delivery/services/database.dart';
 
 class OrderService {
   final String uid;
@@ -15,11 +16,11 @@ class OrderService {
   // get order response for single user/client stream
   Stream<List<Orders>?> get getOrdersByClientId {
     print('get order called');
-    print(uid);
-    print(getOrdersCollection
-        .where('clientId', isEqualTo: uid)
-        .snapshots()
-        .toSet());
+    //print(uid);
+    // print(getOrdersCollection
+    //     .where('clientId', isEqualTo: uid)
+    //     .snapshots()
+    //     .toSet());
     return getOrdersCollection
         .where('clientId', isEqualTo: uid)
         .snapshots()
@@ -27,10 +28,14 @@ class OrderService {
   }
 
   List<Orders>? _getOrdersListFromSnapshot(QuerySnapshot snapshot) {
-    //print('change to object called');
+    print('change to object called');
     // print(snapshot.docs[1].data());
+    // print(snapshot.docs[0].data());
+    //print('change to object called');
+    //print(snapshot.docs[0].data());
     try {
       return snapshot.docs.map((doc) {
+        print(doc.id);
         DateTime createdAt = (doc['createdAt'] as Timestamp)
             .toDate(); // Convert Firestore Timestamp to DateTime
         print(createdAt);
@@ -93,8 +98,38 @@ class OrderService {
       );
     }).toList();
   }
+}
 
-  //
+// get orders for delivery
+class Delivery {
+  final String uid;
+  final String status;
+  Delivery({required this.uid, required this.status});
 
-  //
+  final CollectionReference getOrdersCollection =
+      FirebaseFirestore.instance.collection('orders');
+
+  Stream<List<Orders>?> get getOrdersByDeliveryId {
+    print('get order from deliveryMan called');
+
+    return getOrdersCollection
+        .where('deliveryId', isEqualTo: uid)
+        .where('status', isEqualTo: status)
+        .snapshots()
+        .map(OrderService(uid: uid)._getOrdersListFromSnapshot);
+  }
+
+  Future updateOrderStatus(
+      {required String orderId, required String status}) async {
+    final CollectionReference updateOrdersCollectionStatus =
+        FirebaseFirestore.instance.collection('orders');
+
+    await updateOrdersCollectionStatus
+        .doc(orderId)
+        .update({'status': status}).then((value) {
+      print('Order status changed successfully');
+    }).catchError((error) {
+      print('Failed to Order status: $error');
+    });
+  }
 }

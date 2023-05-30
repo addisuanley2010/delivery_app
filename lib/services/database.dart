@@ -151,7 +151,7 @@ class DatabaseService {
     var orderId = await ordersCollection.add({
       'clientId': uid,
       'deliveryId': '',
-      // 'addressId': car,
+      'addressId': '',
       'shopId': cart[0].shopId,
       'totalCost': totalAmount,
       'status': 'PAID OUT',

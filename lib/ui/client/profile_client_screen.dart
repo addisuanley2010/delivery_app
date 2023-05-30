@@ -51,10 +51,10 @@ class ProfileClientScreen extends StatelessWidget {
         // StreamListener<AuthBloc, AuthState>
         Container(
       // listener: (context, state) {
+      //     Navigator.pop(context);
       //   if (state is LoadingAuthState) {
       //     modalLoading(context);
       //   } else if (state is SuccessAuthState) {
-      //     Navigator.pop(context);
       //     modalSuccess(
       //         context,
       //         'Picture Change Successfully',
