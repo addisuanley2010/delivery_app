@@ -3,7 +3,7 @@ import 'package:delivery/pages/home.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/admin_home.dart';
 import 'package:delivery/ui/client/client_home.dart';
-import 'package:delivery/ui/delivery2/delivery_home_screen.dart';
+import 'package:delivery/ui/delivery/delivery_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

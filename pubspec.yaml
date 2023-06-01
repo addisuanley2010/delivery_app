@@ -72,6 +72,7 @@ dependencies:
   sqflite: ^2.0.2+1
   badges: ^2.0.2
   chapasdk:
+  http_proxy_client: ">=0.1.0 <1.0.0"
 
 
 

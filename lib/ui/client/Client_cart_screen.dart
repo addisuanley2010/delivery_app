@@ -1,6 +1,8 @@
+import 'package:chapasdk/chapasdk.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/user.dart';
+import 'package:delivery/ui/client/check_out_screen.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/btn_frave.dart';
@@ -297,26 +299,26 @@ class CartClientScreen extends StatelessWidget {
                             ? ColorsFrave.primaryColor
                             : ColorsFrave.secundaryColor,
                         onPressed: () async {
-                          if (cartController.items.isNotEmpty) {
-                            dynamic result =
-                                await cartController.placeOrder(user.uid);
-                            // print('${result}');
-                            if (result == true) {
-                              print('my bag screen : cart added successfully');
-                              // ignore: use_build_context_synchronously
-                              modalSuccess(context, 'your  order received',
-                                  () => Navigator.pop(context));
-                            } else {
-                              // ignore: use_build_context_synchronously
-                              modalSuccess(
-                                  context,
-                                  'you can not add product $result with this quantity ,'
-                                  ' please decrease its amount',
-                                  () => Navigator.pop(context));
-                            }
-                            // Navigator.push(
-                            //     context, routeFrave(page: CheckOutScreen()));
-                          }
+                          dynamic response = await Chapa.paymentParameters(
+                            context: context, // context
+                            publicKey:
+                                'CHAPUBK_TEST-nXneuyrO9fclPHri2otEePg7TUdnxMrn',
+                            currency: 'etb',
+                            amount: '300',
+                            email: 'xyz@gmail.com',
+                            phone: '911223344',
+                            firstName: 'Aemro',
+                            lastName: 'Enyew',
+                            txRef: 'Aemro -1',
+                            title: 'test-1',
+                            desc: 'desc',
+                            namedRouteFallBack:
+                                '/checkoutPage', // fall back route name
+                          );
+                          print(response);
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacement(
+                              context, routeFrave(page: CheckOutScreen()));
                         },
                       )
                     ],

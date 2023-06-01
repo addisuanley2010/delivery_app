@@ -1,5 +1,6 @@
 import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/cartModel.dart';
+import 'package:delivery/ui/client/check_out_screen.dart';
 import 'firebase_options.dart';
 import 'package:delivery/screens/wrapper.dart';
 import 'package:delivery/models/user.dart';
@@ -47,6 +48,13 @@ class MyApp extends StatelessWidget {
               image:
                   DecorationImage(image: AssetImage('assets/images/bg2.png'))),
           child: const Wrapper()),
+      // child: const CheckOutScreen()),
+      routes: {
+        // '/': (context) => const Wrapper(),
+        '/checkoutPage': (context) => const CheckOutScreen(),
+        // '/profilePage': (context) => ProfileScreen(),
+        // '/settingsPage': (context) => SettingsScreen(),
+      },
     );
   }
 }

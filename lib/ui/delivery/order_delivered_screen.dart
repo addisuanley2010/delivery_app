@@ -6,13 +6,13 @@ import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/card_orders_delivery.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
-import 'package:delivery/ui/delivery2/delivery_home_screen.dart';
-import 'package:delivery/ui/delivery2/order_details_delivery_screen.dart';
+import 'package:delivery/ui/delivery/delivery_home_screen.dart';
+import 'package:delivery/ui/delivery/order_details_delivery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-class OrderOnWayScreen extends StatelessWidget {
+class OrderDeliveredScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users?>(context);
@@ -21,7 +21,7 @@ class OrderOnWayScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const TextCustom(text: 'Orders On Way'),
+        title: const TextCustom(text: 'Orders Delivered'),
         centerTitle: true,
         elevation: 0,
         leadingWidth: 80,
@@ -40,8 +40,9 @@ class OrderOnWayScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder<List<Orders>?>(
-          stream:
-              Delivery(status: 'ON WAY', uid: user!.uid).getOrdersByDeliveryId,
+          stream: Delivery(status: 'DELIVERED', uid: user!.uid)
+              .getOrdersByDeliveryId,
+          // future: deliveryServices.getOrdersForDelivery('DELIVERED'),
           builder: (context, snapshot) => (!snapshot.hasData)
               ? Column(
                   children: const [
@@ -82,7 +83,7 @@ class _ListOrdersForDelivery extends StatelessWidget {
               Center(child: SvgPicture.asset('svg/no-data.svg', height: 300)),
               const SizedBox(height: 15.0),
               const TextCustom(
-                  text: 'Without Orders on way',
+                  text: 'Without Orders delivered',
                   color: ColorsFrave.primaryColor,
                   fontWeight: FontWeight.w500,
                   fontSize: 21)

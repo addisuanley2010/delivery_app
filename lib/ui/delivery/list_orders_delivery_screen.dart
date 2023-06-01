@@ -6,7 +6,7 @@ import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/card_orders_delivery.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
-import 'package:delivery/ui/delivery2/order_details_delivery_screen.dart';
+import 'package:delivery/ui/delivery/order_details_delivery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
