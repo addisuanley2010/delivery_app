@@ -3,13 +3,20 @@ import 'package:delivery/pages/home.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/admin_home.dart';
 import 'package:delivery/ui/client/client_home.dart';
-import 'package:delivery/ui/client/guestPage.dart';
 import 'package:delivery/ui/delivery/deliveryHome.dart';
 import 'package:flutter/material.dart';
+import '../services/auth.dart';
 import 'package:provider/provider.dart';
 
-class Wrapper extends StatelessWidget {
-  const Wrapper({super.key});
+class Wrapper extends StatefulWidget {
+   Wrapper({super.key});
+
+  @override
+  State<Wrapper> createState() => _WrapperState();
+}
+
+class _WrapperState extends State<Wrapper> {
+  AuthService a = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -36,14 +43,24 @@ class Wrapper extends StatelessWidget {
                   return AdminHome();
                 } else if (role == 'user') {
                   return ClientHomeScreen();
-                  //return GuestHomeScreen();
                 } else {
-                  return const DeliveryHome();
+                  return  AdminHome();
                 }
               } else if (snapshot.hasError) {
-                // return const Scaffold(
-                //     backgroundColor: Colors.white54, body: Text('loading...'));
-                return const Home();
+                return Scaffold(
+                    appBar: AppBar(
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            await a.signOut();
+                          },
+                          child: Text('logout'),
+                        )
+                      ],
+                    ),
+                    backgroundColor: Colors.white54,
+                    body: Text('loading...'));
+                // return  AdminHome();
               } else {
                 // Data is not yet available
                 return const Center(
