@@ -130,9 +130,9 @@ class DatabaseService {
     String email,
     String address,
     String imageUrl,
-    String? uid,
+    String? uidDelivery,
   ) async {
-    return await customersCollection.add({
+    return await customersCollection.doc(uidDelivery).set({
       'name': name,
       'phone': phone,
       'email': email,
