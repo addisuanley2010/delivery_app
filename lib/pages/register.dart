@@ -322,7 +322,7 @@ class _RegisterState extends State<Register> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Wrapper()),
+                              builder: (context) =>  Wrapper()),
                         );
                       } catch (error) {
                         ScaffoldMessenger.of(context).showSnackBar(

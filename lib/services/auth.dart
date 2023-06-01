@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -77,7 +76,8 @@ class AuthService {
           email: email, password: password);
       User user = result.user!;
       if (user != null) {
-        await DatabaseService(uid: uid!).addNewDelivery(name, phone, email,address,imageUrl,uid);
+
+        await DatabaseService(uid: uid!).addNewDelivery(name, phone, email,address,imageUrl,user.uid);//shop
         return "registered successfully!";
       } else {
         return "not registerd";
@@ -91,7 +91,7 @@ class AuthService {
   }
 
   // sign out
-  Future signOut() async {
+  Future  signOut() async {
     try {
       return await _auth.signOut();
     } catch (error) {
