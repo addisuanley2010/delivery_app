@@ -3,13 +3,14 @@ import 'package:delivery/pages/home.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/ui/admin/admin_home.dart';
 import 'package:delivery/ui/client/client_home.dart';
-import 'package:delivery/ui/delivery/deliveryHome.dart';
+import 'package:delivery/ui/delivery/delivery_home_screen.dart';
+// import 'package:delivery/ui/delivery/deliveryHome.dart';
 import 'package:flutter/material.dart';
 import '../services/auth.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatefulWidget {
-   Wrapper({super.key});
+  Wrapper({super.key});
 
   @override
   State<Wrapper> createState() => _WrapperState();
@@ -44,7 +45,7 @@ class _WrapperState extends State<Wrapper> {
                 } else if (role == 'user') {
                   return ClientHomeScreen();
                 } else {
-                  return const DeliveryHome();
+                  return DeliveryHomeScreen();
                 }
               } else if (snapshot.hasError) {
                 // return const Scaffold(
