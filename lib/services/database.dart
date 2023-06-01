@@ -151,7 +151,7 @@ class DatabaseService {
     var orderId = await ordersCollection.add({
       'clientId': uid,
       'deliveryId': '',
-      // 'addressId': car,
+      'addressId': '',
       'shopId': cart[0].shopId,
       'totalCost': totalAmount,
       'status': 'PAID OUT',
@@ -229,6 +229,15 @@ class DatabaseService {
 
   // user data from snapshots
   UserData _userDataFromSnapshot(DocumentSnapshot snapshot) {
+    print('change to object');
+    print(uid);
+    print(UserData(
+        uid: uid,
+        role: snapshot['role'],
+        name: snapshot['name'],
+        email: snapshot['email'],
+        phone: snapshot['phone'],
+        address: snapshot['address']));
     return UserData(
         uid: uid,
         role: snapshot['role'],
@@ -245,6 +254,7 @@ class DatabaseService {
 
   // get user doc stream
   Stream<UserData> get userData {
+    print('user id : $uid');
     print('get data called');
     return customersCollection.doc(uid).snapshots().map(_userDataFromSnapshot);
   }

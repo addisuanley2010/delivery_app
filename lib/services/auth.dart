@@ -28,7 +28,7 @@ class AuthService {
       User? user = result.user;
       return user;
     } catch (error) {
-       print('my error is {$error.toString()}');
+      print('my error is {$error.toString()}');
       return null;
     }
   }
@@ -41,7 +41,6 @@ class AuthService {
     String password,
     String address,
     String imageUrl,
-
   ) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
@@ -50,7 +49,7 @@ class AuthService {
 
       if (user != null) {
         await DatabaseService(uid: user.uid)
-            .updateUserData(name, email, phone, address,imageUrl);
+            .updateUserData(name, email, phone, address, imageUrl);
       } else {
         // print('unuble to create account');
       }

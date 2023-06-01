@@ -72,7 +72,7 @@ class ClientDetailsOrderScreen extends StatelessWidget {
                   : ColorsFrave.secundaryColor),
             ),
           ),
-        ],
+        ],  
       ),
       body: Column(
         children: [
