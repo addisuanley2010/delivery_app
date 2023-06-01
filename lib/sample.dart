@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+//
+// Please enable Developer Mode in your system settings. Run
+//   start ms-settings:developers
+// to open settings.
 // Define a function that returns a stream of orders for the current client
 
 Stream<List<Order>> getClientOrders(String uid) {

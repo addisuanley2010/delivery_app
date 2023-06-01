@@ -207,6 +207,7 @@ class LoginScreenState extends State<LoginScreen> {
                               await _auth.signInWithEmailAndPassword(
                                   _emailController.text,
                                   _passwordController.text);
+                          print(result);
                           if (result == null) {
                             setState(() => {
                                   loading = false,

@@ -38,6 +38,7 @@ class DeliveryHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('delivery screen');
     return Scaffold(
       backgroundColor: Colors.white,
       body: FutureBuilder(

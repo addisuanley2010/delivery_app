@@ -37,9 +37,12 @@ class Wrapper extends StatelessWidget {
                   return ClientHomeScreen();
                   //return GuestHomeScreen();
                 } else {
+                  print('delivery');
                   return DeliveryHomeScreen();
                 }
               } else if (snapshot.hasError) {
+                print('at error position');
+                print(snapshot.error);
                 // return const Scaffold(
                 //     backgroundColor: Colors.white54, body: Text('loading...'));
                 return const Home();
