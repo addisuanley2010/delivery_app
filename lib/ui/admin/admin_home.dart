@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery/pages/registerShope.dart';
 import 'package:delivery/ui/admin/delivery/list_deliverys_screen.dart';
 import 'package:delivery/ui/admin/orders_admin/orders_admin_screen.dart';
 import 'package:delivery/ui/admin/products/list_products_screen.dart';
+import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:flutter/material.dart';
 import 'components/text_custom.dart';
 import 'components/item_account.dart';
@@ -38,6 +40,7 @@ class AdminHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('admin home screen widget');
     return Scaffold(
       backgroundColor: Colors.white,
       body: FutureBuilder(
@@ -46,6 +49,7 @@ class AdminHome extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
+            print('error occured while fetching');
             print(snapshot.error);
             return const Center(child: Text('Error loading data'));
           } else {
@@ -159,6 +163,12 @@ class AdminHome extends StatelessWidget {
                           ),
                         );
                       }),
+                  ItemAccount(
+                      text: 'apply',
+                      icon: Icons.policy_rounded,
+                      colorIcon: 0xff6dbd63,
+                      onPressed: () => Navigator.push(
+                          context, routeFrave(page: RegisterShopeInfo()))),
                   const SizedBox(height: 15.0),
                   const TextCustom(text: 'Personal', color: Colors.grey),
                   const SizedBox(height: 10.0),
@@ -167,6 +177,7 @@ class AdminHome extends StatelessWidget {
                     icon: Icons.policy_rounded,
                     colorIcon: 0xff6dbd63,
                   ),
+
                   ItemAccount(
                       text: 'Security',
                       icon: Icons.lock_outline_rounded,
@@ -220,6 +231,7 @@ class AdminHome extends StatelessWidget {
             child: CircleAvatar(
               radius: 100,
               backgroundImage: NetworkImage(imageUrl),
+              //backgroundImage: AssetImage(imageUrl),
             ),
           ),
           Positioned(

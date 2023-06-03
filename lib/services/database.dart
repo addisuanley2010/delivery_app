@@ -77,6 +77,39 @@ class DatabaseService {
     });
   }
 
+  //update Admin data at customer collection
+
+  Future updateAdminData(
+    String name,
+    String email,
+    String phone,
+    String imageUrlLiscence,
+    String? region,
+    String? zone,
+    String? wereda,
+    String? kebele,
+    String? friendlyAddress,
+    String? imageUrlAddress,
+    String? houseNumber,
+  ) async {
+    return await customersCollection.doc(uid).set({
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'imageUrlLiscence': imageUrlLiscence,
+      'region': region,
+      'zone': zone,
+      'wereda': wereda,
+      'kebele': kebele,
+      'friendlyAddress': friendlyAddress,
+      'imageUrlAddress': imageUrlAddress,
+      'houseNumber': houseNumber,
+      'role': 'admin',
+      'address': '',
+      'status':'pending'
+    });
+  }
+
   Future updateUserDataProfile(
     String name,
     String email,
