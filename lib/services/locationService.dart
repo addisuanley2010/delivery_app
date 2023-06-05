@@ -21,8 +21,10 @@ class ListShopesService {
     print('get address called');
     print(uid);
 
-    const currentLat = 52.132633;
-    const currentLon = 5.291266;
+    const currentLat = 11.596382;
+    //    const currentLat = 11.5963826;
+//    const currentLon = 37.3955301;
+    const currentLon = 37.395530;
 
     final addressList = getAddressCollection.snapshots().map((snapshot) {
       return _getAddressListFromSnapshot(snapshot, currentLat, currentLon)!
@@ -37,28 +39,23 @@ class ListShopesService {
     print('change to object called');
     try {
       return snapshot.docs.map((doc) {
-        final addressLat = doc['latitude'] ?? 0.0;
-        final addressLon = doc['longitude'] ?? 0.0;
+        final addressLat = (doc['latitude'] ?? 0).toDouble();
+        final addressLon = (doc['longitude'] ?? 0).toDouble();
 
-        //const distanceString = 0.0; // Assume distance is stored as a String
-        // const distance = distanceString??
-        //     0.0; // Convert distance to double
-
-        final calculatedDistance = distanceBetween(currentLat, currentLon,
-            addressLat, addressLon); // Calculate the distance
+        final calculatedDistance =
+            distanceBetween(currentLat, currentLon, addressLat, addressLon);
 
         return Address(
           id: doc.id,
           name: doc['name'] ?? '',
-          lat: addressLat.toDouble(),
-          long: addressLon.toDouble(),
-          distance:
-              calculatedDistance, // Assign the calculated distance as a property
+          lat: addressLat,
+          long: addressLon,
+          distance: calculatedDistance,
         );
       }).toList();
     } catch (e) {
       print('Error mapping orders: $e');
-      return null; // or throw the error again if you want to handle it in another part of your code
+      return null;
     }
   }
 
@@ -135,13 +132,44 @@ class ListShopesService {
 ////////////////
 ///
 ///
+class L {
+  Future<Mylocation> getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    return Mylocation(
+      lat: position.latitude,
+      long: position.longitude,
+    );
+  }
+}
 
-Future<Mylocation> getLocation() async {
-  Position position = await Geolocator.getCurrentPosition(
-    desiredAccuracy: LocationAccuracy.high,
-  );
-  return Mylocation(
-    lat: position.latitude,
-    long: position.longitude,
-  );
+// insert location data in to location collection
+class LocationInsert {
+  Future<String?> addAdress({
+    required double latitude,
+    required double longitude,
+    required String name,
+  }) async {
+    print('insert address called, at it');
+    // Create a new document reference in the "address" collection
+    DocumentReference addressRef =
+        FirebaseFirestore.instance.collection('address').doc();
+
+    // Create a data map with the latitude and longitude
+    Map<String, dynamic> addressData = {
+      'latitude': latitude,
+      'longitude': longitude,
+      'name': name
+    };
+
+    try {
+      // Insert the address data into the Firestore collection
+      await addressRef.set(addressData);
+      return addressRef.id; // Return the document ID of the inserted data
+    } catch (error) {
+      print('Error inserting address: $error');
+      return null;
+    }
+  }
 }

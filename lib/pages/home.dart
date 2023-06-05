@@ -1,4 +1,5 @@
 import 'package:delivery/pages/login.dart';
+import 'package:delivery/screens/select_role.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/pages/register.dart';
 
@@ -34,9 +35,7 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) =>  LoginScreen(),
-
-                            
+                            builder: (context) => LoginScreen(),
                           ),
                         );
                       },
@@ -54,7 +53,10 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const Register(),
+                            // builder: (context) => const Register(),
+                            builder: (context) => const SelectRoleScreen(),
+
+                            
                           ),
                         );
                       },

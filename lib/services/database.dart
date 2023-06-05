@@ -91,12 +91,14 @@ class DatabaseService {
     String? friendlyAddress,
     String? imageUrlAddress,
     String? houseNumber,
+    String? addressId,
   ) async {
     return await customersCollection.doc(uid).set({
       'name': name,
       'email': email,
       'phone': phone,
       'imageUrlLiscence': imageUrlLiscence,
+      'imageUrl': imageUrlAddress,
       'region': region,
       'zone': zone,
       'wereda': wereda,
@@ -105,8 +107,9 @@ class DatabaseService {
       'imageUrlAddress': imageUrlAddress,
       'houseNumber': houseNumber,
       'role': 'admin',
-      'address': '',
-      'status':'pending'
+      'address': kebele,
+      'addressId': addressId,
+      'status': 'pending'
     });
   }
 
@@ -357,8 +360,12 @@ class Products {
 // get product stream
   Stream<List<Product>> get productsListByAddress {
     // print('get product with address provider called ');
-    print('current address= ${addressId}');
+    print('current address for single shop= ${addressId}');
     //print('stream called');
+    // print(productsCollection
+    //     .where('status', isEqualTo: 'not sold')
+    //     .where('addressId', isEqualTo: addressId)
+    //     .snapshots());
     return productsCollection
         .where('status', isEqualTo: 'not sold')
         .where('addressId', isEqualTo: addressId)

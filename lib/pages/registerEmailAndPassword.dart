@@ -21,6 +21,7 @@ class RegisterShope extends StatefulWidget {
   final String? friendlyAddress;
   final String? imageUrlAddress;
   final String? houseNumber;
+  final String? addressId;
 
   const RegisterShope(
       {super.key,
@@ -33,7 +34,8 @@ class RegisterShope extends StatefulWidget {
       required this.kebele,
       required this.friendlyAddress,
       required this.imageUrlAddress,
-      required this.houseNumber});
+      required this.houseNumber,
+      required this.addressId});
 
   @override
   State<RegisterShope> createState() => _RegisterState();
@@ -61,9 +63,17 @@ class _RegisterState extends State<RegisterShope> {
   late TextEditingController _emailController;
 
   final _keyForm = GlobalKey<FormState>();
+  String? addressId = '';
+  Mylocation location = Mylocation(lat: 0, long: 0);
 
   @override
   void initState() {
+    L().getLocation().then((data) {
+      location = data;
+      print('here placelatitude of device:  ${location.lat}');
+      print('here place longtude of device:  ${location.long}');
+    });
+
     _passwordController = TextEditingController();
     _confirmpasswordController = TextEditingController();
     _addressController = TextEditingController();
@@ -81,14 +91,6 @@ class _RegisterState extends State<RegisterShope> {
 
   @override
   Widget build(BuildContext context) {
-    Mylocation location;
-
-    getLocation().then((data) {
-      location = data;
-      // print('latitude:  ${location.lat}');
-      //print('longtude:  ${location.long}');
-    });
-
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -224,7 +226,27 @@ class _RegisterState extends State<RegisterShope> {
                       setState(() {
                         _isLoading = true;
                       });
+
                       try {
+                        print('calling insert address to get address Id');
+                        addressId = await LocationInsert().addAdress(
+                            latitude: location.lat,
+                            longitude: location.long,
+                            name: widget.name!);
+                        if (addressId != null) {
+                          print(
+                              'Address inserted with document ID: $addressId');
+                        } else {
+                          print('Failed to insert address');
+                        }
+                      } catch (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error: $error')));
+                      }
+
+                      try {
+                        print(
+                            'after address inserted , trying to add all data to customer table with above address id');
                         dynamic result = await _auth.registerAdmin(
                             name: widget.name,
                             phone: widget.phone,
@@ -236,6 +258,7 @@ class _RegisterState extends State<RegisterShope> {
                             friendlyAddress: widget.friendlyAddress,
                             houseNumber: widget.houseNumber,
                             imageUrlAddress: widget.imageUrlAddress,
+                            addressId: addressId,
                             email: _emailController.text,
                             password: _passwordController.text
 

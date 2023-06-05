@@ -27,13 +27,17 @@ class ClientHomeScreen extends StatelessWidget {
     final user = Provider.of<Users?>(context);
     //final cartController = Provider.of<CartController>(context);
     final addressController = Provider.of<AddressController>(context);
+    print(addressController.address.lat);
+    print(addressController.address.long);
+    print(addressController.address.name);
+    print(addressController.address.distance);
 
     Mylocation location;
 
-    getLocation().then((data) {
+    L().getLocation().then((data) {
       location = data;
-      print('latitude:  ${location.lat}');
-      print('longtude:  ${location.long}');
+      print('here placelatitude:  ${location.lat}');
+      print('here place longtude:  ${location.long}');
     });
     print('address new = ${addressController.address.name}');
     return Scaffold(
@@ -213,7 +217,7 @@ class _ListProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // print('product list called');
-
+    print('at single shop $addressId');
     return StreamBuilder<List<Product>>(
       stream: Products(addressId: addressId).productsListByAddress,
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {

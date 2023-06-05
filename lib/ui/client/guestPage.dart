@@ -30,7 +30,7 @@ class GuestHomeScreen extends StatelessWidget {
 
     Mylocation location;
 
-    getLocation().then((data) {
+      L().getLocation().then((data) {
       location = data;
       print('latitude:  ${location.lat}');
       print('longtude:  ${location.long}');

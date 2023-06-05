@@ -44,8 +44,6 @@ dependencies:
   cached_network_image: ^3.0.0
   cupertino_icons: ^1.0.5
   font_awesome_flutter: ^10.4.0
-  bloc: ^8.1.1
-  flutter_bloc: ^8.1.2
   flutter_secure_storage: ^8.0.0
   http: ^0.13.5
   image_picker: ^0.8.7+4
@@ -54,7 +52,6 @@ dependencies:
   shimmer: ^2.0.0
   carousel_slider: ^4.1.1
   geolocator: ^9.0.2
-  google_maps_flutter: ^2.2.5
   permission_handler: ^10.2.0
   geocoding: ^2.1.0
   intl: ^0.18.1
@@ -72,6 +69,8 @@ dependencies:
   sqflite: ^2.0.2+1
   badges: ^2.0.2
   chapasdk:
+  location: ^4.2.0
+
 
 
 

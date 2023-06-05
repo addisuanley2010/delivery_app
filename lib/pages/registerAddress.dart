@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:delivery/models/location_model.dart';
-import 'package:delivery/pages/login.dart';
 import 'package:delivery/pages/registerEmailAndPassword.dart';
-import 'package:delivery/screens/wrapper.dart';
 import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/client/component/btn_frave.dart';
 import 'package:delivery/ui/client/component/form_field_frave.dart';
@@ -12,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import '../services/auth.dart';
+import 'package:location/location.dart';
+import 'package:delivery/pages/registerShope.dart';
 
 //this is comment
 class RegisterAddress extends StatefulWidget {
@@ -33,6 +33,38 @@ class RegisterAddress extends StatefulWidget {
 class _RegisterState extends State<RegisterAddress> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
+  Future<Map<String, double>?> getCurrentLocation() async {
+    Location location = Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        // Handle if the user denies enabling the location service
+        return null;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        // Handle if the user denies granting location permission
+        return null;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    double? latitude = _locationData.latitude;
+    double? longitude = _locationData.longitude;
+    print('current done above $latitude');
+    print('current done above $longitude');
+    return {'latitude': latitude!, 'longitude': longitude!};
+  }
+
   String imageUrlAddress = '';
   File? _imageFile;
   bool _isLoading = false;
@@ -43,6 +75,7 @@ class _RegisterState extends State<RegisterAddress> {
   String errorMessage = '';
   bool showPassword = true;
   late String confirmpassword;
+  String? addressId = '';
 
   final AuthService _auth = AuthService();
 
@@ -54,10 +87,14 @@ class _RegisterState extends State<RegisterAddress> {
   late TextEditingController _houseNumController;
   late TextEditingController _friendAddressController;
 
-  final _keyForm = GlobalKey<FormState>();
-
   @override
   void initState() {
+    L().getLocation().then((data) {
+      Mylocation location;
+      location = data;
+      print('current done latitude:  ${location.lat}');
+      print('current done longtude:  ${location.long}');
+    });
     _regionController = TextEditingController();
     _zoneController = TextEditingController();
     _weredaController = TextEditingController();
@@ -79,14 +116,6 @@ class _RegisterState extends State<RegisterAddress> {
 
   @override
   Widget build(BuildContext context) {
-    Mylocation location;
-
-    getLocation().then((data) {
-      location = data;
-      // print('latitude:  ${location.lat}');
-      //print('longtude:  ${location.long}');
-    });
-
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -263,7 +292,6 @@ class _RegisterState extends State<RegisterAddress> {
                               ),
                             )),
                 ),
-
                 const SizedBox(height: 20),
                 BtnFrave(
                   text: 'Next',
@@ -294,52 +322,76 @@ class _RegisterState extends State<RegisterAddress> {
 
                         imageUrlAddress =
                             await referenceImageToUpload.getDownloadURL();
-
+                        print('address url:  $imageUrlAddress');
                         setState(() {
                           _isLoading = false;
                         });
 
-                        await _auth.registerWithEmailAndPassword(
-                            _zoneController.text,
-                            _weredaController.text,
-                            _kebeleController.text,
-                            _houseNumController.text,
-                            _friendAddressController.text,
-                            imageUrlAddress);
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterShope(
-                                    phone: widget.phone,
-                                    imageUrlLiscence: widget.imageUrlLiscence,
-                                    name: widget.name,
-                                    zone: _zoneController.text,
-                                    friendlyAddress:
-                                        _friendAddressController.text,
-                                    imageUrlAddress: imageUrlAddress,
-                                    kebele: _kebeleController.text,
-                                    houseNumber: _houseNumController.text,
-                                    region: _regionController.text,
-                                    wereda: _weredaController.text,
-                                  )),
-                        );
-
-                        // ignore: use_build_context_synchronously
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(
-                        //         content: Text('Registerd successfully!')));
-                        // ignore: use_build_context_synchronously
-                        // Navigator.pop(context);
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => Wrapper()),
-                        // );
+                        //getCurrentLocation
+                        // Map<String, double>? locationData =
+                        //     await getCurrentLocation();
+                        // if (locationData != null) {
+                        //   double? latitude = locationData['latitude'];
+                        //   double? longitude = locationData['longitude'];
+                        //   print('latitude at on pressed $latitude');
+                        //   addressId = await LocationInsert().addAdress(
+                        //       latitude: latitude!,
+                        //       longitude: longitude!,
+                        //       name: widget.name!);
+                        //   if (addressId != null) {
+                        //     print(
+                        //         'Address inserted with document ID: $addressId');
+                        //   } else {
+                        //     print('Failed to insert address');
+                        //   }
+                        // } else {
+                        //   print('Failed to get location data');
+                        // }
                       } catch (error) {
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Error: $error')));
                       }
-                    }
+                      // try{
+                      // await _auth.registerWithEmailAndPassword(
+                      //     _zoneController.text,
+                      //     _weredaController.text,
+                      //     _kebeleController.text,
+                      //     _houseNumController.text,
+                      //     _friendAddressController.text,
+                      //     imageUrlAddress);
+                      //     } catch (error) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //       SnackBar(content: Text('Error: $error')));
+                      // }
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegisterShope(
+                                phone: widget.phone,
+                                imageUrlLiscence: widget.imageUrlLiscence,
+                                name: widget.name,
+                                zone: _zoneController.text,
+                                friendlyAddress: _friendAddressController.text,
+                                imageUrlAddress: imageUrlAddress,
+                                kebele: _kebeleController.text,
+                                houseNumber: _houseNumController.text,
+                                region: _regionController.text,
+                                wereda: _weredaController.text,
+                                addressId: addressId)),
+                      );
+
+                      // ignore: use_build_context_synchronously
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //         content: Text('Registerd successfully!')));
+                      // ignore: use_build_context_synchronously
+                      // Navigator.pop(context);
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => Wrapper()),
+                      // );
+                    } //form validate
                   },
                 ),
                 const SizedBox(height: 20),
