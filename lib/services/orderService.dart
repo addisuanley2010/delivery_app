@@ -44,7 +44,8 @@ class OrderService {
           clientId: doc['clientId'] ?? '',
           deliveryId: doc['deliveryId'] ?? '',
           addressId: doc['addressId'] ?? '',
-          totalCost: doc['totalCost'] ?? 0,
+          //totalCost: doc['totalCost'] ?? 0,
+          totalCost: (doc['totalCost'] ?? 0).toDouble(), // Cast to double
           createdAt: createdAt,
           status: doc['status'] ?? '',
         );

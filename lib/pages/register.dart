@@ -84,7 +84,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     Mylocation location;
 
-    getLocation().then((data) {
+    L().getLocation().then((data) {
       location = data;
       // print('latitude:  ${location.lat}');
       //print('longtude:  ${location.long}');
@@ -321,8 +321,7 @@ class _RegisterState extends State<Register> {
                         // Navigator.pop(context);
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) =>  Wrapper()),
+                          MaterialPageRoute(builder: (context) => Wrapper()),
                         );
                       } catch (error) {
                         ScaffoldMessenger.of(context).showSnackBar(

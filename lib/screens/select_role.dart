@@ -1,3 +1,5 @@
+import 'package:delivery/pages/register.dart';
+import 'package:delivery/pages/registerShope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:delivery/ui/admin/components/text_custom.dart';
@@ -43,33 +45,35 @@ class SelectRoleScreen extends StatelessWidget {
               const SizedBox(height: 30.0),
               _BtnRol(
                 svg: 'assets/svg/restaurante.svg',
-                text: 'shop Admin',
+                text: ' as Shop Admin',
                 color1: ColorsFrave.primaryColor.withOpacity(.2),
                 color2: Colors.greenAccent.withOpacity(.1),
                 onPressed: () => {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => AdminHome(),
+                      //builder: (context) => AdminHome(),
+                      builder: (context) => const RegisterShopeInfo(),
                     ),
                   )
                 },
               ),
               _BtnRol(
                 svg: 'assets/svg/bussiness-man.svg',
-                text: 'Client',
+                text: 'as Customer',
                 color1: const Color(0xffFE6488).withOpacity(.2),
                 color2: Colors.amber.withOpacity(.1),
                 onPressed: () => {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ClientHomeScreen(),
+                      //  builder: (context) => ClientHomeScreen(),
+                      builder: (context) => const Register(),
                     ),
                   )
                 },
               ),
               _BtnRol(
                 svg: 'assets/svg/delivery-bike.svg',
-                text: 'Delivery',
+                text: 'as Delivery',
                 color1: const Color(0xff8956FF).withOpacity(.2),
                 color2: Colors.purpleAccent.withOpacity(.1),
                 // onPressed: () => Navigator.pushAndRemoveUntil(context, routeFrave(page: DeliveryHomeScreen()), (route) => false),

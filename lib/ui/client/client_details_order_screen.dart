@@ -72,7 +72,7 @@ class ClientDetailsOrderScreen extends StatelessWidget {
                   : ColorsFrave.secundaryColor),
             ),
           ),
-        ],  
+        ],
       ),
       body: Column(
         children: [
@@ -131,7 +131,8 @@ class ClientDetailsOrderScreen extends StatelessWidget {
                                   //         '')
                                   //     ? '${Environment.endpointBase}${orderClient.imageDelivery}'
                                   //     : '${Environment.endpointBase}without-image.png')
-                                  image: AssetImage('images/deliveryMan.jpg'))),
+                                  image: AssetImage(
+                                      'assets/images/deliveryMan.jpg'))),
                         ),
                         const SizedBox(width: 10.0),
                         TextCustom(

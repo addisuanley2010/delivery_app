@@ -102,7 +102,8 @@ class AuthService {
       String? houseNumber,
       String? friendlyAddress,
       String? kebele,
-      String? region}) async {
+      String? region,
+      String? addressId}) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -121,6 +122,7 @@ class AuthService {
           friendlyAddress,
           imageUrlAddress,
           houseNumber,
+          addressId,
         );
       } else {
         print('unuble to create account');
@@ -143,3 +145,6 @@ class AuthService {
     }
   }
 }
+
+
+//get admin personal infor
