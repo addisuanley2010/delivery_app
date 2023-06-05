@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/pages/home.dart';
+import 'package:delivery/pages/registerShope.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:delivery/ui/admin/components/item_account.dart';
 import 'package:delivery/ui/admin/profile/change_password_screen.dart';
@@ -164,10 +165,11 @@ class ProfileClientScreen extends StatelessWidget {
                         icon: Icons.description_outlined,
                         colorIcon: 0xff458bff,
                       ),
-                      const ItemAccount(
+                     const ItemAccount(
                         text: 'Help',
                         icon: Icons.help_outline,
                         colorIcon: 0xff4772e6,
+                           
                       ),
                       const Divider(),
                       ItemAccount(

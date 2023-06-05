@@ -22,9 +22,10 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users?>(context);
-    String role = '';
+    //String role = '';
 
     if (user == null) {
+      print('at wraper   user:null');
       return const Home();
     } else {
       //get role
@@ -39,8 +40,10 @@ class _WrapperState extends State<Wrapper> {
               if (snapshot.hasData) {
                 // Data is available, use it
                 UserData userData = snapshot.data!;
-                role = userData.role;
+                String role = userData.role;
+                print(role);
                 if (role == 'admin') {
+                  print('home admin called');
                   return AdminHome();
                 } else if (role == 'user') {
                   return ClientHomeScreen();
@@ -48,6 +51,8 @@ class _WrapperState extends State<Wrapper> {
                   return DeliveryHomeScreen();
                 }
               } else if (snapshot.hasError) {
+                print(
+                    'error ocured while fetching customer data,may be undefine filed mapping');
                 // return const Scaffold(
                 //     backgroundColor: Colors.white54, body: Text('loading...'));
                 return const Home();

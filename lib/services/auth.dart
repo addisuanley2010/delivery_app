@@ -75,8 +75,8 @@ class AuthService {
           email: email, password: password);
       User user = result.user!;
       if (user != null) {
-
-        await DatabaseService(uid: uid!).addNewDelivery(name, phone, email,address,imageUrl,user.uid);//shop
+        await DatabaseService(uid: uid!).addNewDelivery(
+            name, phone, email, address, imageUrl, user.uid); //shop
         return "registered successfully!";
       } else {
         return "not registerd";
@@ -89,8 +89,52 @@ class AuthService {
     }
   }
 
+  // register  Admin/Shopes
+  Future registerAdmin(
+      {String? name,
+      String? phone,
+      String? imageUrlLiscence,
+      String? zone,
+      String? wereda,
+      required String password,
+      required String email,
+      String? imageUrlAddress,
+      String? houseNumber,
+      String? friendlyAddress,
+      String? kebele,
+      String? region}) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user!;
+
+      if (user != null) {
+        await DatabaseService(uid: user.uid).updateAdminData(
+          name!,
+          email,
+          phone!,
+          imageUrlLiscence!,
+          zone!,
+          wereda!,
+          region,
+          kebele,
+          friendlyAddress,
+          imageUrlAddress,
+          houseNumber,
+        );
+      } else {
+        print('unuble to create account');
+      }
+      return _userFromFirebaseUser(user);
+    } catch (error) {
+      print('error while creating account : $error');
+
+      return null;
+    }
+  }
+
   // sign out
-  Future  signOut() async {
+  Future signOut() async {
     try {
       return await _auth.signOut();
     } catch (error) {
