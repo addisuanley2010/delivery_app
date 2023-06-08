@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:chapasdk/chapasdk.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/cartModel.dart';
@@ -10,6 +11,19 @@ import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+//{ "amount":"1000",
+// "currency": "ETB",
+// "email": "aemro@gmail.com",
+// "first_name": "aemro",
+// "last_name": "enyew",
+// "phone_number": "0930375845",
+// "tx_ref": "chewatatest-1992",
+// "callback_url": "https://webhook.site/077164d6-29cb-40df-ba29-8a00e59a7e60",
+// "return_url": "https://www.google.com/",
+// "customization[title]": "Payment for my favourite merchant",
+// "customization[description]": "I love online payments."
+// }
+//token== secrete key
 
 class CartClientScreen extends StatelessWidget {
   const CartClientScreen({super.key});
@@ -18,7 +32,7 @@ class CartClientScreen extends StatelessWidget {
     //final cartBloc = BlocProvider.of<CartBloc>(context);
     // final cartController = Provider.of<CartController>(context);
     final user = Provider.of<Users>(context);
-
+    print('chapa done at this');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -299,26 +313,51 @@ class CartClientScreen extends StatelessWidget {
                             ? ColorsFrave.primaryColor
                             : ColorsFrave.secundaryColor,
                         onPressed: () async {
-                          dynamic response = await Chapa.paymentParameters(
-                            context: context, // context
-                            publicKey:
-                                'CHAPUBK_TEST-nXneuyrO9fclPHri2otEePg7TUdnxMrn',
-                            currency: 'etb',
-                            amount: '300',
-                            email: 'xyz@gmail.com',
-                            phone: '911223344',
-                            firstName: 'Aemro',
-                            lastName: 'Enyew',
-                            txRef: 'Aemro -1',
-                            title: 'test-1',
-                            desc: 'desc',
-                            namedRouteFallBack:
-                                '/checkoutPage', // fall back route name
-                          );
-                          print(response);
-                          // ignore: use_build_context_synchronously
-                          Navigator.pushReplacement(
-                              context, routeFrave(page: CheckOutScreen()));
+                          try {
+                            dynamic response = await Chapa.paymentParameters(
+                              context: context, // context
+                              publicKey:
+                                  'CHASECK_TEST-LuyPQHmIruZaX970hr0f1PoUNxSSDGUl',
+                              currency: 'ETB',
+                              amount: '60',
+                              email: 'aemroenyew@gmail.com',
+                              phone: '930223344',
+                              firstName: 'awe',
+                              lastName: 'desie',
+                              txRef: 'Aemro -2006',
+                              title: 'test-3',
+                              desc: 'desc',
+                              namedRouteFallBack:
+                                  '/checkoutPage', // fall back route name
+                            );
+                            print('hello try done');
+
+                            //print(response.status);
+                            //print(response.toString());
+//{ "amount":"1000",
+// "currency": "ETB",
+// "email": "aemro@gmail.com",
+// "first_name": "aemro",
+// "last_name": "enyew",
+// "phone_number": "0930375845",
+// "tx_ref": "chewatatest-1992",
+// "callback_url": "https://webhook.site/077164d6-29cb-40df-ba29-8a00e59a7e60",
+// "return_url": "https://www.google.com/",
+// "customization[title]": "Payment for my favourite merchant",
+// "customization[description]": "I love online payments."
+// }
+//token== secrete key
+                            // Map<String, dynamic> responseMap = jsonDecode(response);
+                            // print(responseMap);
+                            // ignore: use_build_context_synchronously
+                            // Navigator.pushReplacement(
+                            //     context, routeFrave(page: CheckOutScreen()));
+                          } catch (error) {
+                            print('sad  catch done');
+                            print('error= $error');
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Error: $error')));
+                          }
                         },
                       )
                     ],
