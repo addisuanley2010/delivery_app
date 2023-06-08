@@ -197,7 +197,7 @@ class _CheckoutPaymentMethods extends StatelessWidget {
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       //image: NetworkImage('${Environment.endpointBase}${listProductDetails[i].picture}')
-                      image: AssetImage('Logo/chapa.jpg'),
+                      image: AssetImage('assets/Logo/chapa.jpg'),
                     ),
                   ),
                 ),
