@@ -32,7 +32,7 @@ class CartClientScreen extends StatelessWidget {
     //final cartBloc = BlocProvider.of<CartBloc>(context);
     // final cartController = Provider.of<CartController>(context);
     final user = Provider.of<Users>(context);
-
+    print('chapa done at this');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
