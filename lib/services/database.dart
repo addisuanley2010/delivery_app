@@ -73,7 +73,9 @@ class DatabaseService {
       'phone': phone,
       'address': address,
       'imageUrl': imageUrl,
-      'role': 'user'
+      'role': 'user',
+      'status': 'approved',
+      'createdAt': FieldValue.serverTimestamp(),
     });
   }
 
@@ -109,7 +111,8 @@ class DatabaseService {
       'role': 'admin',
       'address': kebele,
       'addressId': addressId,
-      'status': 'pending'
+      'status': 'pending',
+      'createdAt': FieldValue.serverTimestamp(),
     });
   }
 

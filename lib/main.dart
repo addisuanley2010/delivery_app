@@ -3,6 +3,7 @@ import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/pages/registerAddress.dart';
 import 'package:delivery/pages/registerEmailAndPassword.dart';
 import 'package:delivery/ui/client/check_out_screen.dart';
+import 'package:delivery/ui/client/guestPage.dart';
 import 'firebase_options.dart';
 import 'package:delivery/screens/wrapper.dart';
 import 'package:delivery/pages/registerShope.dart';
@@ -51,9 +52,8 @@ class MyApp extends StatelessWidget {
               image:
                   DecorationImage(image: AssetImage('assets/images/bg2.png'))),
           // child: const RegisterShopeInfo()),
-          child: Wrapper()),
-
-      // child: const CheckOutScreen()),
+        //  child: Wrapper()),
+          child: GuestHomeScreen()),
       routes: {
         // '/': (context) => const Wrapper(),
         '/checkoutPage': (context) => const CheckOutScreen(),
@@ -63,4 +63,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

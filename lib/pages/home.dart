@@ -1,3 +1,4 @@
+import 'package:delivery/pages/agreement.dart';
 import 'package:delivery/pages/login.dart';
 import 'package:delivery/screens/select_role.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +55,7 @@ class _HomeState extends State<Home> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             // builder: (context) => const Register(),
-                            builder: (context) => const SelectRoleScreen(),
-
-                            
+                            builder: (context) => LicenseAgreementPage(),
                           ),
                         );
                       },

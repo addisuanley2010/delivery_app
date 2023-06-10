@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/location_model.dart';
 import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
+import 'package:delivery/services/auth.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/client/Client_cart_screen.dart';
@@ -14,12 +16,38 @@ import 'package:delivery/ui/client/component/shimmer_frave.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:delivery/ui/client/details_product_screen.dart';
 import 'package:delivery/ui/client/search_for_category_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'component/date_custom.dart';
 
 class ClientHomeScreen extends StatelessWidget {
   ClientHomeScreen({super.key});
+
+  final AuthService _auth = AuthService();
+  late String name;
+  late String email;
+  late String imageUrl;
+  late String status = 'approved';
+
+  Stream<void> getPersonalInformationStream() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      final customerRef = FirebaseFirestore.instance
+          .collection('customers')
+          .doc(currentUser.uid);
+
+      return customerRef.snapshots().map((customerSnapshot) {
+        final customerData = customerSnapshot.data() as Map<String, dynamic>;
+        name = customerData['name'];
+        email = customerData['email'];
+        imageUrl = customerData['imageUrl'];
+        status = customerData['status'];
+      });
+    }
+
+    return Stream.empty(); // Return an empty stream if currentUser is null
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,173 +68,221 @@ class ClientHomeScreen extends StatelessWidget {
       print('here place longtude:  ${location.long}');
     });
     print('address new = ${addressController.address.name}');
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          physics: const BouncingScrollPhysics(),
-          children: [
-            const SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 45,
-                      width: 45,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            //  '${Environment.endpointBase}${authBloc.state.user!.image}'))),
-                            image: AssetImage('assets/images/bg.png'),
-                          )),
-                    ),
-                    const SizedBox(width: 8.0),
-                    TextCustom(
-                        text: "${DateCustom.getDateFrave()} , Aemro client",
-                        fontSize: 17,
-                        color: ColorsFrave.secundaryColor),
-                  ],
-                ),
-                InkWell(
-                  onTap: () => Navigator.pushReplacement(
-                      context, routeFrave(page: const CartClientScreen())),
-                  child: Stack(
+        backgroundColor: Colors.white,
+        body: StreamBuilder<void>(
+          stream: getPersonalInformationStream(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              print('error occured while fetching');
+              print(status);
+              print(snapshot.error);
+              return const Center(child: Text('Error loading data'));
+            } else {
+              if (status == 'approved') {
+                return SafeArea(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    physics: const BouncingScrollPhysics(),
                     children: [
-                      const Icon(Icons.shopping_bag_outlined, size: 30),
-                      Positioned(
-                          right: 0,
-                          bottom: 5,
-                          child: Container(
-                              height: 20,
-                              width: 15,
-                              decoration: const BoxDecoration(
-                                  color: Color(0xff0C6CF2),
-                                  shape: BoxShape.circle),
-                              child: Center(
+                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 45,
+                                width: 45,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      //  '${Environment.endpointBase}${authBloc.state.user!.image}'))),
+                                      image: AssetImage('assets/images/bg.png'),
+                                    )),
+                              ),
+                              const SizedBox(width: 8.0),
+                              TextCustom(
+                                  text:
+                                      "${DateCustom.getDateFrave()} , Aemro client",
+                                  fontSize: 17,
+                                  color: ColorsFrave.secundaryColor),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () => Navigator.pushReplacement(context,
+                                routeFrave(page: const CartClientScreen())),
+                            child: Stack(
+                              children: [
+                                const Icon(Icons.shopping_bag_outlined,
+                                    size: 30),
+                                Positioned(
+                                    right: 0,
+                                    bottom: 5,
+                                    child: Container(
+                                        height: 20,
+                                        width: 15,
+                                        decoration: const BoxDecoration(
+                                            color: Color(0xff0C6CF2),
+                                            shape: BoxShape.circle),
+                                        child: Center(
+                                            child:
+                                                //BlocBuilder<CartBloc, CartState>(builder: (context, state) =>
+                                                Consumer<CartController>(
+                                                    builder: (context,
+                                                            cartController,
+                                                            child) =>
+                                                        TextCustom(
+                                                            //text: state.quantityCart.toString(),
+                                                            text:
+                                                                '${cartController.items.length} Items',
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 15))))),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Padding(
+                          padding: EdgeInsets.only(right: 50.0),
+                          child: TextCustom(
+                              text: 'What do you want buy today?',
+                              fontSize: 28,
+                              maxLine: 2,
+                              fontWeight: FontWeight.w500)),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey[300]!),
+                                borderRadius: BorderRadius.circular(15.0)),
+                            child: const Icon(Icons.place_outlined,
+                                size: 38, color: Colors.grey),
+                          ),
+                          const SizedBox(width: 10.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const TextCustom(text: 'Address'),
+                              InkWell(
+                                  onTap: () => {},
                                   child:
-                                      //BlocBuilder<CartBloc, CartState>(builder: (context, state) =>
-                                      Consumer<CartController>(
-                                          builder: (context, cartController,
-                                                  child) =>
-                                              TextCustom(
-                                                  //text: state.quantityCart.toString(),
-                                                  text:
-                                                      '${cartController.items.length} Items',
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15))))),
+                                      // BlocBuilder<UserBloc, UserState>( builder: (context, state) =>
+                                      const TextCustom(
+                                    //  text: "(state.addressName != '') f ? state.addressName  : 'without direction'",
+                                    text: "Addis Abeba",
+                                    color: ColorsFrave.primaryColor,
+                                    fontSize: 17,
+                                    maxLine: 1,
+                                  )),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      StreamBuilder<List<Catagory>>(
+                        stream: Category().catagory1,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Catagory>> snapshot) {
+                          final List<Catagory>? category = snapshot.data;
+                          // print(category);
+
+                          return !snapshot.hasData
+                              ? const ShimmerFrave()
+                              : Container(
+                                  height: 45,
+                                  child: ListView.builder(
+                                    physics: const BouncingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (BuildContext context, i) =>
+                                        InkWell(
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          routeFrave(
+                                              page: SearchForCategoryScreen(
+                                                  categoryId: category[i].id,
+                                                  category: category[i].name))),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin:
+                                            const EdgeInsets.only(right: 10.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xff5469D4)
+                                                .withOpacity(.1),
+                                            borderRadius:
+                                                BorderRadius.circular(25.0)),
+                                        child:
+                                            TextCustom(text: category![i].name),
+                                        //child: Text('catagory'),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          TextCustom(
+                              text: 'Populer Items',
+                              fontSize: 21,
+                              fontWeight: FontWeight.w500),
+                          TextCustom(
+                              text: 'See All',
+                              color: ColorsFrave.primaryColor,
+                              fontSize: 17)
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      _ListProducts(addressId: addressController.address.id),
+                      const SizedBox(height: 20.0),
                     ],
                   ),
-                )
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            const Padding(
-                padding: EdgeInsets.only(right: 50.0),
-                child: TextCustom(
-                    text: 'What do you want buy today?',
-                    fontSize: 28,
-                    maxLine: 2,
-                    fontWeight: FontWeight.w500)),
-            const SizedBox(height: 20.0),
-            Row(
-              children: [
-                Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey[300]!),
-                      borderRadius: BorderRadius.circular(15.0)),
-                  child: const Icon(Icons.place_outlined,
-                      size: 38, color: Colors.grey),
-                ),
-                const SizedBox(width: 10.0),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const TextCustom(text: 'Address'),
-                    InkWell(
-                        onTap: () => {},
-                        child:
-                            // BlocBuilder<UserBloc, UserState>( builder: (context, state) =>
-                            const TextCustom(
-                          //  text: "(state.addressName != '') f ? state.addressName  : 'without direction'",
-                          text: "Addis Abeba",
-                          color: ColorsFrave.primaryColor,
-                          fontSize: 17,
-                          maxLine: 1,
-                        )),
-                  ],
-                )
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            StreamBuilder<List<Catagory>>(
-              stream: Category().catagory1,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<Catagory>> snapshot) {
-                final List<Catagory>? category = snapshot.data;
-                // print(category);
-
-                return !snapshot.hasData
-                    ? const ShimmerFrave()
-                    : Container(
-                        height: 45,
-                        child: ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (BuildContext context, i) => InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () => Navigator.push(
-                                context,
-                                routeFrave(
-                                    page: SearchForCategoryScreen(
-                                        categoryId: category[i].id,
-                                        category: category[i].name))),
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(right: 10.0),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              decoration: BoxDecoration(
-                                  color: Color(0xff5469D4).withOpacity(.1),
-                                  borderRadius: BorderRadius.circular(25.0)),
-                              child: TextCustom(text: category![i].name),
-                              //child: Text('catagory'),
-                            ),
-                          ),
+                );
+              } else {
+                return SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 200.0),
+                    child: Center(
+                        child: Column(
+                      children: const [
+                        TextCustom(
+                          text: 'please waite until allows you  ',
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
                         ),
-                      );
-              },
-            ),
-            const SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                TextCustom(
-                    text: 'Populer Items',
-                    fontSize: 21,
-                    fontWeight: FontWeight.w500),
-                TextCustom(
-                    text: 'See All',
-                    color: ColorsFrave.primaryColor,
-                    fontSize: 17)
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            _ListProducts(addressId: addressController.address.id),
-            const SizedBox(height: 20.0),
-          ],
+                        TextCustom(
+                          text: ' you are blocked for some reason ',
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                      ],
+                    )),
+                  ),
+                );
+              } // end of safe area
+            } //end of else // every thing is well
+          },
         ),
-      ),
-      bottomNavigationBar: const BottomNavigationFrave(0),
-    );
+        bottomNavigationBar: const BottomNavigationFrave(0)); // end of scaffold
   }
 }
 

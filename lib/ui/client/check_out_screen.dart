@@ -215,6 +215,7 @@ class _CheckoutPaymentMethods extends StatelessWidget {
 class _CheckoutAddress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('check out after payment done sucess');
     return Container(
       padding: const EdgeInsets.all(15.0),
       height: 95,
