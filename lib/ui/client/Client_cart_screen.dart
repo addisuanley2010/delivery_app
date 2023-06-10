@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'package:chapasdk/chapasdk.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/user.dart';
+import 'package:delivery/services/auth.dart';
 import 'package:delivery/ui/client/check_out_screen.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/btn_frave.dart';
 import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 //{ "amount":"1000",
@@ -20,19 +23,52 @@ import 'package:provider/provider.dart';
 // "tx_ref": "chewatatest-1992",
 // "callback_url": "https://webhook.site/077164d6-29cb-40df-ba29-8a00e59a7e60",
 // "return_url": "https://www.google.com/",
-// "customization[title]": "Payment for my favourite merchant",
+// "customization[title]": "Payment ",
 // "customization[description]": "I love online payments."
 // }
 //token== secrete key
 
-class CartClientScreen extends StatelessWidget {
+class CartClientScreen extends StatefulWidget {
   const CartClientScreen({super.key});
+
   @override
+  State<CartClientScreen> createState() => _CartClientScreenState();
+}
+
+class _CartClientScreenState extends State<CartClientScreen> {
+  @override
+  final AuthService _auth = AuthService();
+  String name = 'getch';
+  String email = 'getch@gmail.com';
+  //String imageUrl = '';
+  String status = 'approved';
+  String phone = '0930375845';
+
+  void getcustomer() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    print(currentUser!.uid);
+    final customerRef =
+        FirebaseFirestore.instance.collection('customers').doc(currentUser.uid);
+
+    customerRef.snapshots().map((customerSnapshot) {
+      final customerData = customerSnapshot.data() as Map<String, dynamic>;
+      name = customerData['name'];
+      email = customerData['email'];
+      print(name);
+      print(email);
+      // imageUrl = customerData['imageUrl'];
+      phone = customerData['phone'];
+    });
+  }
+
   Widget build(BuildContext context) {
     //final cartBloc = BlocProvider.of<CartBloc>(context);
     // final cartController = Provider.of<CartController>(context);
     final user = Provider.of<Users>(context);
-    print('chapa done at this');
+    if (user.uid != null) {
+      getcustomer();
+    }
+    print('chapa done at this here and there');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -319,14 +355,15 @@ class CartClientScreen extends StatelessWidget {
                               publicKey:
                                   'CHASECK_TEST-LuyPQHmIruZaX970hr0f1PoUNxSSDGUl',
                               currency: 'ETB',
-                              amount: '60',
-                              email: 'aemroenyew@gmail.com',
-                              phone: '930223344',
-                              firstName: 'awe',
-                              lastName: 'desie',
-                              txRef: 'Aemro -2006',
-                              title: 'test-3',
-                              desc: 'desc',
+                              amount: cartController.totalAmount.toString(),
+                              email: email,
+                              phone: phone,
+                              firstName: name,
+                              lastName: 'common',
+                              txRef:
+                                  'chewatatest-${cartController.totalAmount.toString()} ',
+                              title: 'test',
+                              desc: 'payment for delivery',
                               namedRouteFallBack:
                                   '/checkoutPage', // fall back route name
                             );

@@ -1,19 +1,24 @@
 import 'package:delivery/constants/constants.dart';
+import 'package:delivery/models/user.dart';
+import 'package:delivery/pages/home.dart';
 import 'package:delivery/ui/client/Client_cart_screen.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
+import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:delivery/ui/client/profile_client_screen.dart';
 import 'package:delivery/ui/client/search_client_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavigationFrave extends StatelessWidget {
   final int index;
-
   const BottomNavigationFrave(this.index, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<Users?>(context);
+
     return Container(
         height: 55,
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -40,13 +45,24 @@ class BottomNavigationFrave extends StatelessWidget {
                   context, routeFrave(page: SearchClientScreen())),
             ),
             _ItemButton(
-              i: 2,
-              index: index,
-              iconData: Icons.local_mall_outlined,
-              text: 'Cart',
-              onPressed: () => Navigator.pushReplacement(
-                  context, routeFrave(page: const CartClientScreen())),
-            ),
+                i: 2,
+                index: index,
+                iconData: Icons.local_mall_outlined,
+                text: 'Cart',
+                onPressed: () {
+                  //print(user1);
+                  //if (user1=='') {
+                  Navigator.pushReplacement(
+                      context, routeFrave(page: const CartClientScreen()));
+                  // } else {
+                  //   print('else');
+                  //   modalSuccess(
+                  //       context,
+                  //       'please login first',
+                  //       () => Navigator.pushReplacement(
+                  //           context, routeFrave(page: const Home())));
+                  // }
+                }),
             _ItemButton(
               i: 3,
               index: index,

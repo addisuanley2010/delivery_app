@@ -71,13 +71,6 @@ class SelectRoleScreen extends StatelessWidget {
                   )
                 },
               ),
-              _BtnRol(
-                svg: 'assets/svg/delivery-bike.svg',
-                text: 'as Delivery',
-                color1: const Color(0xff8956FF).withOpacity(.2),
-                color2: Colors.purpleAccent.withOpacity(.1),
-                // onPressed: () => Navigator.pushAndRemoveUntil(context, routeFrave(page: DeliveryHomeScreen()), (route) => false),
-              )
             ],
           ),
         ),
