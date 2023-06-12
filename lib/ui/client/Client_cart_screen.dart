@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:chapasdk/chapasdk.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/auth.dart';
-import 'package:delivery/ui/client/check_out_screen.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/btn_frave.dart';
@@ -371,19 +369,7 @@ class _CartClientScreenState extends State<CartClientScreen> {
 
                             //print(response.status);
                             //print(response.toString());
-//{ "amount":"1000",
-// "currency": "ETB",
-// "email": "aemro@gmail.com",
-// "first_name": "aemro",
-// "last_name": "enyew",
-// "phone_number": "0930375845",
-// "tx_ref": "chewatatest-1992",
-// "callback_url": "https://webhook.site/077164d6-29cb-40df-ba29-8a00e59a7e60",
-// "return_url": "https://www.google.com/",
-// "customization[title]": "Payment for my favourite merchant",
-// "customization[description]": "I love online payments."
-// }
-//token== secrete key
+
                             // Map<String, dynamic> responseMap = jsonDecode(response);
                             // print(responseMap);
                             // ignore: use_build_context_synchronously

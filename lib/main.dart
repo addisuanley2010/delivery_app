@@ -1,7 +1,9 @@
 import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/cartModel.dart';
+import 'package:delivery/pages/complains.dart';
 import 'package:delivery/pages/registerAddress.dart';
 import 'package:delivery/pages/registerEmailAndPassword.dart';
+import 'package:delivery/pages/splashScreen.dart';
 import 'package:delivery/ui/client/check_out_screen.dart';
 import 'package:delivery/ui/client/guestPage.dart';
 import 'firebase_options.dart';
@@ -51,9 +53,10 @@ class MyApp extends StatelessWidget {
           decoration: const BoxDecoration(
               image:
                   DecorationImage(image: AssetImage('assets/images/bg2.png'))),
-          // child: const RegisterShopeInfo()),
-        //  child: Wrapper()),
-          child: GuestHomeScreen()),
+         // child: ComplaintForm()),
+      //  child: Wrapper()),
+      //child: GuestHomeScreen()),
+      child: SplashScreen()),
       routes: {
         // '/': (context) => const Wrapper(),
         '/checkoutPage': (context) => const CheckOutScreen(),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/user.dart';
+import 'package:delivery/pages/complains.dart';
 import 'package:delivery/pages/home.dart';
 import 'package:delivery/pages/registerShope.dart';
 import 'package:delivery/services/auth.dart';
@@ -142,10 +143,18 @@ class ProfileClientScreen extends StatelessWidget {
                         onPressed: () => Navigator.push(
                             context, routeFrave(page: ClientOrdersScreen())),
                       ),
+                      //ComplaintForm
                       const ItemAccount(
                         text: 'Dark mode',
                         icon: Icons.dark_mode_rounded,
                         colorIcon: 0xff051E2F,
+                      ),
+                      ItemAccount(
+                        text: 'your complains',
+                        icon: Icons.dark_mode_rounded,
+                        colorIcon: 0xff051E2F,
+                        onPressed: () => Navigator.push(
+                            context, routeFrave(page: ComplaintForm())),
                       ),
                       const SizedBox(height: 15.0),
                       const TextCustom(text: 'Personal', color: Colors.grey),
@@ -165,11 +174,10 @@ class ProfileClientScreen extends StatelessWidget {
                         icon: Icons.description_outlined,
                         colorIcon: 0xff458bff,
                       ),
-                     const ItemAccount(
+                      const ItemAccount(
                         text: 'Help',
                         icon: Icons.help_outline,
                         colorIcon: 0xff4772e6,
-                           
                       ),
                       const Divider(),
                       ItemAccount(

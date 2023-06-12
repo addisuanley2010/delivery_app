@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/models/location_model.dart';
+import 'package:delivery/pages/complains.dart';
 import 'package:delivery/pages/registerShope.dart';
 import 'package:delivery/services/locationService.dart';
 import 'package:delivery/ui/admin/delivery/list_deliverys_screen.dart';
@@ -178,6 +179,14 @@ class AdminHome extends StatelessWidget {
                           );
                         }),
 
+                    ItemAccount(
+                      text: 'your complains',
+                      icon: Icons.dark_mode_rounded,
+                      colorIcon: 0xff051E2F,
+                      onPressed: () => Navigator.push(
+                          context, routeFrave(page: ComplaintForm())),
+                    ),
+
                     const SizedBox(height: 15.0),
                     const TextCustom(text: 'Personal', color: Colors.grey),
                     const SizedBox(height: 10.0),
@@ -244,8 +253,6 @@ class AdminHome extends StatelessWidget {
                 ),
               );
             }
-
-            
           } //end of else // every thing is well
         },
       ),

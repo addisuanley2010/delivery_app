@@ -1,13 +1,10 @@
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/addressModel.dart';
-import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/location_model.dart';
 import 'package:delivery/models/product.dart';
-import 'package:delivery/models/user.dart';
 import 'package:delivery/pages/home.dart';
 import 'package:delivery/services/database.dart';
 import 'package:delivery/services/locationService.dart';
-import 'package:delivery/ui/client/Client_cart_screen.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/product.dart';
 import 'package:delivery/ui/client/component/shimmer_frave.dart';
@@ -17,9 +14,6 @@ import 'package:delivery/ui/client/search_for_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'component/date_custom.dart';
-import 'package:delivery/ui/client/client_home.dart';
-import 'package:delivery/ui/client/profile_client_screen.dart';
-import 'package:delivery/ui/client/search_client_screen.dart';
 
 class GuestHomeScreen extends StatelessWidget {
   GuestHomeScreen({super.key});
@@ -30,7 +24,7 @@ class GuestHomeScreen extends StatelessWidget {
     // final user = Provider.of<Users?>(context);
     //final cartController = Provider.of<CartController>(context);
     final addressController = Provider.of<AddressController>(context);
-
+    print('guest house');
     Mylocation location;
 
     L().getLocation().then((data) {
@@ -51,40 +45,25 @@ class GuestHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  children: [
-                    Container(
-                      height: 45,
-                      width: 45,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            //  '${Environment.endpointBase}${authBloc.state.user!.image}'))),
-                            image: AssetImage('assets/images/bg.png'),
-                          )),
-                    ),
+                  children: const [
+                    // Container(
+                    //   height: 45,
+                    //   width: 45,
+                    //   decoration: const BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       image: DecorationImage(
+                    //         fit: BoxFit.cover,
+                    //         //  '${Environment.endpointBase}${authBloc.state.user!.image}'))),
+                    //         image: AssetImage('assets/images/bg.png'),
+                    //       )),
+                    // ),
                     const SizedBox(width: 8.0),
-                    TextCustom(
-                        text: "${DateCustom.getDateFrave()} , customer",
-                        fontSize: 17,
-                        color: ColorsFrave.secundaryColor),
+                    // TextCustom(
+                    //     text: "${DateCustom.getDateFrave()} , customer",
+                    //     fontSize: 17,
+                    //     color: ColorsFrave.secundaryColor),
                   ],
                 ),
-                InkWell(
-                  onTap: () => Navigator.pushReplacement(
-                      context, routeFrave(page: const Home())),
-                  child: Row(
-                    children: const [
-                      Icon(Icons.person, size: 40),
-                      TextCustom(
-                          //text: state.quantityCart.toString(),
-                          text: ' login',
-                          color: ColorsFrave.secundaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ],
-                  ),
-                )
               ],
             ),
             const SizedBox(height: 20.0),
@@ -118,7 +97,7 @@ class GuestHomeScreen extends StatelessWidget {
                             // BlocBuilder<UserBloc, UserState>( builder: (context, state) =>
                             const TextCustom(
                           //  text: "(state.addressName != '') f ? state.addressName  : 'without direction'",
-                          text: "Addis Abeba",
+                          text: "without address",
                           color: ColorsFrave.primaryColor,
                           fontSize: 17,
                           maxLine: 1,
@@ -173,13 +152,13 @@ class GuestHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 TextCustom(
-                    text: 'Populer Items',
+                    text: 'available Items',
                     fontSize: 21,
                     fontWeight: FontWeight.w500),
-                TextCustom(
-                    text: 'See All',
-                    color: ColorsFrave.primaryColor,
-                    fontSize: 17)
+                // TextCustom(
+                //     text: 'See All',
+                //     color: ColorsFrave.primaryColor,
+                //     fontSize: 17)
               ],
             ),
             const SizedBox(height: 20.0),
@@ -233,10 +212,7 @@ class _ListProducts extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20.0)),
                   child: GestureDetector(
                     onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => DetailsProductScreen(
-                                product: listProduct[i], quantity: 1))),
+                        context, MaterialPageRoute(builder: (_) => Home())),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -302,7 +278,8 @@ class BottomNavigationFraveGuest extends StatelessWidget {
               iconData: Icons.search,
               text: 'Search',
               onPressed: () =>
-                  Navigator.pushReplacement(context, routeFrave(page: Home())),
+                  //Navigator.pushReplacement(context, routeFrave(page: Home())),
+                  Navigator.push(context, routeFrave(page: Home())),
             ),
             _ItemButton(
                 i: 2,
@@ -312,8 +289,7 @@ class BottomNavigationFraveGuest extends StatelessWidget {
                 onPressed: () {
                   //print(user1);
                   //if (user1=='') {
-                  Navigator.pushReplacement(
-                      context, routeFrave(page: const Home()));
+                  Navigator.push(context, routeFrave(page: const Home()));
                   // } else {
                   //   print('else');
                   //   modalSuccess(
@@ -329,7 +305,7 @@ class BottomNavigationFraveGuest extends StatelessWidget {
               iconData: Icons.person_outline_outlined,
               text: 'Profile',
               onPressed: () =>
-                  Navigator.pushReplacement(context, routeFrave(page: Home())),
+                  Navigator.push(context, routeFrave(page: Home())),
             ),
           ],
         ));
