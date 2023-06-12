@@ -4,9 +4,11 @@ import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/auth.dart';
+import 'package:delivery/ui/client/check_out_screen.dart';
 import 'package:delivery/ui/client/client_home.dart';
 import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/btn_frave.dart';
+import 'package:delivery/ui/client/component/modal_error.dart';
 import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,36 +38,12 @@ class CartClientScreen extends StatefulWidget {
 class _CartClientScreenState extends State<CartClientScreen> {
   @override
   final AuthService _auth = AuthService();
-  String name = 'getch';
-  String email = 'getch@gmail.com';
-  //String imageUrl = '';
-  String status = 'approved';
-  String phone = '0930375845';
-
-  void getcustomer() {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    print(currentUser!.uid);
-    final customerRef =
-        FirebaseFirestore.instance.collection('customers').doc(currentUser.uid);
-
-    customerRef.snapshots().map((customerSnapshot) {
-      final customerData = customerSnapshot.data() as Map<String, dynamic>;
-      name = customerData['name'];
-      email = customerData['email'];
-      print(name);
-      print(email);
-      // imageUrl = customerData['imageUrl'];
-      phone = customerData['phone'];
-    });
-  }
 
   Widget build(BuildContext context) {
     //final cartBloc = BlocProvider.of<CartBloc>(context);
     // final cartController = Provider.of<CartController>(context);
     final user = Provider.of<Users>(context);
-    if (user.uid != null) {
-      getcustomer();
-    }
+
     print('chapa done at this here and there');
     return Scaffold(
       backgroundColor: Colors.white,
@@ -270,21 +248,21 @@ class _CartClientScreenState extends State<CartClientScreen> {
                                                                               i]
                                                                           .productId);
 
-                                                              print(
-                                                                  '${result}');
-                                                              if (result ==
-                                                                  true) {
-                                                                print(
-                                                                    'increase quantity called');
-                                                              } else {
-                                                                // ignore: use_build_context_synchronously
-                                                                modalSuccess(
-                                                                    context,
-                                                                    'can not add above this',
-                                                                    () => Navigator
-                                                                        .pop(
-                                                                            context));
-                                                              }
+                                                              // print(
+                                                              //     '${result}');
+                                                              // if (result ==
+                                                              //     true) {
+                                                              //   print(
+                                                              //       'increase quantity called');
+                                                              // } else {
+                                                              //   // ignore: use_build_context_synchronously
+                                                              //   modalSuccess(
+                                                              //       context,
+                                                              //       'can not add above this',
+                                                              //       () => Navigator
+                                                              //           .pop(
+                                                              //               context));
+                                                              // }
 
                                                               // cartBloc.add(
                                                               //   OnIncreaseQuantityProductToCartEvent(
@@ -347,40 +325,54 @@ class _CartClientScreenState extends State<CartClientScreen> {
                             ? ColorsFrave.primaryColor
                             : ColorsFrave.secundaryColor,
                         onPressed: () async {
-                          try {
-                            dynamic response = await Chapa.paymentParameters(
-                              context: context, // context
-                              publicKey:
-                                  'CHASECK_TEST-LuyPQHmIruZaX970hr0f1PoUNxSSDGUl',
-                              currency: 'ETB',
-                              amount: cartController.totalAmount.toString(),
-                              email: email,
-                              phone: phone,
-                              firstName: name,
-                              lastName: 'common',
-                              txRef:
-                                  'chewatatest-${cartController.totalAmount.toString()} ',
-                              title: 'test',
-                              desc: 'payment for delivery',
-                              namedRouteFallBack:
-                                  '/checkoutPage', // fall back route name
-                            );
-                            print('hello try done');
-
-                            //print(response.status);
-                            //print(response.toString());
-
-                            // Map<String, dynamic> responseMap = jsonDecode(response);
-                            // print(responseMap);
+                          // try {
+                          dynamic result =
+                              await cartController.checkout(user.uid);
+                          if (result == true) {
+                            print('my bag screen : cart added successfully');
                             // ignore: use_build_context_synchronously
-                            // Navigator.pushReplacement(
-                            //     context, routeFrave(page: CheckOutScreen()));
-                          } catch (error) {
-                            print('sad  catch done');
-                            print('error= $error');
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Error: $error')));
+                            modalSuccess(context, 'checked',
+                                () => Navigator.pop(context));
+
+                            // ignore: use_build_context_synchronously
+                            Navigator.pushReplacement(
+                                context, routeFrave(page: CheckOutScreen()));
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            modalError(
+                                context,
+                                'you can not add product $result with this quantity ,'
+                                ' please decrease its amount',
+                                () => Navigator.pop(context));
                           }
+
+                          // dynamic response = await Chapa.paymentParameters(
+                          //   context: context, // context
+                          //   publicKey:
+                          //       'CHASECK_TEST-LuyPQHmIruZaX970hr0f1PoUNxSSDGUl',
+                          //   currency: 'ETB',
+                          //   amount: cartController.totalAmount.toString(),
+                          //   email: email,
+                          //   phone: phone,
+                          //   firstName: name,
+                          //   lastName: 'common',
+                          //   txRef:
+                          //       'chewatatest-${cartController.totalAmount.toString()} ',
+                          //   title: 'test',
+                          //   desc: 'payment for delivery',
+                          //   namedRouteFallBack:
+                          //       '/checkoutPage', // fall back route name
+                          // );
+                          // print('hello try done');
+
+                          // ignore: use_build_context_synchronously
+
+                          // } catch (error) {
+                          //   print('sad  catch done');
+                          //   print('error= $error');
+                          //   ScaffoldMessenger.of(context).showSnackBar(
+                          //       SnackBar(content: Text('Error: $error')));
+                          // }
                         },
                       )
                     ],

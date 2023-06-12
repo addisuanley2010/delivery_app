@@ -53,13 +53,13 @@ class MyApp extends StatelessWidget {
           decoration: const BoxDecoration(
               image:
                   DecorationImage(image: AssetImage('assets/images/bg2.png'))),
-         // child: ComplaintForm()),
-      //  child: Wrapper()),
-      //child: GuestHomeScreen()),
-      child: SplashScreen()),
+          // child: ComplaintForm()),
+          //  child: Wrapper()),
+          //child: GuestHomeScreen()),
+          child: SplashScreen()),
       routes: {
         // '/': (context) => const Wrapper(),
-        '/checkoutPage': (context) => const CheckOutScreen(),
+        '/checkoutPage': (context) => CheckOutScreen(),
         // '/profilePage': (context) => ProfileScreen(),
         // '/settingsPage': (context) => SettingsScreen(),
       },

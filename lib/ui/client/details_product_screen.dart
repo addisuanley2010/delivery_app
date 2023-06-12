@@ -255,7 +255,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                         //   cartBloc.add(
                                         //       OnDecreaseProductQuantityEvent());
                                       }),
-                                  const SizedBox(width: 10.0),
+                                  const SizedBox(width: 7.0),
                                   TextCustom(
                                       text: (index >= 0)
                                           ? cartController.items[index].quantity
@@ -263,7 +263,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                           : cartItem.quantity.toString(),
                                       fontSize: 22,
                                       fontWeight: FontWeight.w500),
-                                  const SizedBox(width: 10.0),
+                                  const SizedBox(width: 7.0),
                                   IconButton(
                                       splashColor: Colors.transparent,
                                       highlightColor:
@@ -278,16 +278,16 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                                 await cartController
                                                     .increaseQuantity(
                                                         cartItem.productId);
-                                            print('${result}');
-                                            if (result == true) {
-                                              print('increase quantity called');
-                                            } else {
-                                              // ignore: use_build_context_synchronously
-                                              modalSuccess(
-                                                  context,
-                                                  'can not add above this quantity',
-                                                  () => Navigator.pop(context));
-                                            }
+                                            // print('${result}');
+                                            // if (result == true) {
+                                            //   print('increase quantity called');
+                                            // } else {
+                                            //   // ignore: use_build_context_synchronously
+                                            //   modalSuccess(
+                                            //       context,
+                                            //       'can not add above this quantity',
+                                            //       () => Navigator.pop(context));
+                                            // }
                                           } else {
                                             cartController.addItem(
                                                 cartItem.productId,

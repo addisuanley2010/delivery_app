@@ -72,15 +72,37 @@ class CartController with ChangeNotifier {
     // Code to place the order goes here
     //print('user id : ${userId}');
     // befor order check if required amount is present in database product table
-    String? finishedItem = await Inventory().checkInventoryFromCart(_items);
+    // String? finishedItem = await Inventory().checkInventoryFromCart(_items);
 
     //print(_items[index].quantity);
-    if (finishedItem == '') {
+    // if (finishedItem == '') {
+    try {
       DatabaseService databaseService = DatabaseService(uid: userId);
       var orderDetailId =
           await databaseService.orderProducts(items, totalAmount);
 
       clear();
+      return true;
+    } catch (e) {
+      print('error while ordering = $e');
+      return false;
+    }
+    // } else {
+    //   print(
+    //       'you can not add product $finishedItem with this quantity , please decrease its amount');
+    //   return finishedItem;
+    // }
+  }
+
+  //check out product
+  Future checkout(String userId) async {
+    // Code to place the order goes here
+    //print('user id : ${userId}');
+    // befor order check if required amount is present in database product table
+    String? finishedItem = await Inventory().checkInventoryFromCart(_items);
+
+    //print(_items[index].quantity);
+    if (finishedItem == '') {
       //print(orderDetailId);
       return true;
     } else {
@@ -96,21 +118,21 @@ class CartController with ChangeNotifier {
     int index = _items.indexWhere((item) => item.productId == id);
     // check if quantity in databse available
 
-    String isAvailabel = await Inventory()
-        .checkInventoryFromIncreaseQuantity(id, _items[index].quantity);
+    // String isAvailabel = await Inventory()
+    //     .checkInventoryFromIncreaseQuantity(id, _items[index].quantity);
 
     //print(_items[index].quantity);
-    if (isAvailabel == 'true') {
-      if (index >= 0) {
-        _items[index].quantity += 1;
-        // print(_items[index].quantity);
-        notifyListeners();
-      }
-      return true;
-    } else {
-      print('you can not add above this quantity , unavaillabe');
-      return false;
+    // if (isAvailabel == 'true') {
+    if (index >= 0) {
+      _items[index].quantity += 1;
+      // print(_items[index].quantity);
+      notifyListeners();
     }
+    return true;
+    // } else {
+    //   print('you can not add above this quantity , unavaillabe');
+    //   return false;
+    // }
   }
 
   void decreaseQuantity(String id) {

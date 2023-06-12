@@ -32,13 +32,17 @@ void modalError(BuildContext context, String text, VoidCallback onPressed) {
                   shape: BoxShape.circle,
                   gradient: LinearGradient(
                       begin: Alignment.centerLeft,
-                      colors: [Colors.white, Color(0xff30d598)])),
+                      colors: [
+                        Colors.white,
+                        Color.fromARGB(255, 218, 22, 113)
+                      ])),
               child: Container(
                 margin: const EdgeInsets.all(10.0),
                 decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Color(0xff15c880)),
-                child: const Icon(FontAwesomeIcons.check,
-                    color: Colors.white, size: 38),
+                    shape: BoxShape.circle,
+                    color: Color.fromARGB(255, 243, 4, 4)),
+                child: const Icon(Icons.error,
+                    color: Color.fromRGBO(58, 56, 56, 1), size: 38),
               ),
             ),
             const SizedBox(height: 35.0),
@@ -54,7 +58,7 @@ void modalError(BuildContext context, String text, VoidCallback onPressed) {
                     color: Color.fromARGB(255, 248, 4, 4),
                     borderRadius: BorderRadius.circular(5.0)),
                 child: const TextCustom(
-                    text: 'Done', color: Colors.white, fontSize: 16),
+                    text: 'cancel', color: Colors.white, fontSize: 16),
               ),
             )
           ],
