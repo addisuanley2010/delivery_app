@@ -1,8 +1,6 @@
 import 'package:delivery/pages/agreement.dart';
 import 'package:delivery/pages/login.dart';
-import 'package:delivery/screens/select_role.dart';
 import 'package:flutter/material.dart';
-import 'package:delivery/pages/register.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

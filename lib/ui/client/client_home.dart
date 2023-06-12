@@ -55,10 +55,6 @@ class ClientHomeScreen extends StatelessWidget {
     final user = Provider.of<Users?>(context);
     //final cartController = Provider.of<CartController>(context);
     final addressController = Provider.of<AddressController>(context);
-    print(addressController.address.lat);
-    print(addressController.address.long);
-    print(addressController.address.name);
-    print(addressController.address.distance);
 
     Mylocation location;
 
@@ -108,7 +104,7 @@ class ClientHomeScreen extends StatelessWidget {
                               const SizedBox(width: 8.0),
                               TextCustom(
                                   text:
-                                      "${DateCustom.getDateFrave()} , Aemro client",
+                                      "${DateCustom.getDateFrave()} , $name client",
                                   fontSize: 17,
                                   color: ColorsFrave.secundaryColor),
                             ],
@@ -240,13 +236,13 @@ class ClientHomeScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
                           TextCustom(
-                              text: 'Populer Items',
+                              text: 'available  Items',
                               fontSize: 21,
                               fontWeight: FontWeight.w500),
-                          TextCustom(
-                              text: 'See All',
-                              color: ColorsFrave.primaryColor,
-                              fontSize: 17)
+                          // TextCustom(
+                          //     text: 'See All',
+                          //     color: ColorsFrave.primaryColor,
+                          //     fontSize: 17)
                         ],
                       ),
                       const SizedBox(height: 20.0),
@@ -263,7 +259,7 @@ class ClientHomeScreen extends StatelessWidget {
                         child: Column(
                       children: const [
                         TextCustom(
-                          text: 'please waite until allows you  ',
+                          text: 'please wait until allows you  ',
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 25,

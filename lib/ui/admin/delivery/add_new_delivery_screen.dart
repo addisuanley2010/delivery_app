@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/auth.dart';
-import 'package:delivery/services/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/constants/constants.dart';

@@ -1,27 +1,55 @@
 import 'package:chapasdk/chapa_payment%20initializer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/constants/constants.dart';
 import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/user.dart';
+import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:delivery/ui/client/component/btn_frave.dart';
+import 'package:delivery/ui/client/component/modal_error.dart';
 import 'package:delivery/ui/client/component/modal_success.dart';
 import 'package:delivery/ui/client/component/text_custom.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:chapasdk/chapasdk.dart';
 
 class CheckOutScreen extends StatelessWidget {
-  const CheckOutScreen({super.key});
+  CheckOutScreen({super.key});
+  String name = 'getch';
+  String email = 'getch@gmail.com';
+  //String imageUrl = '';
+  String status = 'approved';
+  String phone = '0930375845';
+
+  void getcustomer() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    print(currentUser!.uid);
+    final customerRef =
+        FirebaseFirestore.instance.collection('customers').doc(currentUser.uid);
+
+    customerRef.snapshots().map((customerSnapshot) {
+      final customerData = customerSnapshot.data() as Map<String, dynamic>;
+      name = customerData['name'];
+      email = customerData['email'];
+      print(name);
+      print(email);
+      // imageUrl = customerData['imageUrl'];
+      phone = customerData['phone'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users?>(context);
     final cartController = Provider.of<CartController>(context);
-
+    if (user!.uid != null) {
+      getcustomer();
+    }
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: Colors.grey[50],
-        title: const TextCustom(text: 'Checkout', fontWeight: FontWeight.w500),
+        title: const TextCustom(text: 'Order', fontWeight: FontWeight.w500),
         centerTitle: true,
         elevation: 0,
         leadingWidth: 80,
@@ -69,9 +97,38 @@ class CheckOutScreen extends StatelessWidget {
                           ? ColorsFrave.primaryColor
                           : ColorsFrave.secundaryColor,
                       onPressed: () async {
+                        try {
+                          dynamic response = await Chapa.paymentParameters(
+                            context: context, // context
+                            publicKey:
+                                'CHASECK_TEST-LuyPQHmIruZaX970hr0f1PoUNxSSDGUl',
+                            currency: 'ETB',
+                            amount: cartController.totalAmount.toString(),
+                            email: email,
+                            phone: phone,
+                            firstName: name,
+                            lastName: 'common',
+                            txRef:
+                                'chewatatest-${cartController.totalAmount.toString()} ',
+                            title: 'test',
+                            desc: 'payment for delivery',
+                            namedRouteFallBack:
+                                '/checkoutPage', // fall back route name
+                          );
+                          print('hello try done');
+
+                          // Navigator.pushReplacement(
+                          //     context, routeFrave(page: CheckOutScreen()));
+                        } catch (error) {
+                          print('sad  catch done');
+                          print('error= $error');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error: $error')));
+                        }
+
                         if (cartController.items.isNotEmpty) {
                           dynamic result =
-                              await cartController.placeOrder(user!.uid);
+                              await cartController.placeOrder(user.uid);
                           // print('${result}');
                           if (result == true) {
                             print('my bag screen : cart added successfully');
@@ -80,10 +137,10 @@ class CheckOutScreen extends StatelessWidget {
                                 () => Navigator.pop(context));
                           } else {
                             // ignore: use_build_context_synchronously
-                            modalSuccess(
+                            modalError(
                                 context,
-                                'you can not add product $result with this quantity ,'
-                                ' please decrease its amount',
+                                'order faild ,'
+                                ' try again',
                                 () => Navigator.pop(context));
                           }
                           // Navigator.push(
