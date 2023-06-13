@@ -95,8 +95,9 @@ class ListProducts extends StatelessWidget {
 
                               //  child: Image.network(listProduct[i].picture,
                               child: Image.asset('assets/phone/iphone.png',
-                                  height: 150)),
+                                  height: 100)),
                         ),
+                        const SizedBox(height: 5.0),
                         TextCustom(
                             text: listProduct[i].name,
                             textOverflow: TextOverflow.ellipsis,
