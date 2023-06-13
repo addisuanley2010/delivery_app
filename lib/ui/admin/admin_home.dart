@@ -173,11 +173,11 @@ class AdminHome extends StatelessWidget {
                     const SizedBox(height: 15.0),
                     const TextCustom(text: 'Personal', color: Colors.grey),
                     const SizedBox(height: 10.0),
-                    const ItemAccount(
-                      text: 'Privacy & Policy',
-                      icon: Icons.policy_rounded,
-                      colorIcon: 0xff6dbd63,
-                    ),
+                    // const ItemAccount(
+                    //   text: 'Privacy & Policy',
+                    //   icon: Icons.policy_rounded,
+                    //   colorIcon: 0xff6dbd63,
+                    // ),
                     ItemAccount(
                         text: 'message',
                         icon: Icons.lock_outline_rounded,

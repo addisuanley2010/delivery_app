@@ -174,14 +174,14 @@ class _DetailsTotal extends StatelessWidget {
         children: [
           const TextCustom(text: 'Order Summary', fontWeight: FontWeight.w500),
           const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const TextCustom(text: 'Subtotal', color: Colors.grey),
-              TextCustom(
-                  text: '\$ ${cartController.totalAmount}', color: Colors.grey),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     const TextCustom(text: 'Subtotal', color: Colors.grey),
+          //     TextCustom(
+          //         text: '\$ ${cartController.totalAmount}', color: Colors.grey),
+          //   ],
+          // ),
           const SizedBox(height: 10.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -15,6 +15,7 @@ import 'package:delivery/ui/client/selectShopScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:delivery/ui/admin/message/message.dart';
 
 class ProfileClientScreen extends StatelessWidget {
   ProfileClientScreen({super.key});
@@ -121,14 +122,14 @@ class ProfileClientScreen extends StatelessWidget {
                         onPressed: () => Navigator.push(context,
                             routeFrave(page: const ChangePasswordScreen())),
                       ),
-                      const ItemAccount(
-                        text: 'Add addresses',
-                        icon: Icons.my_location_rounded,
-                        colorIcon: 0xffFB5019,
-                        // onPressed: () => Navigator.push(
-                        //     context, routeFrave(page: SelectShopScreen())
-                        //     ),
-                      ),
+                      // const ItemAccount(
+                      //   text: 'Add addresses',
+                      //   icon: Icons.my_location_rounded,
+                      //   colorIcon: 0xffFB5019,
+                      // onPressed: () => Navigator.push(
+                      //     context, routeFrave(page: SelectShopScreen())
+                      //     ),
+                      // ),
                       ItemAccount(
                         text: 'select addresss',
                         icon: Icons.my_location_rounded,
@@ -144,11 +145,11 @@ class ProfileClientScreen extends StatelessWidget {
                             context, routeFrave(page: ClientOrdersScreen())),
                       ),
                       //ComplaintForm
-                      const ItemAccount(
-                        text: 'Dark mode',
-                        icon: Icons.dark_mode_rounded,
-                        colorIcon: 0xff051E2F,
-                      ),
+                      // const ItemAccount(
+                      //   text: 'Dark mode',
+                      //   icon: Icons.dark_mode_rounded,
+                      //   colorIcon: 0xff051E2F,
+                      // ),
                       ItemAccount(
                         text: 'your complains',
                         icon: Icons.dark_mode_rounded,
@@ -159,17 +160,22 @@ class ProfileClientScreen extends StatelessWidget {
                       const SizedBox(height: 15.0),
                       const TextCustom(text: 'Personal', color: Colors.grey),
                       const SizedBox(height: 10.0),
-                      const ItemAccount(
-                        text: 'Privacy & Policy',
-                        icon: Icons.policy_rounded,
-                        colorIcon: 0xff6dbd63,
-                      ),
-                      const ItemAccount(
-                        text: 'message',
-                        icon: Icons.lock_outline_rounded,
-                        colorIcon: 0xff1F252C,
-                      ),
-                      const ItemAccount(
+                      // const ItemAccount(
+                      //   text: 'Privacy & Policy',
+                      //   icon: Icons.policy_rounded,
+                      //   colorIcon: 0xff6dbd63,
+                      // ),
+                      ItemAccount(
+                          text: 'message',
+                          icon: Icons.lock_outline_rounded,
+                          colorIcon: 0xff1F252C,
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => MessageScreen()),
+                            );
+                          }),
+                      ItemAccount(
                         text: 'Term & Conditions',
                         icon: Icons.description_outlined,
                         colorIcon: 0xff458bff,
