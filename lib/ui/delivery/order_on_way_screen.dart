@@ -26,8 +26,8 @@ class OrderOnWayScreen extends StatelessWidget {
         elevation: 0,
         leadingWidth: 80,
         leading: InkWell(
-          onTap: () =>
-              Navigator.push(context, routeFrave(page: DeliveryHomeScreen())),
+          onTap: () => Navigator.pushReplacement(
+              context, routeFrave(page: DeliveryHomeScreen())),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [

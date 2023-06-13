@@ -372,7 +372,7 @@ class Products {
     //     .snapshots());
     return productsCollection
         .where('status', isEqualTo: 'not sold')
-        .where('addressId', isEqualTo: addressId)
+        // .where('shopId', isEqualTo: addressId)
         .snapshots()
         .map(_productsListFromSnapshot);
   }

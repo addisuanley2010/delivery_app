@@ -82,7 +82,7 @@ class _OrdersDetailsDeliveryScreenState
           elevation: 0,
           title: TextCustom(
               text: 'ORDER N# ${widget.order.orderId}',
-              fontWeight: FontWeight.w500),
+              fontWeight: FontWeight.w100),
           centerTitle: true,
           leadingWidth: 80,
           leading: InkWell(
@@ -156,21 +156,21 @@ class _OrdersDetailsDeliveryScreenState
                       const TextCustom(
                           text: 'CLIENT',
                           color: ColorsFrave.primaryColor,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w300),
                       Row(
                         children: [
-                          Container(
-                            height: 35,
-                            width: 35,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                  image: AssetImage('assets/images/bg.png'),
-                                  // image: NetworkImage( (widget.order.clientImage != '') ? '${Environment.endpointBase}${widget.order.clientImage}' : '${Environment.endpointBase}without-image.png')
-                                )),
-                          ),
-                          const SizedBox(width: 10.0),
+                          //   Container(
+                          //     height: 35,
+                          //     width: 35,
+                          //     decoration: const BoxDecoration(
+                          //         shape: BoxShape.circle,
+                          //         image: DecorationImage(
+                          //           image: AssetImage('assets/images/bg.png'),
+                          //           // image: NetworkImage( (widget.order.clientImage != '') ? '${Environment.endpointBase}${widget.order.clientImage}' : '${Environment.endpointBase}without-image.png')
+                          //         )),
+                          //   ),
+                          //   const SizedBox(width: 10.0),
                           TextCustom(text: widget.order.clientId),
                         ],
                       ),

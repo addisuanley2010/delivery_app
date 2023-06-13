@@ -53,14 +53,14 @@ class CardOrdersDelivery extends StatelessWidget {
                       text: 'Client',
                       fontSize: 16,
                       color: ColorsFrave.secundaryColor),
-                  TextCustom(text: orderResponse.clientId, fontSize: 16),
+                  TextCustom(text: orderResponse.clientId, fontSize: 9),
                 ],
               ),
               const SizedBox(height: 10.0),
-              const TextCustom(
-                  text: 'Address shipping',
-                  fontSize: 16,
-                  color: ColorsFrave.secundaryColor),
+              // const TextCustom(
+              //     text: 'Address shipping',
+              //     fontSize: 16,
+              //     color: ColorsFrave.secundaryColor),
               const SizedBox(height: 5.0),
               Align(
                   alignment: Alignment.centerRight,
