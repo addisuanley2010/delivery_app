@@ -22,8 +22,10 @@ class _ComplaintFormState extends State<ComplaintForm> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // Save the complaint to Firebase Firestore
       print('name = $name');
+      final currentUser = FirebaseAuth.instance.currentUser;
+      final email = currentUser?.email ?? '';
+
       FirebaseFirestore.instance.collection('complaints').add({
         'complaint': _complaintController.text,
         'ownerName': name,
@@ -118,9 +120,9 @@ class _ComplaintFormState extends State<ComplaintForm> {
         backgroundColor: Colors.white,
         elevation: 0,
         leadingWidth: 70,
-        title: TextCustom(
-          text: 'write your complaint  name=$name',
-        ),
+        // title: TextCustom(
+        //   text: 'write your complaint  name=$name',
+        // ),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
