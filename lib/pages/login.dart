@@ -1,4 +1,6 @@
+import 'package:delivery/pages/forgotPassword.dart';
 import 'package:delivery/screens/wrapper.dart';
+import 'package:delivery/ui/client/component/animation_route.dart';
 import 'package:flutter/material.dart';
 import 'package:delivery/ui/admin/components/btn_frave.dart';
 import 'package:delivery/ui/admin/components/form_field_frave.dart';
@@ -84,18 +86,18 @@ class LoginScreenState extends State<LoginScreen> {
                                   size: 20),
                             ),
                           ),
-                          Row(
-                            children: const [
-                              TextCustom(
-                                  text: 'online  ',
-                                  color: ColorsFrave.primaryColor,
-                                  fontWeight: FontWeight.w500),
-                              TextCustom(
-                                  text: 'Delivery',
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w500),
-                            ],
-                          )
+                          // Row(
+                          //   children: const [
+                          //     // TextCustom(
+                          //     //     text: 'online  ',
+                          //     //     color: ColorsFrave.primaryColor,
+                          //     //     fontWeight: FontWeight.w500),
+                          //     TextCustom(
+                          //         text: 'Delivery',
+                          //         color: Colors.black87,
+                          //         fontWeight: FontWeight.w500),
+                          //   ],
+                          // )
                         ],
                       ),
                     ),
@@ -177,15 +179,17 @@ class LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
+                          children: [
                             InkWell(
-                                // onTap: () => Navigator.push(context, routeFrave(page: ForgotPasswordScreen())),
-                                child: TextCustom(
+                                onTap: () => Navigator.push(context,
+                                    routeFrave(page: ForgotPasswordScreen())),
+                                child: const TextCustom(
                                     text: 'Forgot Password?',
                                     fontSize: 17,
                                     color: ColorsFrave.primaryColor)),
                           ],
                         )),
+                    //  ForgotPasswordScreen
                     Text(
                       errorMessage,
                       style: const TextStyle(

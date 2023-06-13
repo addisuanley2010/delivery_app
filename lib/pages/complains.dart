@@ -23,6 +23,7 @@ class _ComplaintFormState extends State<ComplaintForm> {
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // Save the complaint to Firebase Firestore
+      print('name = $name');
       FirebaseFirestore.instance.collection('complaints').add({
         'complaint': _complaintController.text,
         'ownerName': name,
@@ -74,26 +75,21 @@ class _ComplaintFormState extends State<ComplaintForm> {
 
   Stream<void> getPersonalInformationStream() {
     final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      final customerRef = FirebaseFirestore.instance
-          .collection('customers')
-          .doc(currentUser.uid);
-      return customerRef.snapshots().map((customerSnapshot) {
-        final customerData = customerSnapshot.data() as Map<String, dynamic>;
-        name = customerData['name'];
-        email = customerData['email'];
-        role = customerData['role'];
-        uId = currentUser.uid;
-      });
-    }
+    String a = currentUser!.uid;
+    print('current user = $a');
+
+    final customerRef =
+        FirebaseFirestore.instance.collection('customers').doc(currentUser.uid);
+    customerRef.snapshots().map((customerSnapshot) {
+      final customerData = customerSnapshot.data() as Map<String, dynamic>;
+      print('name');
+      name = customerData['name'];
+      email = customerData['email'];
+      role = customerData['role'];
+      uId = currentUser.uid;
+    });
 
     return Stream.empty(); // Return an empty stream if currentUser is null
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getPersonalInformationStream();
   }
 
   void clearForm() {
@@ -103,10 +99,7 @@ class _ComplaintFormState extends State<ComplaintForm> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users>(context);
-    if (user.uid != null) {
-      getPersonalInformationStream();
-    }
-
+    getPersonalInformationStream();
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
