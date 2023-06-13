@@ -67,19 +67,18 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                                 //   itemBuilder: (context, i, realIndex) =>
                                 //       Container(
                                 //     width: size.width,
-                                //     child:
-                                //         Image.asset(widget.product.picture),
-                                child: Image.asset(
-                                  'assets/phone/iphone.png',
+                                child: Image.network(widget.product.picture),
+                                // child: Image.asset(
+                                //   'assets/phone/iphone.png',
 
-                                  // child: Image.network(
-                                  //   widget.product.picture,
+                                //   // child: Image.network(
+                                //   //   widget.product.picture,
 
-                                  // child: Asset.network(
-                                  //     widget.product.picture),
-                                  //   ),
-                                  // ),
-                                ),
+                                //   // child: Asset.network(
+                                //   //     widget.product.picture),
+                                //   //   ),
+                                //   // ),
+                                // ),
                               ),
                             ),
                           )

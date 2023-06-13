@@ -1,4 +1,5 @@
 import 'package:delivery/models/addressModel.dart';
+import 'package:delivery/models/cartModel.dart';
 import 'package:delivery/models/product.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/database.dart';
@@ -30,6 +31,8 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
       final addressController =
           Provider.of<AddressController>(context, listen: false);
       address = addressController.address.id;
+      print('addrss');
+
       fetchProducts(); // Call the method to fetch and populate the products list
     });
   }
@@ -39,6 +42,8 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
       if (snapshot != null) {
         setState(() {
           listProduct = snapshot;
+          print('${listProduct}');
+          print(address);
         });
       }
     });
@@ -54,10 +59,10 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Users?>(context);
-    //final cartController = Provider.of<CartController>(context);
-    //final addressController = Provider.of<AddressController>(context);
-    // address = addressController.address.id;
-    //Products(addressId: addressController.address.id).productsList,
+    final cartController = Provider.of<CartController>(context);
+    final addressController = Provider.of<AddressController>(context);
+    address = addressController.address.id;
+    // Products(addressId: addressController.address.id).productsList,
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -121,7 +126,8 @@ class _SearchClientScreenState extends State<SearchClientScreen> {
     final addressController = Provider.of<AddressController>(context);
 
     return StreamBuilder<List<Product>>(
-        stream: Products(addressId: addressController.address.id).productsListByAddress,
+        stream: Products(addressId: addressController.address.id)
+            .productsListByAddress,
         builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
           final List<Product>? listProduct = snapshot.data;
           if (snapshot.data == null) return _HistorySearch();
@@ -208,7 +214,7 @@ class _HistorySearch extends StatelessWidget {
           contentPadding: EdgeInsets.all(0),
           minLeadingWidth: 20,
           leading: Icon(Icons.history),
-          title: TextCustom(text: 'Burger', color: Colors.grey),
+          title: TextCustom(text: 'phone', color: Colors.grey),
         )
       ],
     );
