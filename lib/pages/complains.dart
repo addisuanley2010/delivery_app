@@ -82,7 +82,8 @@ class _ComplaintFormState extends State<ComplaintForm> {
         FirebaseFirestore.instance.collection('customers').doc(currentUser.uid);
     customerRef.snapshots().map((customerSnapshot) {
       final customerData = customerSnapshot.data() as Map<String, dynamic>;
-      print('name');
+      print('name= $name');
+      name = customerData['name'];
       name = customerData['name'];
       email = customerData['email'];
       role = customerData['role'];
