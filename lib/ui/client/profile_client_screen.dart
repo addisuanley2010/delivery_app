@@ -165,7 +165,7 @@ class ProfileClientScreen extends StatelessWidget {
                         colorIcon: 0xff6dbd63,
                       ),
                       const ItemAccount(
-                        text: 'Security',
+                        text: 'message',
                         icon: Icons.lock_outline_rounded,
                         colorIcon: 0xff1F252C,
                       ),

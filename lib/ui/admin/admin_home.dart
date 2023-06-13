@@ -16,6 +16,7 @@ import 'package:delivery/ui/admin/profile/edit_Prodile_screen.dart';
 import 'package:delivery/ui/admin/profile/change_password_screen.dart';
 import 'package:delivery/ui/admin/category/categories_admin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:delivery/ui/admin/message/message.dart';
 //lat =11.596716
 //long=37.394999
 import 'my_test/test.dart';
@@ -114,22 +115,6 @@ class AdminHome extends StatelessWidget {
                             ),
                           );
                         }),
-                    // ItemAccount(
-                    //     text: 'Change Role',
-                    //     icon: Icons.swap_horiz_rounded,
-                    //     colorIcon: 0xffE62755,
-                    //     onPressed: () {
-                    //       Navigator.of(context).push(
-                    //         MaterialPageRoute(
-                    //           builder: (context) => const SelectRoleScreen(),
-                    //         ),
-                    //       );
-                    //     }),
-                    // const ItemAccount(
-                    //   text: 'Dark mode',
-                    //   icon: Icons.dark_mode_rounded,
-                    //   colorIcon: 0xff051E2F,
-                    // ),
                     const SizedBox(height: 15.0),
                     const TextCustom(text: 'shop', color: Colors.grey),
                     const SizedBox(height: 10.0),
@@ -178,7 +163,6 @@ class AdminHome extends StatelessWidget {
                             ),
                           );
                         }),
-
                     ItemAccount(
                       text: 'your complains',
                       icon: Icons.dark_mode_rounded,
@@ -186,7 +170,6 @@ class AdminHome extends StatelessWidget {
                       onPressed: () => Navigator.push(
                           context, routeFrave(page: ComplaintForm())),
                     ),
-
                     const SizedBox(height: 15.0),
                     const TextCustom(text: 'Personal', color: Colors.grey),
                     const SizedBox(height: 10.0),
@@ -195,18 +178,18 @@ class AdminHome extends StatelessWidget {
                       icon: Icons.policy_rounded,
                       colorIcon: 0xff6dbd63,
                     ),
-
                     ItemAccount(
-                        text: 'Security',
+                        text: 'message',
                         icon: Icons.lock_outline_rounded,
                         colorIcon: 0xff1F252C,
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const TestShop(),
+                              builder: (context) =>  MessageScreen()
                             ),
                           );
-                        }),
+                        }
+                        ),
                     const ItemAccount(
                       text: 'Term & Conditions',
                       icon: Icons.description_outlined,
