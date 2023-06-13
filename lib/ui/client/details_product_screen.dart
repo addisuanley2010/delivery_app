@@ -59,7 +59,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                             child: Hero(
                               tag: widget.product.id,
                               child: Container(
-                                height: 180,
+                                height: 200,
                                 // child: CarouselSlider.builder(
                                 //   itemCount: imagesProducts.length,
                                 //   options: CarouselOptions(
@@ -135,34 +135,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
             const SizedBox(height: 20.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0, vertical: 5.0),
-                    decoration: BoxDecoration(
-                        color: ColorsFrave.primaryColor,
-                        borderRadius: BorderRadius.circular(5.0)),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.star_rounded, color: Colors.white, size: 18),
-                        SizedBox(width: 3.0),
-                        TextCustom(
-                            text: '4.9', color: Colors.white, fontSize: 17)
-                      ],
-                    ),
-                  ),
-                  Row(
-                    children: const [
-                      Icon(Icons.timer, size: 18),
-                      SizedBox(width: 5.0),
-                      TextCustom(text: '30 Min'),
-                    ],
-                  ),
-                  const TextCustom(text: '\$ Free Shipping')
-                ],
-              ),
+              child: Row(),
             ),
             const SizedBox(height: 30.0),
             Padding(
@@ -330,7 +303,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                         (widget.product.status == 'not sold')
                             ? Container(
                                 height: 50,
-                                width: 220,
+                                width: 200,
                                 decoration: BoxDecoration(
                                     color: ColorsFrave.primaryColor,
                                     borderRadius: BorderRadius.circular(15.0)),
