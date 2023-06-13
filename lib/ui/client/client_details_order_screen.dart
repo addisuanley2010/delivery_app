@@ -176,14 +176,59 @@ class ClientDetailsOrderScreen extends StatelessWidget {
               ],
             ),
           ),
+          // (orderClient.status == 'ON WAY')
+          //     ? Padding(
+          //         padding: const EdgeInsets.all(15.0),
+          //         child: BtnFrave(
+          //             text: 'confirm recieved',
+          //             fontWeight: FontWeight.w500,
+          //             onPressed: () async {}
+          //             // accessGps(await Permission.location.request(), context),
+          //             ),
+          //       )
+          //     : const SizedBox(),
           (orderClient.status == 'ON WAY')
-              ? Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: BtnFrave(
-                    text: 'FOLLOW DELIVERY',
-                    fontWeight: FontWeight.w500,
-                    onPressed: () async =>
-                        accessGps(await Permission.location.request(), context),
+              ? Container(
+                  padding: const EdgeInsets.all(10.0),
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // BlocBuilder<MylocationmapBloc, MylocationmapState>(
+                      //   builder: (context, state) =>
+                      BtnFrave(
+                        text: 'confirm',
+                        fontWeight: FontWeight.w500,
+                        // onPressed: () {
+                        //   if (widget.order.status == 'DISPATCHED') {
+                        //     if (state.location != null) {
+                        //       orderBloc.add(OnUpdateStatusOrderOnWayEvent(
+                        //           widget.order.orderId.toString(),
+                        //           state.location!));
+                        //     }
+                        //   }
+                        //   if (widget.order.status == 'ON WAY') {
+                        //     Navigator.push(
+                        //         context,
+                        //         routeFrave(
+                        //             page: MapDeliveryScreen(
+                        //                 order: widget.order)));
+                        //   }
+                        // },
+
+                        onPressed: () async {
+                          await Delivery(
+                                  status: 'DELIVERED',
+                                  uid: orderClient.deliveryId)
+                              .updateOrderStatus(
+                                  orderId: orderClient.orderId,
+                                  status: 'ON WAY');
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                        },
+                      ),
+                      //)
+                    ],
                   ),
                 )
               : const SizedBox()

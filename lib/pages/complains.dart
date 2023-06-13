@@ -118,8 +118,8 @@ class _ComplaintFormState extends State<ComplaintForm> {
         backgroundColor: Colors.white,
         elevation: 0,
         leadingWidth: 70,
-        title: const TextCustom(
-          text: 'write your complaint',
+        title: TextCustom(
+          text: 'write your complaint  name=$name',
         ),
         centerTitle: true,
       ),

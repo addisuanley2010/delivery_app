@@ -1,14 +1,8 @@
 import 'package:delivery/models/addressModel.dart';
 import 'package:delivery/models/cartModel.dart';
-import 'package:delivery/pages/complains.dart';
-import 'package:delivery/pages/registerAddress.dart';
-import 'package:delivery/pages/registerEmailAndPassword.dart';
 import 'package:delivery/pages/splashScreen.dart';
 import 'package:delivery/ui/client/check_out_screen.dart';
-import 'package:delivery/ui/client/guestPage.dart';
 import 'firebase_options.dart';
-import 'package:delivery/screens/wrapper.dart';
-import 'package:delivery/pages/registerShope.dart';
 import 'package:delivery/models/user.dart';
 import 'package:delivery/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';

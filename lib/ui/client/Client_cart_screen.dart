@@ -38,6 +38,28 @@ class CartClientScreen extends StatefulWidget {
 class _CartClientScreenState extends State<CartClientScreen> {
   @override
   final AuthService _auth = AuthService();
+  String name = 'getch';
+  String email = 'getch@gmail.com';
+  //String imageUrl = '';
+  String status = 'approved';
+  String phone = '0930375845';
+
+  void getcustomer() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    print(currentUser!.uid);
+    final customerRef =
+        FirebaseFirestore.instance.collection('customers').doc(currentUser.uid);
+
+    customerRef.snapshots().map((customerSnapshot) {
+      final customerData = customerSnapshot.data() as Map<String, dynamic>;
+      name = customerData['name'];
+      email = customerData['email'];
+      print(name);
+      print(email);
+      // imageUrl = customerData['imageUrl'];
+      phone = customerData['phone'];
+    });
+  }
 
   Widget build(BuildContext context) {
     //final cartBloc = BlocProvider.of<CartBloc>(context);
@@ -333,6 +355,31 @@ class _CartClientScreenState extends State<CartClientScreen> {
                             // ignore: use_build_context_synchronously
                             modalSuccess(context, 'checked',
                                 () => Navigator.pop(context));
+                            // //order
+                            // if (cartController.items.isNotEmpty) {
+                            //   dynamic result =
+                            //       await cartController.placeOrder(user.uid);
+                            //   // print('${result}');
+                            //   if (result == true) {
+                            //     print(
+                            //         'my bag screen : cart added successfully');
+                            //     // ignore: use_build_context_synchronously
+                            //     modalSuccess(context, 'your  order received',
+                            //         () => Navigator.pop(context));
+                            //     // ignore: use_build_context_synchronously
+                            //     Navigator.pushReplacement(context,
+                            //         routeFrave(page: CheckOutScreen()));
+                            //   } else {
+                            //     // ignore: use_build_context_synchronously
+                            //     // modalError(
+                            //     //     context,
+                            //     //     'order faild ,'
+                            //     //     ' try again',
+                            //     //     () => Navigator.pop(context));
+                            //   }
+                            //   // Navigator.push(
+                            //   //     context, routeFrave(page: CheckOutScreen()));
+                            // }
 
                             // ignore: use_build_context_synchronously
                             Navigator.pushReplacement(

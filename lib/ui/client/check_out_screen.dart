@@ -97,35 +97,7 @@ class CheckOutScreen extends StatelessWidget {
                           ? ColorsFrave.primaryColor
                           : ColorsFrave.secundaryColor,
                       onPressed: () async {
-                        try {
-                          dynamic response = await Chapa.paymentParameters(
-                            context: context, // context
-                            publicKey:
-                                'CHASECK_TEST-LuyPQHmIruZaX970hr0f1PoUNxSSDGUl',
-                            currency: 'ETB',
-                            amount: cartController.totalAmount.toString(),
-                            email: email,
-                            phone: phone,
-                            firstName: name,
-                            lastName: 'common',
-                            txRef:
-                                'chewatatest-${cartController.totalAmount.toString()} ',
-                            title: 'test',
-                            desc: 'payment for delivery',
-                            namedRouteFallBack:
-                                '/checkoutPage', // fall back route name
-                          );
-                          print('hello try done');
-
-                          // Navigator.pushReplacement(
-                          //     context, routeFrave(page: CheckOutScreen()));
-                        } catch (error) {
-                          print('sad  catch done');
-                          print('error= $error');
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Error: $error')));
-                        }
-
+                        double total = cartController.totalAmount;
                         if (cartController.items.isNotEmpty) {
                           dynamic result =
                               await cartController.placeOrder(user.uid);
@@ -133,8 +105,34 @@ class CheckOutScreen extends StatelessWidget {
                           if (result == true) {
                             print('my bag screen : cart added successfully');
                             // ignore: use_build_context_synchronously
-                            modalSuccess(context, 'your  order received',
-                                () => Navigator.pop(context));
+
+                            try {
+                              dynamic response = await Chapa.paymentParameters(
+                                context: context, // context
+                                publicKey:
+                                    'CHASECK_TEST-LuyPQHmIruZaX970hr0f1PoUNxSSDGUl',
+                                currency: 'ETB',
+                                amount: total.toString(),
+                                email: email,
+                                phone: phone,
+                                firstName: name,
+                                lastName: 'common',
+                                txRef: 'chewatatest-${total.toString()}',
+                                title: 'test',
+                                desc: 'payment for delivery',
+                                namedRouteFallBack:
+                                    '/checkoutPage', // fall back route name
+                              );
+                              print('hello try done');
+
+                              // Navigator.pushReplacement(
+                              //     context, routeFrave(page: CheckOutScreen()));
+                            } catch (error) {
+                              print('sad  catch done');
+                              print('error= $error');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Error: $error')));
+                            }
                           } else {
                             // ignore: use_build_context_synchronously
                             modalError(
